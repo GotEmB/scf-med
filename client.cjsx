@@ -1,0 +1,14 @@
+docReady = require "doc-ready"
+Page = require "./components/page"
+React = require "react"
+RootView = require "./components/root-view"
+
+window.$ = window.jQuery = require "jquery"
+Bootstrap = require "bootstrap"
+
+docReady ->
+  page =
+    <Page title={process.env.PAGE_TITLE}>
+      <RootView />
+    </Page>
+  React.render page, document

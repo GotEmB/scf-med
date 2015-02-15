@@ -1,0 +1,4 @@
+{
+  "title": "App Title",
+  "dbConnectionString": "/tmp/mongodb-27017.sock/db"
+}
