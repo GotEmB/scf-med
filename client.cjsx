@@ -2,9 +2,10 @@ docReady = require "doc-ready"
 Page = require "./components/page"
 React = require "react"
 RootView = require "./components/root-view"
-
 window.$ = window.jQuery = require "jquery"
-Bootstrap = require "bootstrap"
+
+require "bootstrap"
+require "bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min"
 
 docReady ->
   page =

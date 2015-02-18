@@ -10,4 +10,9 @@ router.get "/bootstrap.min.css", (req, res, next) ->
 router.use "/font-awesome", express.static path.resolve __dirname,
   "../node_modules/font-awesome/"
 
+router.get "/bootstrap-datetimepicker.min.css", (req, res, next) ->
+  res.sendFile path.resolve __dirname,
+    "../node_modules/bootstrap-datetimepicker/build/css/\
+    bootstrap-datetimepicker.min.css"
+
 module.exports = router

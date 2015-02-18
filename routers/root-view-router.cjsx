@@ -7,10 +7,12 @@ RootView = require "../components/root-view"
 router = express.Router()
 
 router.get "/", (req, res, next) ->
-  res.send React.renderToString(
+  html = "<!DOCTYPE html>"
+  html += React.renderToString(
     <Page title={constants.title}>
       <RootView />
     </Page>
   )
+  res.send html
 
 module.exports = router

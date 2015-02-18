@@ -1,4 +1,4 @@
-leAPICalls = require("../../async-calls/le-api").calls
+leAPICalls = require("../async-calls/le-api").calls
 React = require "react"
 
 class module.exports extends React.Component

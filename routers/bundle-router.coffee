@@ -29,6 +29,7 @@ getBundle = ->
 router = express.Router()
 
 router.get "/", (req, res, next) ->
+  res.type "js"
   getBundle().pipe res
 
 module.exports = router

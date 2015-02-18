@@ -1,5 +1,5 @@
-AboutView = require "./root-view/about-view"
-MainNav = require "./root-view/main-nav"
+MainNav = require "./main-nav"
+PatientsView = require "./patients-view"
 React = require "react"
 
 class module.exports extends React.Component
@@ -7,20 +7,26 @@ class module.exports extends React.Component
 
   constructor: ->
     @state =
-      activeView: "about"
+      activeView: "patients"
+      patient: undefined
 
-  handleActiveViewChanged: (str) ->
+  handleActiveViewChanged: (str) =>
     @setState activeView: str
+
+  handlePatientChanged: (patient) =>
+    @setState patient: patient
 
   render: ->
     activeView =
       switch @state.activeView
-        when "about"
-          <AboutView />
-    <div> 
+        when "patients"
+          <PatientsView />
+    <div>
       <MainNav
         activeView={@state.activeView}
         onActiveViewChange={@handleActiveViewChanged}
       />
-      {activeView}
+      <div className="container">
+        {activeView}
+      </div>
     </div>

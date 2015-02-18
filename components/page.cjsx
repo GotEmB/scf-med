@@ -25,6 +25,11 @@ class module.exports extends React.Component
           type="text/css"
           href="/static/font-awesome/css/font-awesome.min.css"
         />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="/static/bootstrap-datetimepicker.min.css"
+        />
       </head>
       <body style={height: "100%", paddingTop: 70}>
         {@props.children}

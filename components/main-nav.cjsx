@@ -1,9 +1,9 @@
 changeCase = require "change-case"
-constants = require "../../constants"
+constants = require "../constants"
 React = require "react"
 
 navItems = [
-  "About"
+  "Patients"
 ]
 
 class module.exports extends React.Component
