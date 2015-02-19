@@ -1,3 +1,4 @@
+Layers = require "./layers"
 React = require "react"
 
 class module.exports extends React.Component
@@ -33,5 +34,6 @@ class module.exports extends React.Component
       </head>
       <body style={height: "100%", paddingTop: 70}>
         {@props.children}
+        <Layers />
       </body>
     </html>
