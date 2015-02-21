@@ -1,6 +1,7 @@
 CommitCache = require "./commit-cache"
 constants = require "../constants"
 EditPatient = require "./edit-patient"
+escapeStringRegexp = require "escape-string-regexp"
 Layers = require "./layers"
 nextTick = require "next-tick"
 patientsCalls = require("../async-calls/patients").calls
@@ -22,15 +23,18 @@ class module.exports extends React.Component
 
   fetchPatients: =>
     @setState loading: true
-    patientsCalls.getPatients @state.filterQuery, @state.loadFrom,
-      constants.patientsPaginationLimit, (err, patients, total) =>
+    patientsCalls.getPatients escapeStringRegexp(@state.filterQuery),
+      @state.loadFrom, constants.patientsPaginationLimit,
+      (err, patients, total) =>
         @setState
           patients: patients
           total: total
           loading: false
 
   handleFilterQueryChanged: (e) =>
-    @setState filterQuery: e.target.value
+    @setState
+      filterQuery: e.target.value
+      loadFrom: 0
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
     @filterQueryChangeTimer = setTimeout @fetchPatients, 200
 
