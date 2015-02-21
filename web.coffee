@@ -5,7 +5,7 @@ bundleRouter = require "./routers/bundle-router"
 compression = require "compression"
 express = require "express"
 http = require "http"
-leAPICalls = require "./async-calls/le-api"
+patientsCalls = require "./async-calls/patients"
 rootViewRouter = require "./routers/root-view-router"
 staticRouter = require "./routers/static-router"
 
@@ -15,7 +15,7 @@ router.use compression()
 router.use rootViewRouter
 router.use "/static", staticRouter
 router.use "/bundle", bundleRouter
-router.use leAPICalls.router express: express, bodyParser: bodyParser
+router.use patientsCalls.router express: express, bodyParser: bodyParser
 
 server = http.createServer router
 

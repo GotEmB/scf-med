@@ -17,8 +17,11 @@ makeRestInterface = (calls, mountPath, cache) ->
           .timeout 1000 * 60 * 60
           .end (err, res) ->
             return console.error err if err?
-            cache[hash] = res.body.result if cache?
-            callback? res.body.result...
+            if res.body.err?
+              return console.error res.body.err
+            else
+              cache[hash] = res.body.result if cache?
+              callback? undefined, res.body.result...
   restInterface
 
 makeCacheChecker = (calls, cache) ->
@@ -35,8 +38,11 @@ makeRouter = (calls, mountPath) -> ({express, bodyParser}) ->
   for name, func of calls then do (name, func) ->
     router.post "#{mountPath}/#{name}", (req, res, next) ->
       if req.body.callback
-        func.apply calls, req.body.args.concat ->
-          res.json result: Array.prototype.slice.call arguments
+        func.apply calls, req.body.args.concat (err, args...) ->
+          if err?
+            res.status(500).json error: err
+          else
+            res.json result: args
       else
         func.apply calls, req.body.args
         res.end()

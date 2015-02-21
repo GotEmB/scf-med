@@ -1,53 +1,90 @@
+CommitCache = require "./commit-cache"
+constants = require "../constants"
+EditPatient = require "./edit-patient"
+Layers = require "./layers"
+nextTick = require "next-tick"
+patientsCalls = require("../async-calls/patients").calls
 PatientsTable = require "./patients-table"
 React = require "react"
-
-sampleData = [
-  {
-    id: "101"
-    name: "Badhrinathan Nithyanandam"
-    dob: new Date("Apr 23, 1963")
-    sex: "Male"
-  }
-  {
-    id: "101D"
-    name: "Saundarya Badhrinathan"
-    dob: new Date("Jan 13, 1996")
-    sex: "Female"
-  }
-  {
-    id: "101S"
-    name: "Gautham Badhrinathan"
-    dob: new Date("Aug 12, 1991")
-    sex: "Male"
-  }
-  {
-    id: "101W"
-    name: "Lalitha Badhrinathan"
-    dob: new Date("Mar 12, 1968")
-    sex: "Female"
-  }
-]
 
 class module.exports extends React.Component
   @displayName: "PatientsView"
 
   constructor: ->
     @state =
-      patients: sampleData
+      filterQuery: ""
+      patients: []
       selectedPatient: undefined
-      loadedFrom: 0
-      total: sampleData.length
+      loadFrom: 0
+      total: 0
       loading: false
+      layer: undefined
 
-  handleFilterKeyDown: (e) ->
+  fetchPatients: =>
+    @setState loading: true
+    patientsCalls.getPatients @state.filterQuery, @state.loadFrom,
+      constants.patientsPaginationLimit, (err, patients, total) =>
+        @setState
+          patients: patients
+          total: total
+          loading: false
 
-  handleNewPatientClicked: ->
+  handleFilterQueryChanged: (e) =>
+    @setState filterQuery: e.target.value
+    clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
+    @filterQueryChangeTimer = setTimeout @fetchPatients, 200
 
-  handlePagerPreviousClicked: ->
+  handleNewPatientClicked: =>
+    layer =
+      <CommitCache
+        component={EditPatient}
+        data={undefined}
+        dataProperty="patient"
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState layer: layer
+    Layers.addLayer layer, "New Patient"
 
-  handlePagerNextClicked: ->
+  handlePagerPreviousClicked: =>
+    @setState
+      loadFrom:
+        Math.max 0, @state.loadFrom - constants.patientsPaginationLimit
+    nextTick @fetchPatients
 
-  handlePatientClicked: ->
+  handlePagerNextClicked: =>
+    @setState
+      loadFrom:
+        Math.min @state.total - constants.patientsPaginationLimit,
+          @state.loadFrom + constants.patientsPaginationLimit
+    nextTick @fetchPatients
+
+  handlePatientClicked: (patient) =>
+    layer =
+      <CommitCache
+        component={EditPatient}
+        data={patient}
+        dataProperty="patient"
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState
+      selectedPatient: patient
+      layer: layer
+    Layers.addLayer layer, "Edit Patient"
+
+  handleLayerDismissed: ({commit, data}) =>
+    Layers.removeLayer @state.layer
+    @setState
+      selectedPatient: undefined
+      layer: undefined
+    if commit
+      if data?
+        patientsCalls.commitPatient data, (err) =>
+          @setState loading: true
+          @fetchPatients()
+      else if @state.selectedPatient?._id?
+        patientsCalls.removePatient @state.selectedPatient, (err) =>
+          @setState loading: true
+          @fetchPatients()
 
   renderLeftControls: ->
     <div className="form-inline pull-left">
@@ -55,10 +92,15 @@ class module.exports extends React.Component
         <span className="input-group-addon">
           <i className="fa fa-filter" />
         </span>
-        <input type="text" className="form-control" />
+        <input
+          type="text"
+          className="form-control"
+          value={@state.filterQuery}
+          onChange={@handleFilterQueryChanged}
+        />
       </div>
       <span> </span>
-      <button className="btn btn-default">
+      <button className="btn btn-default" onClick={@handleNewPatientClicked}>
         <i className="fa fa-plus" /> New Patient
       </button>
     </div>
@@ -70,18 +112,22 @@ class module.exports extends React.Component
           <i className="fa fa-circle-o-notch fa-spin fa-fw" />
         </button>
     leftButton =
-      if @state.loadedFrom > 0
-        <button className="btn btn-default">
+      if @state.loadFrom > 0
+        <button
+          className="btn btn-default"
+          onClick={@handlePagerPreviousClicked}>
           <i className="fa fa-chevron-left" />
         </button>
     rightButton =
-      if @state.loadedFrom + @state.patients.length < @state.total
-        <button className="btn btn-default">
+      if @state.loadFrom + @state.patients.length < @state.total
+        <button
+          className="btn btn-default"
+          onClick={@handlePagerNextClicked}>
           <i className="fa fa-chevron-right" />
         </button>
     text =
-      "#{@state.loadedFrom + 1}—" +
-      "#{@state.loadedFrom + @state.patients.length} of " +
+      "#{@state.loadFrom + 1}—" +
+      "#{@state.loadFrom + @state.patients.length} of " +
       "#{@state.total}"
     <div className="pull-right">
       <div className="pull-right btn-group">
@@ -103,5 +149,12 @@ class module.exports extends React.Component
     <div>
       {@renderControls()}
       <br />
-      <PatientsTable patients={@state.patients} />
+      <PatientsTable
+        patients={@state.patients}
+        selectedPatient={@state.selectedPatient}
+        onPatientClick={@handlePatientClicked}
+      />
     </div>
+
+  componentDidMount: ->
+    @fetchPatients()

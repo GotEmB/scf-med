@@ -12,12 +12,12 @@ class module.exports extends React.Component
     singletonInstance = @
     @state =
       layers: []
-    setTimeout ( =>
-      @setState layers: ["a"]
-    ), 3000
+      titles: []
 
-  renderLayer: (layer, key) ->
-    <Layer index={key} key={key} />
+  renderLayer: (layer, title, key) ->
+    <Layer index={key} title={title} key={key}>
+      {layer}
+    </Layer>
 
   render: ->
     style =
@@ -28,15 +28,21 @@ class module.exports extends React.Component
       right: 0
     style.pointerEvents = "none" if @state.layers.length is 0
     <ReactTransitionGroup style={style} component="div">
-      {@renderLayer layer, i for layer, i in @state.layers}
+      {@renderLayer layer, @state.titles[i], i for layer, i in @state.layers}
     </ReactTransitionGroup>
 
-  @addLayer: (component) ->
+  @addLayer: (component, title) ->
     singletonInstance.state.layers.push component
-    singletonInstance.setState layers: singletonInstance.state.layers
+    singletonInstance.state.titles.push title
+    singletonInstance.setState
+      layers: singletonInstance.state.layers
+      titles: singletonInstance.state.titles
 
   @removeLayer: (component) ->
     i = singletonInstance.state.layers.indexOf component
-    if i > 0
+    if i >= 0
       singletonInstance.state.layers.splice i, 1
-      singletonInstance.setState layers: singletonInstance.state.layers
+      singletonInstance.state.titles.splice i, 1
+      singletonInstance.setState
+        layers: singletonInstance.state.layers
+        titles: singletonInstance.state.titles

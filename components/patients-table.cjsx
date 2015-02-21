@@ -8,6 +8,7 @@ class module.exports extends React.Component
 
   @propTypes:
     patients: React.PropTypes.arrayOf reactTypes.patient
+    selectedPatient: reactTypes.patient
     onPatientClick: React.PropTypes.func
 
   @defaultProps:
@@ -19,7 +20,8 @@ class module.exports extends React.Component
   renderRow: (row, key) ->
     dob = moment(row.dob).format("ll") if row.dob?
     age = calculateAge row.dob
-    <tr onClick={@handleRowClicked.bind @, row} key={key}>
+    className = "active" if row is @props.selectedPatient
+    <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
       <th>{row.id}</th>
       <td>{row.name}</td>
       <td>{dob}</td>

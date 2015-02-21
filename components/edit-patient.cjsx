@@ -7,7 +7,7 @@ class module.exports extends React.Component
 
   @propTypes:
     patient: reactTypes.patient
-    onPatientChange: React.PropTypes.func
+    onPatientChange: React.PropTypes.func.isRequired
 
   @defaultProps:
     patient:

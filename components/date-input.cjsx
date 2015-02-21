@@ -1,10 +1,14 @@
+moment = require "moment"
 React = require "react"
 
 class module.exports extends React.Component
   @displayName: "DateInput"
 
   @propTypes:
-    value: React.PropTypes.instanceOf Date
+    value: React.PropTypes.oneOfType [
+      React.PropTypes.instanceOf Date
+      React.PropTypes.string
+    ]
     onChange: React.PropTypes.func
 
   @defaultProps:
@@ -41,4 +45,4 @@ class module.exports extends React.Component
       .on "dp.change", (e) =>
         @props.onChange? e.date?.toDate()
       .data "DateTimePicker"
-        .date @props.value
+        .date moment(@props.value).toDate()
