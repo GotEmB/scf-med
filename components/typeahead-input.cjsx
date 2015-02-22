@@ -1,101 +1,124 @@
+constants = require "../constants"
 escapeStringRegexp = require "escape-string-regexp"
 nextTick = require "next-tick"
 React = require "react"
 
-module.exports = React.createClass
-  displayName: "TypeaheadInput"
-  propTypes:
-    value: React.PropTypes.string
-    onChange: React.PropTypes.func.isRequired
-    onBlur: React.PropTypes.func
-    autoFocus: React.PropTypes.bool
-    suggestions: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
+class module.exports extends React.Component
+  @displayName: "TypeaheadInput"
+  @propTypes:
+    selectedItem: React.PropTypes.object
+    onSelectedItemChange: React.PropTypes.func.isRequired
+    suggestionsFetcher: React.PropTypes.func.isRequired
+    textFormatter: React.PropTypes.func.isRequired
+    label: React.PropTypes.string
 
-  getInitialState: ->
-    @getDefaultState @props
+  constructor: ->
+    @state =
+      focused: false
+      query: ""
+      suggestions: []
+      loading: false
+      keyboardFocusedIndex: undefined
 
-  getDefaultProps: ->
-    autoFocus: false
+  fetchSuggestions: =>
+    @setState loading: true
+    @props.suggestionsFetcher escapeStringRegexp(@state.query), 0,
+      constants.typeaheadSuggestionsLimit, (err, suggestions, total) =>
+        @setState
+          suggestions: suggestions
+          loading: false
+          keyboardFocusedIndex: if suggestions.length > 0 then 0
 
-  componentWillReceiveProps: (newProps) ->
-    if newProps.value isnt @props.value
-      @setState @getDefaultState newProps
+  offsetSelectedItem: (offset) =>
+    return unless @props.selectedItem?
+    i = @state.suggestions.indexOf @props.selectedItem
+    i += offset
+    i %% @state.suggestions.length
+    @props.onSelectedItemChange @state.suggestions[i]
 
-  getDefaultState: (props) ->
-    selectedSuggestion:
-      if @getItems(props.value).length > 0 then 0
-      else null
+  handleSelectedItemChanged: (item) =>
+    @props.onSelectedItemChange item
+    @setState
+      query: @props.textFormatter item
+      keyboardFocusedIndex: @state.suggestions.indexOf item
 
-  getItems: (value) ->
-    query = ".*"
-    query += "#{escapeStringRegexp c}.*" for c in value ? @props.value
-    regexp = new RegExp query, "ig"
-    items =
-      for item in @props.suggestions when item.match(regexp)?
-        item
-    items[...8]
+  handleQueryChanged: (e) =>
+    @setState query: e.target.value
+    clearTimeout @queryChangeTimer if @queryChangeTimer?
+    @queryChangeTimer = setTimeout @fetchSuggestions, 200
+    @props.onSelectedItemChange undefined
 
-  suggestionSelected: (index) ->
-    @props.onChange @getItems()[index]
-    @refs.input.getDOMNode().blur()
+  handleFocused: =>
+    @setState focused: true
 
-  renderDropdown: ->
-    items = @getItems()
-    return null if items.length is 0
-    dropdownItems =
-      for item, key in items
-        a = <a href="#">{item}</a>
-        if @state.selectedSuggestion is key
-          <li
-            key={key}
-            className="active"
-            onMouseDown={@suggestionSelected.bind @, key}>
-            {a}
-          </li>
-        else
-          <li
-            key={key}
-            onMouseDown={@suggestionSelected.bind @, key}>
-            {a}
-          </li>
-    <div className="dropdown-menu" style={left: 0, right: 0, display: "block"}>
-      {dropdownItems}
-    </div>
+  handleBlured: =>
+    @setState focused: false
 
-  handleChanged: (event) ->
-    @props.onChange event.target.value
-
-  handleBlured: ->
-    nextTick => @props.onBlur?()
-
-  handleKeyDown: (event) ->
+  handleKeyDown: (event) =>
     handled = true
-    if event.keyCode is 38 and @state.selectedSuggestion? # up arrow
-      @setState selectedSuggestion:
-        (@state.selectedSuggestion - 1) %% @getItems().length
-    else if event.keyCode is 40 and @state.selectedSuggestion? # down arrow
-      if @state.selectedSuggestion?
-        @setState selectedSuggestion:
-          (@state.selectedSuggestion + 1) %% @getItems().length
-    else if event.keyCode is 13 # enter key
-      if @state.selectedSuggestion?
-        @suggestionSelected @state.selectedSuggestion
+    if event.keyCode is 38 and @state.keyboardFocusedIndex? # up arrow
+      @setState keyboardFocusedIndex:
+        (@state.keyboardFocusedIndex - 1) %% @state.suggestions.length
+    else if event.keyCode is 40 and @state.keyboardFocusedIndex? # down arrow
+      @setState keyboardFocusedIndex:
+        (@state.keyboardFocusedIndex + 1) %% @state.suggestions.length
+    else if event.keyCode is 13 and @state.keyboardFocusedIndex? # enter key
       @refs.input.getDOMNode().blur()
+      @handleSelectedItemChanged @state.suggestions[@state.keyboardFocusedIndex]
     else
       handled = false
-    if handled
-      event.preventDefault()
+    event.preventDefault() if handled
 
-  renderInput: ->
-    <input
-      ref="input"
-      type="text"
-      className="form-control"
-      value={@props.value}
-      onChange={@handleChanged}
-      onBlur={@handleBlured}
-      onKeyDown={@handleKeyDown}
-    />
+  renderInput: =>
+    divClassName = "form-group"
+    label =
+      if @props.label?
+        <label className="control-label">{@props.label}</label>
+    feedbackDefaultClass = "form-control-feedback fa"
+    if @state.loading and @state.focused
+      divClassName += " has-feedback"
+      feedback =
+        <i
+          className="#{feedbackDefaultClass} fa-circle-o-notch fa-spin"
+          style={lineHeight: "34px"}
+        />
+    else if @props.selectedItem? and not @state.focused
+      divClassName += " has-feedback has-success"
+      feedback =
+        <i
+          className="#{feedbackDefaultClass} fa-check"
+          style={lineHeight: "34px"}
+        />
+    <div className={divClassName}>
+      {label}
+      <input
+        ref="input"
+        type="text"
+        className="form-control"
+        value={@state.query}
+        onChange={@handleQueryChanged}
+        onFocus={@handleFocused}
+        onBlur={@handleBlured}
+        onKeyDown={@handleKeyDown}
+      />
+      {feedback}
+    </div>
+
+  renderSuggestion: (suggestion, key) =>
+    liClassName = if @state.keyboardFocusedIndex is key then "active"
+    <li
+      key={key}
+      className={liClassName}
+      onMouseDown={@handleSelectedItemChanged.bind @, suggestion}>
+      <a href="#">{@props.textFormatter suggestion}</a>
+    </li>
+
+  renderDropdown: =>
+    return unless @state.focused
+    return if @state.suggestions.length is 0
+    <div className="dropdown-menu" style={left: 0, right: 0, display: "block"}>
+      {@renderSuggestion suggestion, i for suggestion, i in @state.suggestions}
+    </div>
 
   render: ->
     <div style={position: "relative"}>
@@ -103,6 +126,9 @@ module.exports = React.createClass
       {@renderDropdown()}
     </div>
 
+  componentWillMount: ->
+    if @props.selectedItem?
+      @setState query: @props.textFormatter @props.selectedItem
+
   componentDidMount: ->
-    @refs.input.getDOMNode().focus()
-    @refs.input.getDOMNode().select()
+    @fetchSuggestions()

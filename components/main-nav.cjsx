@@ -15,7 +15,7 @@ class module.exports extends React.Component
     onActiveViewChange: React.PropTypes.func.isRequired
 
   handleActiveViewChanged: (str) ->
-    @props.onActiveViewChange str
+    @props.onActiveViewChange changeCase.paramCase str
 
   renderNavItem: (str, key) ->
     if changeCase.paramCase(str) is @props.activeView

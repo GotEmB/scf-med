@@ -1,5 +1,6 @@
 MainNav = require "./main-nav"
 PatientsView = require "./patients-view"
+PrescriptionsView = require "./prescriptions-view"
 React = require "react"
 
 class module.exports extends React.Component
@@ -21,6 +22,8 @@ class module.exports extends React.Component
       switch @state.activeView
         when "patients"
           <PatientsView />
+        when "prescriptions"
+          <PrescriptionsView />
     <div>
       <MainNav
         activeView={@state.activeView}

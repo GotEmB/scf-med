@@ -1,5 +1,5 @@
 async = require "async"
-asyncCaller = require "../async-caller"
+AsyncCaller = require "../async-caller"
 db = require "../db"
 
 calls =
@@ -30,6 +30,6 @@ calls =
   removePatient: (patient, callback) ->
     db.Patient.remove patient, callback
 
-module.exports = asyncCaller
+module.exports = new AsyncCaller
   mountPath: "/async-calls/patients"
   calls: calls

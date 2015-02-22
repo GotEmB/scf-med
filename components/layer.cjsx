@@ -38,13 +38,20 @@ class module.exports extends React.Component
       transition: "transform .2s ease-in-out, opacity .2s ease-in-out"
       transform:
         switch @state.transitionState
-          when "pre" then "translate3d(0, 100px, 0)"
-          when "post" then "translate3d(0, 0, 0)"
+          when "pre" then "translateY(100px)"
+          when "post" then "translateY(0)"
+      WebkitTransition:
+        "-webkit-transform .2s ease-in-out, opacity .2s ease-in-out"
+      WebkitTransform:
+        switch @state.transitionState
+          when "pre" then "translateY(100px)"
+          when "post" then "translateY(0)"
       boxShadow: "0 -5px 5px -5px rgba(0, 0, 0, 0.1)"
       opacity:
         switch @state.transitionState
           when "pre" then 0.01
           when "post" then 1
+      blah: "bleh"
     innerStyle =
       backgroundcolor: "white"
       paddingTop: 20

@@ -24,7 +24,7 @@ class module.exports extends React.Component
   fetchPatients: =>
     @setState loading: true
     patientsCalls.getPatients escapeStringRegexp(@state.filterQuery),
-      @state.loadFrom, constants.patientsPaginationLimit,
+      @state.loadFrom, constants.paginationLimit,
       (err, patients, total) =>
         @setState
           patients: patients
@@ -52,14 +52,14 @@ class module.exports extends React.Component
   handlePagerPreviousClicked: =>
     @setState
       loadFrom:
-        Math.max 0, @state.loadFrom - constants.patientsPaginationLimit
+        Math.max 0, @state.loadFrom - constants.paginationLimit
     nextTick @fetchPatients
 
   handlePagerNextClicked: =>
     @setState
       loadFrom:
-        Math.min @state.total - constants.patientsPaginationLimit,
-          @state.loadFrom + constants.patientsPaginationLimit
+        Math.min @state.total - constants.paginationLimit,
+          @state.loadFrom + constants.paginationLimit
     nextTick @fetchPatients
 
   handlePatientClicked: (patient) =>
@@ -105,7 +105,7 @@ class module.exports extends React.Component
       </div>
       <span> </span>
       <button className="btn btn-default" onClick={@handleNewPatientClicked}>
-        <i className="fa fa-plus" /> New Patient
+        <i className="fa fa-user-plus" /> New Patient
       </button>
     </div>
 
@@ -162,3 +162,6 @@ class module.exports extends React.Component
 
   componentDidMount: ->
     @fetchPatients()
+
+  componentWillUnmount: ->
+    Layers.removeLayer @state.layer if @state.layer?

@@ -1,5 +1,6 @@
 {
   "title": "SCF Clinic – Medical Records",
   "dbConnectionString": "/tmp/mongodb-27017.sock/scf-med",
-  "patientsPaginationLimit": 100
+  "paginationLimit": 100,
+  "typeaheadSuggestionsLimit": 8
 }

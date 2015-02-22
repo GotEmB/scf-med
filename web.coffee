@@ -3,6 +3,7 @@ require "coffee-react/register"
 bodyParser = require "body-parser"
 bundleRouter = require "./routers/bundle-router"
 compression = require "compression"
+drugsCalls = require "./async-calls/drugs"
 express = require "express"
 http = require "http"
 patientsCalls = require "./async-calls/patients"
@@ -15,7 +16,9 @@ router.use compression()
 router.use rootViewRouter
 router.use "/static", staticRouter
 router.use "/bundle", bundleRouter
+router.use "/bundle", bundleRouter
 router.use patientsCalls.router express: express, bodyParser: bodyParser
+router.use drugsCalls.router express: express, bodyParser: bodyParser
 
 server = http.createServer router
 

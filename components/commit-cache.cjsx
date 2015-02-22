@@ -33,10 +33,11 @@ class module.exports extends React.Component
       data: @state.data
 
   handleDeleteClicked: =>
+    lcDataProperty = changeCase.sentenceCase @props.dataProperty
     layer =
       <div className="text-center">
         <p>
-          Are you sure that you would like to delete this {@props.dataProperty}?
+          Are you sure that you would like to delete this {lcDataProperty}?
         </p>
         <div className="btn-toolbar" style={display: "inline-block"}>
           <button
@@ -96,3 +97,6 @@ class module.exports extends React.Component
 
   componentWillMount: ->
     @setState data: clone @props.data
+
+  componentWillUnmount: ->
+    Layers.removeLayer @state.layer if @state.layer?

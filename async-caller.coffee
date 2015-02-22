@@ -47,14 +47,15 @@ makeRouter = (calls, mountPath) -> ({express, bodyParser}) ->
         func.apply calls, req.body.args
         res.end()
 
-module.exports = ({calls, mountPath, shouldCache}) ->
-  cache = if shouldCache then {}
-  router: makeRouter calls, mountPath
-  calls:
-    if typeof window isnt "undefined"
-      makeRestInterface calls, mountPath, cache
-    else
-      calls
-  isCached:
-    if shouldCache and typeof window isnt "undefined"
-      makeCacheChecker calls, cache
+class module.exports
+  constructor: ({calls, mountPath, shouldCache}) ->
+    cache = if shouldCache then {}
+    @router = makeRouter calls, mountPath
+    @calls =
+      if typeof window isnt "undefined"
+        makeRestInterface calls, mountPath, cache
+      else
+        calls
+    @isCached =
+      if shouldCache and typeof window isnt "undefined"
+        makeCacheChecker calls, cache
