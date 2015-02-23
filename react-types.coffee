@@ -35,10 +35,6 @@ brandedDrug = shape
 medicine = shape
   brandedDrug: brandedDrug
   dosage: string
-  when: oneOf ["Before Food", "With Food", "After Food"]
-  frequency: string
-  administration: oneOf ["Oral"]
-  duration: string
   comments: string
 
 prescription = shape

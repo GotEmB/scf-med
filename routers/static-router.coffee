@@ -15,4 +15,8 @@ router.get "/bootstrap-datetimepicker.min.css", (req, res, next) ->
     "../node_modules/bootstrap-datetimepicker/build/css/\
     bootstrap-datetimepicker.min.css"
 
+  router.get "/bootstrap-daterangepicker.css", (req, res, next) ->
+    res.sendFile path.resolve __dirname,
+      "../node_modules/bootstrap-daterangepicker/daterangepicker-bs3.css"
+
 module.exports = router

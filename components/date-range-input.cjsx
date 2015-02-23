@@ -3,26 +3,25 @@ React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "DateInput"
+  @displayName: "DateRangeInput"
 
   @propTypes:
-    date: reactTypes.date
-    onDateChange: React.PropTypes.func.isRequired
-    hasTime: React.PropTypes.bool
-
-  @defaultProps:
-    hasTime: false
+    startDate: reactTypes.date
+    endDate: reactTypes.date
+    onDateRangeChange: React.PropTypes.func.isRequired
 
   constructor: ->
     @state =
       picker: undefined
 
-  handleDateChanged: =>
-    @props.onDateChange @state.picker.startDate.toDate()
+  handleDateRangeChanged: =>
+    @props.onDateRangeChange
+      startDate: @state.picker.startDate.toDate()
+      endDate: @state.picker.endDate.toDate()
 
   componentWillReceiveProps: (props) ->
-    @state.picker?.setStartDate moment(props.date).toDate()
-    @state.picker?.setEndDate moment(props.date).toDate()
+    @state.picker?.setStartDate moment(props.startDate).toDate()
+    @state.picker?.setEndDate moment(props.endDate).toDate()
 
   render: ->
     <input
@@ -37,16 +36,13 @@ class module.exports extends React.Component
       $ @refs.dateInput.getDOMNode()
         .daterangepicker
           showDropdowns: true
-          singleDatePicker: true
-          timePicker: @props.hasTime
-          timePickerIncrement: 1
-          format: if @props.hasTime then "lll" else "ll"
+          separator: " – "
         .on "change.daterangepicker", (e) =>
-          @handleDateChanged()
+          @handleDateRangeChanged()
           @refs.dateInput.getDOMNode().blur()
         .on "apply.daterangepicker", (e) =>
-          @handleDateChanged()
+          @handleDateRangeChanged()
         .data "daterangepicker"
-    picker.setStartDate moment(@props.date).toDate()
-    picker.setEndDate moment(@props.date).toDate()
+    picker.setStartDate moment(@props.startDate).toDate()
+    picker.setEndDate moment(@props.endDate).toDate()
     @setState {picker}

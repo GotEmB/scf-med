@@ -31,10 +31,6 @@ exports.Prescription = metaDB.model "Prescription",
     medicines: [
       brandedDrug: type: ObjectId, ref: "BrandedDrug"
       dosage: String
-      when: String
-      frequency: String
-      administration: String
-      duration: String
       comments: String
     ]
   ), "prescriptions"

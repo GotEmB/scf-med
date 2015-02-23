@@ -31,6 +31,11 @@ class module.exports extends React.Component
           type="text/css"
           href="/static/bootstrap-datetimepicker.min.css"
         />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="/static/bootstrap-daterangepicker.css"
+        />
       </head>
       <body style={height: "100%", paddingTop: 70}>
         {@props.children}

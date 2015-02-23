@@ -11,6 +11,7 @@ class module.exports extends React.Component
     suggestionsFetcher: React.PropTypes.func.isRequired
     textFormatter: React.PropTypes.func.isRequired
     label: React.PropTypes.string
+    isInline: React.PropTypes.bool
 
   constructor: ->
     @state =
@@ -71,6 +72,8 @@ class module.exports extends React.Component
 
   renderInput: =>
     divClassName = "form-group"
+    divStyle =
+      marginBottom: if @props.isInline then 0
     label =
       if @props.label?
         <label className="control-label">{@props.label}</label>
@@ -89,7 +92,7 @@ class module.exports extends React.Component
           className="#{feedbackDefaultClass} fa-check"
           style={lineHeight: "34px"}
         />
-    <div className={divClassName}>
+    <div className={divClassName} style={divStyle}>
       {label}
       <input
         ref="input"

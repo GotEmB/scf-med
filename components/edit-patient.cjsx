@@ -59,7 +59,11 @@ class module.exports extends React.Component
       </div>
       <div className="form-group" style={position: "relative"}>
         <label>Date of Birth</label>
-        <DateInput value={@props.patient.dob} onChange={@handleDobChanged} />
+        <DateInput
+          date={@props.patient.dob}
+          onDateChange={@handleDobChanged}
+          className="form-control"
+        />
       </div>
       <div className="form-group">
         <label>Sex</label>

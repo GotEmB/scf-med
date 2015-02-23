@@ -6,6 +6,7 @@ window.$ = window.jQuery = require "jquery"
 
 require "bootstrap"
 require "bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min"
+require "bootstrap-daterangepicker/daterangepicker"
 
 docReady ->
   page =

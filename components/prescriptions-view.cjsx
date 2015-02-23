@@ -1,8 +1,13 @@
 CommitCache = require "./commit-cache"
+constants = require "../constants"
 escapeStringRegexp = require "escape-string-regexp"
+DateRangeInput = require "./date-range-input"
 EditPrescription = require "./edit-prescription"
 Layers = require "./layers"
 ManageDrugsView = require "./manage-drugs-view"
+moment = require "moment"
+prescriptionsCalls = require("../async-calls/prescriptions").calls
+PrescriptionsTable = require "./prescriptions-table"
 React = require "react"
 
 class module.exports extends React.Component
@@ -11,6 +16,8 @@ class module.exports extends React.Component
   constructor: ->
     @state =
       filterQuery: ""
+      queryStartDate: moment().subtract(1, "month").toDate()
+      queryEndDate: moment().endOf("day").toDate()
       prescriptions: []
       selectedPrescription: undefined
       loadFrom: 0
@@ -19,14 +26,18 @@ class module.exports extends React.Component
       layer: undefined
 
   fetchPrescriptions: =>
-    # @setState loading: true
-    # prescriptionsCalls.getPrescriptions escapeStringRegexp(@state.filterQuery),
-    #   @state.loadFrom, constants.paginationLimit,
-    #   (err, prescriptions, total) =>
-    #     @setState
-    #       prescriptions: prescriptions
-    #       total: total
-    #       loading: false
+    @setState loading: true
+    query =
+      text: @state.filterQuery
+      daterange:
+        from: @state.queryStartDate
+        to: @state.queryEndDate
+    prescriptionsCalls.getPrescriptions query, @state.loadFrom,
+      constants.paginationLimit, (err, prescriptions, total) =>
+        @setState
+          prescriptions: prescriptions
+          total: total
+          loading: false
 
   handleFilterQueryChanged: (e) =>
     @setState
@@ -99,14 +110,19 @@ class module.exports extends React.Component
       layer: undefined
     if commit
       if data?
-        prescriptionCalls.commitPrescription data, (err) =>
+        prescriptionsCalls.commitPrescription data, (err) =>
           @setState loading: true
           @fetchPrescriptions()
       else if @state.selectedPrescription?._id?
-        prescriptionCalls.removePrescription @state.selectedPrescription,
+        prescriptionsCalls.removePrescription @state.selectedPrescription,
           (err) =>
             @setState loading: true
             @fetchPrescriptions()
+
+  handleQueryDateRangeChanged: ({startDate, endDate}) =>
+    @setState
+      queryStartDate: startDate
+      queryEndDate: endDate
 
   renderLeftControls: ->
     <div className="form-inline pull-left">
@@ -119,6 +135,19 @@ class module.exports extends React.Component
           className="form-control"
           value={@state.filterQuery}
           onChange={@handleFilterQueryChanged}
+        />
+      </div>
+      <span> </span>
+      <div className="input-group">
+        <span className="input-group-addon">
+          <i className="fa fa-calendar" />
+        </span>
+        <DateRangeInput
+          className="form-control"
+          style={width: 200}
+          startDate={@state.queryStartDate}
+          endDate={@state.queryEndDate}
+          onDateRangeChange={@handleQueryDateRangeChanged}
         />
       </div>
       <span> </span>
@@ -179,6 +208,11 @@ class module.exports extends React.Component
     <div>
       {@renderControls()}
       <br />
+      <PrescriptionsTable
+        prescriptions={@state.prescriptions}
+        selectedPrescription={@state.selectedPrescription}
+        onPrescriptionClick={@handlePrescriptionClicked}
+      />
     </div>
 
   componentDidMount: ->

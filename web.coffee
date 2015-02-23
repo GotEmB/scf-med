@@ -7,6 +7,7 @@ drugsCalls = require "./async-calls/drugs"
 express = require "express"
 http = require "http"
 patientsCalls = require "./async-calls/patients"
+prescriptionsCalls = require "./async-calls/prescriptions"
 rootViewRouter = require "./routers/root-view-router"
 staticRouter = require "./routers/static-router"
 
@@ -19,6 +20,7 @@ router.use "/bundle", bundleRouter
 router.use "/bundle", bundleRouter
 router.use patientsCalls.router express: express, bodyParser: bodyParser
 router.use drugsCalls.router express: express, bodyParser: bodyParser
+router.use prescriptionsCalls.router express: express, bodyParser: bodyParser
 
 server = http.createServer router
 
