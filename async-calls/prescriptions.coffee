@@ -62,6 +62,7 @@ calls =
       .unwind "medicines"
       .project dosage: "$medicines.dosage"
       .group _id: "$dosage"
+      .match _id: query
       .sort _id: 1
       .skip skip
       .limit limit

@@ -1,8 +1,10 @@
 drugsCalls = require("../async-calls/drugs").calls
 md5 = require "MD5"
+prescriptionsCalls = require("../async-calls/prescriptions").calls
 React = require "react"
 reactTypes = require "../react-types"
 TypeaheadInput = require "./typeahead-input"
+TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
   @displayName: "EditPrescription"
@@ -27,8 +29,8 @@ class module.exports extends React.Component
     medicine.brandedDrug = brandedDrug
     @handleMedicineChanged medicine
 
-  handleDosageChanged: (medicine, e) =>
-    medicine.dosage = e.target.value
+  handleDosageChanged: (medicine, dosage) =>
+    medicine.dosage = dosage
     @handleMedicineChanged medicine
 
   handleCommentsChanged: (medicine, e) =>
@@ -37,7 +39,7 @@ class module.exports extends React.Component
 
   renderRow: (medicine, i) ->
     unless medicine._key?
-      medicine._key = md5 "#{Date.now()}i"
+      medicine._key = md5 "#{Date.now()}#{i}"
     removeButton =
       if @props.medicines.indexOf(medicine) isnt -1
         <button
@@ -51,7 +53,7 @@ class module.exports extends React.Component
         </button>
     <tr key={medicine._key}>
       <td style={paddingRight: 0}>
-        <TypeaheadInput
+        <TypeaheadSelect
           selectedItem={medicine.brandedDrug}
           onSelectedItemChange={@handleBrandedDrugChanged.bind @, medicine}
           suggestionsFetcher={drugsCalls.getBrandedDrugs}
@@ -60,11 +62,12 @@ class module.exports extends React.Component
         />
       </td>
       <td style={paddingRight: 0}>
-        <input
-          type="text"
-          className="form-control"
+        <TypeaheadInput
           value={medicine.dosage}
           onChange={@handleDosageChanged.bind @, medicine}
+          suggestionsFetcher={prescriptionsCalls.getDosageSuggestions}
+          textFormatter={(x) -> x}
+          isInline={true}
         />
       </td>
       <td style={paddingRight: 0}>
@@ -83,11 +86,17 @@ class module.exports extends React.Component
   render: ->
     rows = @props.medicines.concat {}
     <table className="table table-striped">
+      <colgroup>
+         <col span="1" style={width: "33%"} />
+         <col span="1" style={width: "33%"} />
+         <col span="1" style={width: "33%"} />
+         <col />
+      </colgroup>
       <thead>
         <tr>
-          <th width={"#{100/3}%"}>Drug</th>
-          <th width={"#{100/3}%"}>Dosage</th>
-          <th width={"#{100/3}%"}>Comments</th>
+          <th>Drug</th>
+          <th>Dosage</th>
+          <th>Comments</th>
           <th />
         </tr>
       </thead>

@@ -1,12 +1,13 @@
 constants = require "../constants"
 escapeStringRegexp = require "escape-string-regexp"
+nextTick = require "next-tick"
 React = require "react"
 
 class module.exports extends React.Component
-  @displayName: "TypeaheadInput"
+  @displayName: "TypeaheadSelect"
   @propTypes:
-    value: React.PropTypes.string
-    onChange: React.PropTypes.func.isRequired
+    selectedItem: React.PropTypes.object
+    onSelectedItemChange: React.PropTypes.func.isRequired
     suggestionsFetcher: React.PropTypes.func.isRequired
     textFormatter: React.PropTypes.func.isRequired
     label: React.PropTypes.string
@@ -15,13 +16,14 @@ class module.exports extends React.Component
   constructor: ->
     @state =
       focused: false
+      query: ""
       suggestions: []
       loading: false
       keyboardFocusedIndex: undefined
 
   fetchSuggestions: =>
     @setState loading: true
-    @props.suggestionsFetcher escapeStringRegexp(@props.value ? ""), 0,
+    @props.suggestionsFetcher escapeStringRegexp(@state.query), 0,
       constants.typeaheadSuggestionsLimit, (err, suggestions, total) =>
         if @canSetState
           @setState
@@ -29,30 +31,17 @@ class module.exports extends React.Component
             loading: false
             keyboardFocusedIndex: if suggestions.length > 0 then 0
 
-  getNextSuggestionFragment: =>
-    selectedSuggestion =
-      @props.textFormatter @state.suggestions[@state.keyboardFocusedIndex]
-    leftText = selectedSuggestion[(@props.value ? "").length..]
-    fragmentsLeft = leftText
-      .split " "
-      .filter (x) -> x isnt ""
-    fragment = fragmentsLeft[0]
-    if leftText[0] is " "
-      " " + fragment
-    else
-      fragment
-
-  handleSuggestionSelected: (suggestion) =>
-    @props.onChange @props.textFormatter suggestion
-    @setState keyboardFocusedIndex: @state.suggestions.indexOf suggestion
-
-  handleValueChanged: (e) =>
+  handleSelectedItemChanged: (item) =>
+    @props.onSelectedItemChange item
     @setState
-      suggestions: []
-      keyboardFocusedIndex: undefined
-    @props.onChange e.target.value
-    clearTimeout @valueChangeTimer if @valueChangeTimer?
-    @valueChangeTimer = setTimeout @fetchSuggestions, 200
+      query: @props.textFormatter item
+      keyboardFocusedIndex: @state.suggestions.indexOf item
+
+  handleQueryChanged: (e) =>
+    @setState query: e.target.value
+    clearTimeout @queryChangeTimer if @queryChangeTimer?
+    @queryChangeTimer = setTimeout @fetchSuggestions, 200
+    @props.onSelectedItemChange undefined
 
   handleFocused: =>
     @setState focused: true
@@ -62,23 +51,15 @@ class module.exports extends React.Component
 
   handleKeyDown: (event) =>
     handled = true
-    value = @props.value ? ""
-    kfi = @state.keyboardFocusedIndex
-    if event.keyCode is 38 and kfi? # up arrow
-      @setState keyboardFocusedIndex: (kfi - 1) %% @state.suggestions.length
-    else if event.keyCode is 40 and kfi? # down arrow
-      @setState keyboardFocusedIndex: (kfi + 1) %% @state.suggestions.length
-    else if event.keyCode is 13 and kfi? # enter key
+    if event.keyCode is 38 and @state.keyboardFocusedIndex? # up arrow
+      @setState keyboardFocusedIndex:
+        (@state.keyboardFocusedIndex - 1) %% @state.suggestions.length
+    else if event.keyCode is 40 and @state.keyboardFocusedIndex? # down arrow
+      @setState keyboardFocusedIndex:
+        (@state.keyboardFocusedIndex + 1) %% @state.suggestions.length
+    else if event.keyCode is 13 and @state.keyboardFocusedIndex? # enter key
       @refs.input.getDOMNode().blur()
-      @handleSuggestionSelected @state.suggestions[kfi]
-    else if event.keyCode is 9 and kfi? # tab key
-      selectedSuggestion =
-        @props.textFormatter @state.suggestions[kfi]
-      if selectedSuggestion is value
-        @refs.input.getDOMNode().blur()
-        @handleSuggestionSelected @state.suggestions[kfi]
-      else
-        @props.onChange value + @getNextSuggestionFragment()
+      @handleSelectedItemChanged @state.suggestions[@state.keyboardFocusedIndex]
     else
       handled = false
     event.preventDefault() if handled
@@ -98,14 +79,21 @@ class module.exports extends React.Component
           className="#{feedbackDefaultClass} fa-circle-o-notch fa-spin"
           style={lineHeight: "34px"}
         />
+    else if @props.selectedItem? and not @state.focused
+      divClassName += " has-feedback has-success"
+      feedback =
+        <i
+          className="#{feedbackDefaultClass} fa-check"
+          style={lineHeight: "34px"}
+        />
     <div className={divClassName} style={divStyle}>
       {label}
       <input
         ref="input"
         type="text"
         className="form-control"
-        value={@props.value}
-        onChange={@handleValueChanged}
+        value={@state.query}
+        onChange={@handleQueryChanged}
         onFocus={@handleFocused}
         onBlur={@handleBlured}
         onKeyDown={@handleKeyDown}
@@ -115,21 +103,11 @@ class module.exports extends React.Component
 
   renderSuggestion: (suggestion, key) =>
     liClassName = if @state.keyboardFocusedIndex is key then "active"
-    text = @props.textFormatter suggestion
-    if @state.keyboardFocusedIndex is key
-      valueLength = (@props.value ? "").length
-      nextFragmentLength = (@getNextSuggestionFragment() ? "").length
-      text =
-        <span>
-          <span>{text[0...valueLength]}</span>
-          <u>{text[valueLength..][...nextFragmentLength]}</u>
-          <span>{text[(valueLength + nextFragmentLength)..]}</span>
-        </span>
     <li
       key={key}
       className={liClassName}
-      onMouseDown={@handleSuggestionSelected.bind @, suggestion}>
-      <a href="#">{text}</a>
+      onMouseDown={@handleSelectedItemChanged.bind @, suggestion}>
+      <a href="#">{@props.textFormatter suggestion}</a>
     </li>
 
   renderDropdown: =>

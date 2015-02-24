@@ -1,7 +1,7 @@
 drugsCalls = require("../async-calls/drugs").calls
 React = require "react"
 reactTypes = require "../react-types"
-TypeaheadInput = require "./typeahead-input"
+TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
   @displayName: "EditBrandedDrug"
@@ -34,7 +34,7 @@ class module.exports extends React.Component
           onChange={@handleNameChanged}
         />
       </div>
-      <TypeaheadInput
+      <TypeaheadSelect
         selectedItem={@props.brandedDrug.genericDrug}
         onSelectedItemChange={@handleGenericDrugChanged}
         suggestionsFetcher={drugsCalls.getGenericDrugs}

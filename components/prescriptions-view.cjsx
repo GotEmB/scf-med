@@ -46,6 +46,13 @@ class module.exports extends React.Component
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
     @filterQueryChangeTimer = setTimeout @fetchPrescriptions, 200
 
+  handleQueryDateRangeChanged: ({startDate, endDate}) =>
+    @setState
+      queryStartDate: startDate
+      queryEndDate: endDate
+    clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
+    @filterQueryChangeTimer = setTimeout @fetchPrescriptions, 200
+
   handleNewPrescriptionClicked: =>
     layer =
       <CommitCache
@@ -119,11 +126,6 @@ class module.exports extends React.Component
             @setState loading: true
             @fetchPrescriptions()
 
-  handleQueryDateRangeChanged: ({startDate, endDate}) =>
-    @setState
-      queryStartDate: startDate
-      queryEndDate: endDate
-
   renderLeftControls: ->
     <div className="form-inline pull-left">
       <div className="input-group">
@@ -134,6 +136,7 @@ class module.exports extends React.Component
           type="text"
           className="form-control"
           value={@state.filterQuery}
+          placeholder="Filter"
           onChange={@handleFilterQueryChanged}
         />
       </div>

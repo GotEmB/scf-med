@@ -4,7 +4,7 @@ EditMedicinesTable = require "./edit-medicines-table"
 patientsCalls = require("../async-calls/patients").calls
 React = require "react"
 reactTypes = require "../react-types"
-TypeaheadInput = require "./typeahead-input"
+TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
   @displayName: "EditPrescription"
@@ -42,7 +42,7 @@ class module.exports extends React.Component
           className="form-control"
         />
       </div>
-      <TypeaheadInput
+      <TypeaheadSelect
         selectedItem={@props.prescription.patient}
         onSelectedItemChange={@handlePatientChanged}
         suggestionsFetcher={patientsCalls.getPatients}

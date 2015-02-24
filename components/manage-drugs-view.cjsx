@@ -166,6 +166,7 @@ class module.exports extends React.Component
           type="text"
           className="form-control"
           value={@state.filterQuery}
+          placeholder="Filter"
           onChange={@handleFilterQueryChanged}
         />
       </div>
