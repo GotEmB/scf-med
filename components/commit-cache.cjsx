@@ -1,5 +1,6 @@
 changeCase = require "change-case"
 clone = require "clone"
+deepEqual = require "deep-equal"
 Layers = require "./layers"
 React = require "react"
 
@@ -26,7 +27,9 @@ class module.exports extends React.Component
     @setState data: data
 
   handleCancelClicked: =>
-    @props.onDismiss "cancelled"
+    status =
+      if deepEqual @state.data, @props.data then "cancelled" else "saved"
+    @props.onDismiss status
 
   handleSaveClicked: =>
     @setState loading: true
@@ -68,7 +71,29 @@ class module.exports extends React.Component
           @setState loading: true
           @props.onDismiss "removed"
 
+  handleDismissed: (status) =>
+    switch status
+      when "cancelled" then @handleCancelClicked()
+      when "saved" then @handleSaveClicked()
+      when "removed" then @handleDeleteClicked()
+
+  handleCommitted: (dismiss) =>
+    @setState loading: true
+    if @state.data?
+      @props.commitMethod @state.data, (err) =>
+        @setState loading: false
+        @props.onDismiss "saved" if dismiss
+
   renderButtonToolbar: ->
+    saveButton =
+      unless deepEqual @state.data, @props.data
+        <button className="btn btn-primary" onClick={@handleSaveClicked}>
+          Save
+        </button>
+      else
+        <button className="btn btn-primary" disabled>
+          Save
+        </button>
     loader =
       if @state.loading
         <button className="btn btn-link" disabled style={color: "inherit"}>
@@ -88,15 +113,15 @@ class module.exports extends React.Component
         <button className="btn btn-default" onClick={@handleCancelClicked}>
           Cancel
         </button>
-        <button className="btn btn-primary" onClick={@handleSaveClicked}>
-          Save
-        </button>
+        {saveButton}
       </div>
       <div className="clearfix" />
     </div>
 
   render: ->
-    props = {}
+    props =
+      onDismiss: @handleDismissed
+      onCommit: @handleCommitted
     props[@props.dataProperty] = @state.data ? {}
     props["on#{changeCase.pascalCase @props.dataProperty}Change"] =
       @handleDataChanged

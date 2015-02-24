@@ -14,6 +14,7 @@ class module.exports extends React.Component
   @propTypes:
     prescription: reactTypes.prescription
     onPrescriptionChange: React.PropTypes.func.isRequired
+    onCommit: React.PropTypes.func
 
   @defaultProps:
     prescription:
@@ -39,6 +40,7 @@ class module.exports extends React.Component
     @handlePrescriptionChanged()
 
   handlePrintClicked: =>
+    @props.onCommit? false
     window.print()
 
   render: ->
@@ -65,7 +67,7 @@ class module.exports extends React.Component
       />
       <div className="text-center">
         <button className="btn btn-primary" onClick={@handlePrintClicked}>
-          <i className="fa fa-print" /> Print
+          <i className="fa fa-print" /> Save & Print
         </button>
       </div>
     </div>
