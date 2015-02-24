@@ -53,7 +53,7 @@ calls =
       db.Prescription.update {_id: prescription._id}, prescription, callback
 
   removePrescription: (prescription, callback) ->
-    db.Prescription.remove prescription, callback
+    db.Prescription.remove _id: prescription._id , callback
 
   getDosageSuggestions: (query, skip, limit, callback) ->
     query = new RegExp query, "i"

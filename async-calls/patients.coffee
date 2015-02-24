@@ -28,7 +28,7 @@ calls =
       db.Patient.update {_id: patient._id}, patient, callback
 
   removePatient: (patient, callback) ->
-    db.Patient.remove patient, callback
+    db.Patient.remove _id: patient._id, callback
 
 module.exports = new AsyncCaller
   mountPath: "/async-calls/patients"

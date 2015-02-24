@@ -30,7 +30,7 @@ calls =
   removeGenericDrug: (genericDrug, callback) ->
     async.parallel [
       (callback) ->
-        db.GenericDrug.remove genericDrug, callback
+        db.GenericDrug.remove _id: genericDrug._id, callback
       (callback) ->
         db.BrandedDrug.remove genericDrug: genericDrug._id, callback
     ], callback
@@ -68,7 +68,7 @@ calls =
       db.BrandedDrug.update {_id: brandedDrug._id}, brandedDrug, callback
 
   removeBrandedDrug: (brandedDrug, callback) ->
-    db.BrandedDrug.remove brandedDrug, callback
+    db.BrandedDrug.remove _id: brandedDrug._id, callback
 
 module.exports = new AsyncCaller
   mountPath: "/async-calls/drugs"
