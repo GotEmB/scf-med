@@ -16,6 +16,7 @@ class module.exports extends React.Component
       name: undefined
       dob: new Date()
       sex: undefined
+      contact: undefined
 
   handleIDChanged: (e) =>
     @props.patient.id = e.target.value
@@ -31,6 +32,10 @@ class module.exports extends React.Component
 
   handleSexChanged: (sex) =>
     @props.patient.sex = sex
+    @props.onPatientChange @props.patient
+
+  handleContactChanged: (e) =>
+    @props.patient.contact = e.target.value
     @props.onPatientChange @props.patient
 
   render: ->
@@ -81,6 +86,15 @@ class module.exports extends React.Component
           </button>
         </div>
         <div className="clearfix" />
+      </div>
+      <div className="form-group">
+        <label>Contact</label>
+        <input
+          className="form-control"
+          type="text"
+          value={@props.patient.contact}
+          onChange={@handleContactChanged}
+        />
       </div>
     </div>
 

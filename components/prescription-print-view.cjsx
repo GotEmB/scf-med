@@ -64,7 +64,7 @@ class module.exports extends React.Component
         <tr>
           <td style={tdKeyStyle}>Contact:</td>
           <td style={tdValueStyle}>
-
+            {@props.prescription?.patient?.contact}
           </td>
           <td style={tdKeyStyle}>Sex:</td>
           <td style={tdValueStyle}>

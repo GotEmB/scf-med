@@ -28,6 +28,7 @@ class module.exports extends React.Component
       <td>{dob}</td>
       <td>{age}</td>
       <td>{row.sex}</td>
+      <td>{row.contact}</td>
     </tr>
 
   render: ->
@@ -40,6 +41,7 @@ class module.exports extends React.Component
             <th>Date of Birth</th>
             <th>Age</th>
             <th>Sex</th>
+            <th>Contact</th>
           </tr>
         </thead>
         <tbody>

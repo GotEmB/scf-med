@@ -22,6 +22,7 @@ patient = shape
   name: string
   dob: date
   sex: oneOf ["Male", "Female"]
+  contact: string
 
 genericDrug = shape
   _id: string
