@@ -12,9 +12,9 @@ class module.exports extends React.Component
     @state =
       transitionState: "pre"
 
-  renderScreen: ->
+  renderTranslucentScreen: ->
     style =
-      position: "absolute"
+      position: "fixed"
       height: "100%"
       width: "100%"
       zIndex: 3
@@ -23,6 +23,31 @@ class module.exports extends React.Component
           when "pre" then "rgba(255, 255, 255, 0.01)"
           when "post" then "rgba(255, 255, 255, 0.8)"
       transition: "background-color .2s ease-in-out"
+    <div style={style} />
+
+  renderOpaqueScreen: ->
+    style =
+      position: "fixed"
+      top: 120 + @props.index * 70
+      bottom: 0
+      width: "100%"
+      zIndex: 3
+      backgroundColor: "white"
+      transition: "transform .2s ease-in-out, opacity .2s ease-in-out"
+      transform:
+        switch @state.transitionState
+          when "pre" then "translateY(100px)"
+          when "post" then "translateY(0)"
+      WebkitTransition:
+        "-webkit-transform .2s ease-in-out, opacity .2s ease-in-out"
+      WebkitTransform:
+        switch @state.transitionState
+          when "pre" then "translateY(100px)"
+          when "post" then "translateY(0)"
+      opacity:
+        switch @state.transitionState
+          when "pre" then 0.01
+          when "post" then 1
     <div style={style} />
 
   renderPane: ->
@@ -51,7 +76,6 @@ class module.exports extends React.Component
         switch @state.transitionState
           when "pre" then 0.01
           when "post" then 1
-      blah: "bleh"
     innerStyle =
       backgroundcolor: "white"
       paddingTop: 20
@@ -72,7 +96,8 @@ class module.exports extends React.Component
       height: "100%"
       width: "100%"
     <div style={style}>
-      {@renderScreen()}
+      {@renderTranslucentScreen()}
+      {@renderOpaqueScreen()}
       {@renderPane()}
     </div>
 
