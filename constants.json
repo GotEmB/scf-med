@@ -2,5 +2,11 @@
   "title": "SCF Clinic – Medical Records",
   "dbConnectionString": "/tmp/mongodb-27017.sock/scf-med",
   "paginationLimit": 100,
-  "typeaheadSuggestionsLimit": 8
+  "typeaheadSuggestionsLimit": 8,
+  "clinicName": "Sharjah Cement Company Clinic",
+  "signature": "Dr. N. Badhrinathan",
+  "printFooter": {
+    "line1": "Al Dhaid Road, Sharjah, UAE · P. O. Box: 5419 · Tel: 06 5311583 · Fax: 06 5311181",
+    "line2": "drbadhri@sharjahcement.com · www.sharjahcement.com"
+  }
 }

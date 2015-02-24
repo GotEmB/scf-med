@@ -1,4 +1,5 @@
 calculateAge = require "../helpers/calculate-age"
+changeCase = require "change-case"
 moment = require "moment"
 React = require "react"
 reactTypes = require "../react-types"
@@ -19,7 +20,7 @@ class module.exports extends React.Component
 
   renderRow: (row, key) ->
     dob = moment(row.dob).format("ll") if row.dob?
-    age = calculateAge row.dob
+    age = changeCase.upperCaseFirst calculateAge row.dob
     className = "active" if row is @props.selectedPatient
     <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
       <th>{row.id}</th>

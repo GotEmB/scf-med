@@ -41,7 +41,7 @@ class module.exports extends React.Component
     unless medicine._key?
       medicine._key = md5 "#{Date.now()}#{i}"
     removeButton =
-      if @props.medicines.indexOf(medicine) isnt -1
+      if (@props.medicines ? []).indexOf(medicine) isnt -1
         <button
           className="btn btn-danger"
           onClick={@handleRemoveMedicineClicked.bind @, medicine}>
@@ -84,7 +84,7 @@ class module.exports extends React.Component
     </tr>
 
   render: ->
-    rows = @props.medicines.concat {}
+    rows = (@props.medicines ? []).concat {}
     <table className="table table-striped">
       <colgroup>
          <col span="1" style={width: "33%"} />

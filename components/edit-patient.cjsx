@@ -1,3 +1,4 @@
+clone = require "clone"
 DateInput = require "./date-input"
 React = require "react"
 reactTypes = require "../react-types"
@@ -13,7 +14,7 @@ class module.exports extends React.Component
     patient:
       id: undefined
       name: undefined
-      dob: undefined
+      dob: new Date()
       sex: undefined
 
   handleIDChanged: (e) =>
@@ -82,3 +83,8 @@ class module.exports extends React.Component
         <div className="clearfix" />
       </div>
     </div>
+
+  componentWillMount: ->
+    if Object.keys(@props.patient).length is 0
+      patient = clone @constructor.defaultProps.patient
+      @props.onPatientChange patient
