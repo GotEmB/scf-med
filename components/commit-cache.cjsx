@@ -12,25 +12,28 @@ class module.exports extends React.Component
         new Error "Expected `component` to be a React Component."
     data: React.PropTypes.object
     dataProperty: React.PropTypes.string.isRequired
+    commitMethod: React.PropTypes.func.isRequired
+    removeMethod: React.PropTypes.func.isRequired
     onDismiss: React.PropTypes.func.isRequired
 
   constructor: ->
     @state =
       data: undefined
       layer: undefined
+      loading: false
 
   handleDataChanged: (data) =>
     @setState data: data
 
   handleCancelClicked: =>
-    @props.onDismiss
-      commit: false
-      data: @props.data
+    @props.onDismiss "cancelled"
 
   handleSaveClicked: =>
-    @props.onDismiss
-      commit: true
-      data: @state.data
+    @setState loading: true
+    if @state.data?
+      @props.commitMethod @state.data, (err) =>
+        @setState loading: false
+        @props.onDismiss "saved"
 
   handleDeleteClicked: =>
     lcDataProperty = changeCase.sentenceCase @props.dataProperty
@@ -59,11 +62,18 @@ class module.exports extends React.Component
     Layers.removeLayer @state.layer
     @setState layer: undefined
     if confirm
-      @props.onDismiss
-        commit: true
-        data: undefined
+      @setState loading: true
+      if @props.data?._id?
+        @props.removeMethod @props.data, (err) =>
+          @setState loading: true
+          @props.onDismiss "removed"
 
   renderButtonToolbar: ->
+    loader =
+      if @state.loading
+        <button className="btn btn-link" disabled style={color: "inherit"}>
+          <i className="fa fa-circle-o-notch fa-spin fa-fw" />
+        </button>
     deleteButton =
       unless @props.data is undefined
         <button className="btn btn-danger" onClick={@handleDeleteClicked}>
@@ -74,6 +84,7 @@ class module.exports extends React.Component
         {deleteButton}
       </div>
       <div className="pull-right btn-toolbar">
+        {loader}
         <button className="btn btn-default" onClick={@handleCancelClicked}>
           Cancel
         </button>

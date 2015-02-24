@@ -44,6 +44,8 @@ class module.exports extends React.Component
         component={EditPatient}
         data={undefined}
         dataProperty="patient"
+        commitMethod={patientsCalls.commitPatient}
+        removeMethod={patientsCalls.removePatient}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
@@ -68,6 +70,8 @@ class module.exports extends React.Component
         component={EditPatient}
         data={patient}
         dataProperty="patient"
+        commitMethod={patientsCalls.commitPatient}
+        removeMethod={patientsCalls.removePatient}
         onDismiss={@handleLayerDismissed}
       />
     @setState
@@ -75,20 +79,12 @@ class module.exports extends React.Component
       layer: layer
     Layers.addLayer layer, "Edit Patient"
 
-  handleLayerDismissed: ({commit, data}) =>
+  handleLayerDismissed: (status) =>
     Layers.removeLayer @state.layer
     @setState
       selectedPatient: undefined
       layer: undefined
-    if commit
-      if data?
-        patientsCalls.commitPatient data, (err) =>
-          @setState loading: true
-          @fetchPatients()
-      else if @state.selectedPatient?._id?
-        patientsCalls.removePatient @state.selectedPatient, (err) =>
-          @setState loading: true
-          @fetchPatients()
+    @fetchPatients() if status in ["saved", "removed"]
 
   renderLeftControls: ->
     <div className="form-inline pull-left">

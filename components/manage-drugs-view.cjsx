@@ -57,15 +57,21 @@ class module.exports extends React.Component
         EditComponent = EditGenericDrug
         dataProperty = "genericDrug"
         title = "New Generic Drug"
+        commitDrug = drugsCalls.commitGenericDrug
+        removeDrug = drugsCalls.removeGenericDrug
       when "branded"
         EditComponent = EditBrandedDrug
         dataProperty = "brandedDrug"
         title = "New Branded Drug"
+        commitDrug = drugsCalls.commitBrandedDrug
+        removeDrug = drugsCalls.removeBrandedDrug
     layer =
       <CommitCache
         component={EditComponent}
         data={undefined}
         dataProperty={dataProperty}
+        commitMethod={commitDrug}
+        removeMethod={removeDrug}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
@@ -90,15 +96,21 @@ class module.exports extends React.Component
         EditComponent = EditGenericDrug
         dataProperty = "genericDrug"
         title = "Edit Generic Drug"
+        commitDrug = drugsCalls.commitGenericDrug
+        removeDrug = drugsCalls.removeGenericDrug
       when "branded"
         EditComponent = EditBrandedDrug
         dataProperty = "brandedDrug"
         title = "Edit Branded Drug"
+        commitDrug = drugsCalls.commitBrandedDrug
+        removeDrug = drugsCalls.removeBrandedDrug
     layer =
       <CommitCache
         component={EditComponent}
         data={drug}
         dataProperty={dataProperty}
+        commitMethod={commitDrug}
+        removeMethod={removeDrug}
         onDismiss={@handleLayerDismissed}
       />
     @setState
@@ -106,28 +118,12 @@ class module.exports extends React.Component
       layer: layer
     Layers.addLayer layer, title
 
-  handleLayerDismissed: ({commit, data}) =>
+  handleLayerDismissed: (status) =>
     Layers.removeLayer @state.layer
     @setState
       selectedDrug: undefined
       layer: undefined
-    if commit
-      if data?
-        commitDrug =
-          switch @state.which
-            when "generic" then drugsCalls.commitGenericDrug
-            when "branded" then drugsCalls.commitBrandedDrug
-        commitDrug data, (err) =>
-          @setState loading: true
-          @fetchDrugs()
-      else if @state.selectedDrug?._id?
-        removeDrug =
-          switch @state.which
-            when "generic" then drugsCalls.removeGenericDrug
-            when "branded" then drugsCalls.removeBrandedDrug
-        removeDrug @state.selectedDrug, (err) =>
-          @setState loading: true
-          @fetchDrugs()
+    @fetchDrugs() if status in ["saved", "removed"]
 
   renderWhichSelect: ->
     genericDrugButtonClassName = "btn btn-default col-sm-6"
