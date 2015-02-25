@@ -3,6 +3,7 @@ md5 = require "MD5"
 prescriptionsCalls = require("../async-calls/prescriptions").calls
 React = require "react"
 reactTypes = require "../react-types"
+TextInput = require "./text-input"
 TypeaheadInput = require "./typeahead-input"
 TypeaheadSelect = require "./typeahead-select"
 
@@ -33,8 +34,8 @@ class module.exports extends React.Component
     medicine.dosage = dosage
     @handleMedicineChanged medicine
 
-  handleCommentsChanged: (medicine, e) =>
-    medicine.comments = e.target.value
+  handleCommentsChanged: (medicine, comments) =>
+    medicine.comments = comments
     @handleMedicineChanged medicine
 
   renderRow: (medicine, i) ->
@@ -71,7 +72,7 @@ class module.exports extends React.Component
         />
       </td>
       <td style={paddingRight: 0}>
-        <input
+        <TextInput
           type="text"
           className="form-control"
           value={medicine.comments}

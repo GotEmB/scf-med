@@ -22,7 +22,7 @@
     "coffee-react": "^2.4.1",
     "coffee-reactify": "^2.4.1",
     "compression": "^1.4.0",
-    "deep-equal": "^1.0.0",
+    "deep-diff": "^0.3.0",
     "doc-ready": "^1.0.3",
     "envify": "^3.2.0",
     "escape-string-regexp": "^1.0.2",

@@ -18,7 +18,7 @@ class module.exports extends React.Component
       picker: undefined
 
   handleDateChanged: =>
-    @props.onDateChange @state.picker.startDate.toDate()
+    @props.onDateChange @state.picker.startDate.toISOString()
 
   componentWillReceiveProps: (props) ->
     @state.picker?.setStartDate moment(props.date).toDate()

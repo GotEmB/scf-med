@@ -114,7 +114,7 @@ class module.exports extends React.Component
       layer: layer
     Layers.addLayer layer, "Edit Prescription"
 
-  handleLayerDismissed: (status) =>
+  handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
     @setState
       selectedPrescription: undefined

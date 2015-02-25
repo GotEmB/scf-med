@@ -1,6 +1,6 @@
 changeCase = require "change-case"
 clone = require "clone"
-deepEqual = require "deep-equal"
+deepDiff = require "deep-diff"
 Layers = require "./layers"
 React = require "react"
 
@@ -23,20 +23,30 @@ class module.exports extends React.Component
       layer: undefined
       loading: false
 
+  dataChanged: ->
+    prefilter = (_, x) -> typeof x is "string" and x.startsWith "_"
+    console.log deepDiff(@state.data, @props.data, prefilter)
+    deepDiff(@state.data, @props.data, prefilter)?
+
   handleDataChanged: (data) =>
     @setState data: data
 
   handleCancelClicked: =>
-    status =
-      if deepEqual @state.data, @props.data then "cancelled" else "saved"
-    @props.onDismiss status
+    @props.onDismiss _ =
+      unless @dataChanged()
+        status: "cancelled"
+      else
+        status: "saved"
+        data: @state.data
 
   handleSaveClicked: =>
     @setState loading: true
     if @state.data?
       @props.commitMethod @state.data, (err) =>
         @setState loading: false
-        @props.onDismiss "saved"
+        @props.onDismiss
+          status: "saved"
+          data: @state.data
 
   handleDeleteClicked: =>
     lcDataProperty = changeCase.sentenceCase @props.dataProperty
@@ -69,7 +79,7 @@ class module.exports extends React.Component
       if @props.data?._id?
         @props.removeMethod @props.data, (err) =>
           @setState loading: true
-          @props.onDismiss "removed"
+          @props.onDismiss status: "removed"
 
   handleDismissed: (status) =>
     switch status
@@ -82,11 +92,14 @@ class module.exports extends React.Component
     if @state.data?
       @props.commitMethod @state.data, (err) =>
         @setState loading: false
-        @props.onDismiss "saved" if dismiss
+        if dismiss
+          @props.onDismiss
+            status: "saved"
+            state: @state.data
 
   renderButtonToolbar: ->
     saveButton =
-      unless deepEqual @state.data, @props.data
+      if @dataChanged()
         <button className="btn btn-primary" onClick={@handleSaveClicked}>
           Save
         </button>

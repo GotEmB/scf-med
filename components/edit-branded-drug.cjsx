@@ -1,6 +1,7 @@
 drugsCalls = require("../async-calls/drugs").calls
 React = require "react"
 reactTypes = require "../react-types"
+TextInput = require "./text-input"
 TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
@@ -15,8 +16,8 @@ class module.exports extends React.Component
       name: undefined
       genericDrug: undefined
 
-  handleNameChanged: (e) =>
-    @props.brandedDrug.name = e.target.value
+  handleNameChanged: (name) =>
+    @props.brandedDrug.name = name
     @props.onBrandedDrugChange @props.brandedDrug
 
   handleGenericDrugChanged: (genericDrug) =>
@@ -27,7 +28,7 @@ class module.exports extends React.Component
     <div>
       <div className="form-group">
         <label>Name</label>
-        <input
+        <TextInput
           className="form-control"
           type="text"
           value={@props.brandedDrug.name}

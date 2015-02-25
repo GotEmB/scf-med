@@ -1,5 +1,6 @@
 React = require "react"
 reactTypes = require "../react-types"
+TextInput = require "./text-input"
 
 class module.exports extends React.Component
   @displayName: "EditGenericDrug"
@@ -12,15 +13,15 @@ class module.exports extends React.Component
     genericDrug:
       name: undefined
 
-  handleNameChanged: (e) =>
-    @props.genericDrug.name = e.target.value
+  handleNameChanged: (name) =>
+    @props.genericDrug.name = name
     @props.onGenericDrugChange @props.genericDrug
 
   render: ->
     <div>
       <div className="form-group">
         <label>Name</label>
-        <input
+        <TextInput
           className="form-control"
           type="text"
           value={@props.genericDrug.name}

@@ -2,6 +2,7 @@ clone = require "clone"
 DateInput = require "./date-input"
 React = require "react"
 reactTypes = require "../react-types"
+TextInput = require "./text-input"
 
 class module.exports extends React.Component
   @displayName: "EditPatient"
@@ -18,12 +19,12 @@ class module.exports extends React.Component
       sex: undefined
       contact: undefined
 
-  handleIDChanged: (e) =>
-    @props.patient.id = e.target.value
+  handleIDChanged: (id) =>
+    @props.patient.id = id
     @props.onPatientChange @props.patient
 
-  handleNameChanged: (e) =>
-    @props.patient.name = e.target.value
+  handleNameChanged: (name) =>
+    @props.patient.name = name
     @props.onPatientChange @props.patient
 
   handleDobChanged: (date) =>
@@ -34,12 +35,12 @@ class module.exports extends React.Component
     @props.patient.sex = sex
     @props.onPatientChange @props.patient
 
-  handleContactChanged: (e) =>
-    @props.patient.contact = e.target.value
+  handleContactChanged: (contact) =>
+    @props.patient.contact = contact
     @props.onPatientChange @props.patient
 
-  handleInsuranceIdChanged: (e) =>
-    @props.patient.insuranceId = e.target.value
+  handleInsuranceIdChanged: (insuranceId) =>
+    @props.patient.insuranceId = insuranceId
     @props.onPatientChange @props.patient
 
   render: ->
@@ -51,7 +52,7 @@ class module.exports extends React.Component
     <div>
       <div className="form-group">
         <label>ID</label>
-        <input
+        <TextInput
           className="form-control"
           type="text"
           value={@props.patient.id}
@@ -60,7 +61,7 @@ class module.exports extends React.Component
       </div>
       <div className="form-group">
         <label>Name</label>
-        <input
+        <TextInput
           className="form-control"
           type="text"
           value={@props.patient.name}
@@ -93,7 +94,7 @@ class module.exports extends React.Component
       </div>
       <div className="form-group">
         <label>Contact</label>
-        <input
+        <TextInput
           className="form-control"
           type="text"
           value={@props.patient.contact}
@@ -102,7 +103,7 @@ class module.exports extends React.Component
       </div>
       <div className="form-group">
         <label>Insurance ID</label>
-        <input
+        <TextInput
           className="form-control"
           type="text"
           value={@props.patient.insuranceId}

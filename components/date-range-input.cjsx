@@ -16,8 +16,8 @@ class module.exports extends React.Component
 
   handleDateRangeChanged: =>
     @props.onDateRangeChange
-      startDate: @state.picker.startDate.toDate()
-      endDate: @state.picker.endDate.toDate()
+      startDate: @state.picker.startDate.toISOString()
+      endDate: @state.picker.endDate.toISOString()
 
   componentWillReceiveProps: (props) ->
     @state.picker?.setStartDate moment(props.startDate).toDate()
