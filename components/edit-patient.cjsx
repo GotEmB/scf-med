@@ -38,6 +38,10 @@ class module.exports extends React.Component
     @props.patient.contact = e.target.value
     @props.onPatientChange @props.patient
 
+  handleInsuranceIdChanged: (e) =>
+    @props.patient.insuranceId = e.target.value
+    @props.onPatientChange @props.patient
+
   render: ->
     maleButtonClassName = "btn btn-default"
     femaleButtonClassName = "btn btn-default"
@@ -94,6 +98,15 @@ class module.exports extends React.Component
           type="text"
           value={@props.patient.contact}
           onChange={@handleContactChanged}
+        />
+      </div>
+      <div className="form-group">
+        <label>Insurance ID</label>
+        <input
+          className="form-control"
+          type="text"
+          value={@props.patient.insuranceId}
+          onChange={@handleInsuranceIdChanged}
         />
       </div>
     </div>

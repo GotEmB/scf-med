@@ -12,6 +12,7 @@ exports.Patient = metaDB.model "Patient",
     dob: Date
     sex: String
     contact: String
+    insuranceId: String
   ), "patients"
 
 exports.GenericDrug = metaDB.model "GenericDrug",

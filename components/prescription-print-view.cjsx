@@ -29,6 +29,7 @@ class module.exports extends React.Component
     tdKeyStyle =
       paddingTop: 4
       paddingRight: 8
+      whiteSpace: "nowrap"
     tdValueStyle =
       paddingTop: 4
       fontWeight: 500
@@ -46,9 +47,15 @@ class module.exports extends React.Component
           <td style={tdValueStyle}>
             {moment(@props.prescription?.date).format "ll"}
           </td>
+        </tr>
+        <tr>
           <td style={tdKeyStyle}>ID:</td>
           <td style={tdValueStyle}>
             {@props.prescription?.patient?.id}
+          </td>
+          <td style={tdKeyStyle}>Insurance ID:</td>
+          <td style={tdValueStyle}>
+            {@props.prescription?.patient?.insuranceId}
           </td>
         </tr>
         <tr>
