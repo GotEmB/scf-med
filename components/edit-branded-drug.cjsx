@@ -1,4 +1,5 @@
 drugsCalls = require("../async-calls/drugs").calls
+EditGenericDrug = require "./edit-generic-drug"
 React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
@@ -25,6 +26,11 @@ class module.exports extends React.Component
     @props.onBrandedDrugChange @props.brandedDrug
 
   render: ->
+    newGenericDrugSuggestion =
+      component: EditGenericDrug
+      dataProperty: "genericDrug"
+      commitMethod: drugsCalls.commitGenericDrug
+      removeMethod: drugsCalls.removeGenericDrug
     <div>
       <div className="form-group">
         <label>Name</label>
@@ -41,5 +47,6 @@ class module.exports extends React.Component
         suggestionsFetcher={drugsCalls.getGenericDrugs}
         textFormatter={(x) -> x.name}
         label="Generic Drug"
+        newSuggestion={newGenericDrugSuggestion}
       />
     </div>

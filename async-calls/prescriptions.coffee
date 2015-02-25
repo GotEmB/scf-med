@@ -44,9 +44,9 @@ calls =
         callback err, prescriptions2, total
 
   commitPrescription: (prescription, callback) ->
-    prescription.patient = prescription.patient._id
+    prescription.patient = prescription.patient?._id
     for medicine in prescription.medicines
-      medicine.brandedDrug = medicine.brandedDrug._id
+      medicine.brandedDrug = medicine.brandedDrug?._id
     unless prescription._id?
       db.Prescription.create prescription, callback
     else

@@ -19,7 +19,7 @@ class module.exports extends React.Component
     className = "active" if row is @props.brandedDrug
     <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
       <td>{row.name}</td>
-      <td>{row.genericDrug.name}</td>
+      <td>{row.genericDrug?.name}</td>
     </tr>
 
   render: ->

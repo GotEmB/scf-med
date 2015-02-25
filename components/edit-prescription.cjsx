@@ -1,6 +1,7 @@
 clone = require "clone"
 DateInput = require "./date-input"
 EditMedicinesTable = require "./edit-medicines-table"
+EditPatient = require "./edit-patient"
 Page = require "./page"
 patientsCalls = require("../async-calls/patients").calls
 PrescriptionPrintView = require "./prescription-print-view"
@@ -44,6 +45,11 @@ class module.exports extends React.Component
     window.print()
 
   render: ->
+    newPatientSuggestion =
+      component: EditPatient
+      dataProperty: "patient"
+      commitMethod: patientsCalls.commitPatient
+      removeMethod: patientsCalls.removePatient
     <div>
       <div className="form-group" style={position: "relative"}>
         <label>Date & Time</label>
@@ -60,6 +66,7 @@ class module.exports extends React.Component
         suggestionsFetcher={patientsCalls.getPatients}
         textFormatter={(x) -> x.name}
         label="Patient"
+        newSuggestion={newPatientSuggestion}
       />
       <EditMedicinesTable
         medicines={@props.prescription.medicines}

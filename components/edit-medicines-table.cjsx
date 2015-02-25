@@ -1,4 +1,5 @@
 drugsCalls = require("../async-calls/drugs").calls
+EditBrandedDrug = require "./edit-branded-drug"
 md5 = require "MD5"
 prescriptionsCalls = require("../async-calls/prescriptions").calls
 React = require "react"
@@ -40,7 +41,16 @@ class module.exports extends React.Component
 
   renderRow: (medicine, i) ->
     unless medicine._key?
-      medicine._key = md5 "#{Date.now()}#{i}"
+      medicine._key =
+        if (@props.medicines ? []).indexOf(medicine) isnt -1
+          md5 "#{Date.now()}#{i}"
+        else
+          md5 "#{i}"
+    newBrandedDrugSuggestion =
+      component: EditBrandedDrug
+      dataProperty: "brandedDrug"
+      commitMethod: drugsCalls.commitBrandedDrug
+      removeMethod: drugsCalls.removeBrandedDrug
     removeButton =
       if (@props.medicines ? []).indexOf(medicine) isnt -1
         <button
@@ -60,6 +70,7 @@ class module.exports extends React.Component
           suggestionsFetcher={drugsCalls.getBrandedDrugs}
           textFormatter={(x) -> x.name}
           isInline={true}
+          newSuggestion={newBrandedDrugSuggestion}
         />
       </td>
       <td style={paddingRight: 0}>

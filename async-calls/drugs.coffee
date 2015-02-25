@@ -61,7 +61,7 @@ calls =
         callback err, brandedDrugs, total
 
   commitBrandedDrug: (brandedDrug, callback) ->
-    brandedDrug.genericDrug = brandedDrug.genericDrug._id
+    brandedDrug.genericDrug = brandedDrug.genericDrug?._id
     unless brandedDrug._id?
       db.BrandedDrug.create brandedDrug, callback
     else

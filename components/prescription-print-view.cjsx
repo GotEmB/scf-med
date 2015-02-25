@@ -84,8 +84,8 @@ class module.exports extends React.Component
   renderMedicine: (medicine, key) ->
     <tr key={key}>
       <td style={border: "solid 1px black"}>
-        <div>{medicine.brandedDrug?.name}</div>
-        <div>({medicine.brandedDrug?.genericDrug?.name})</div>
+        <div style={fontWeight: 500}>{medicine.brandedDrug?.name}</div>
+        <em>{medicine.brandedDrug?.genericDrug?.name}</em>
       </td>
       <td style={border: "solid 1px black"}>
         <div>{medicine.dosage}</div>
@@ -99,9 +99,21 @@ class module.exports extends React.Component
     medicines = @props.prescription?.medicines ? []
     <table className="table table-bordered table-condensed" style={border: 0}>
       <thead>
-        <th className="text-center" style={border: "solid 1px black"}>Drug</th>
-        <th className="text-center" style={border: "solid 1px black"}>Dosage</th>
-        <th className="text-center" style={border: "solid 1px black"}>Comments</th>
+        <th
+          className="text-center"
+          style={border: "solid 1px black"}>
+          Drug
+        </th>
+        <th
+          className="text-center"
+          style={border: "solid 1px black"}>
+          Dosage
+        </th>
+        <th
+          className="text-center"
+          style={border: "solid 1px black", minWidth: 100}>
+          Comments
+        </th>
       </thead>
       <tbody>
         {@renderMedicine medicine, i for medicine, i in medicines}
@@ -127,7 +139,7 @@ class module.exports extends React.Component
     </footer>
 
   render: ->
-    <div style={height: "100%", fontSize: "80%"}>
+    <div style={height: "100%", fontSize: "70%"}>
       {@renderHeader()}
       <hr style={margin: "5px 0 15px", borderColor: "rgb(221, 221, 221)"} />
       {@renderDetail()}

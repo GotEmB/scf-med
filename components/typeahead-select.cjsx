@@ -1,10 +1,17 @@
+changeCase = require "change-case"
+CommitCache = require "./commit-cache"
 constants = require "../constants"
 escapeStringRegexp = require "escape-string-regexp"
+Layers = require "./layers"
 nextTick = require "next-tick"
 React = require "react"
+reactTypes = require "../react-types"
+
+newConstant = {}
 
 class module.exports extends React.Component
   @displayName: "TypeaheadSelect"
+
   @propTypes:
     selectedItem: React.PropTypes.object
     onSelectedItemChange: React.PropTypes.func.isRequired
@@ -12,6 +19,11 @@ class module.exports extends React.Component
     textFormatter: React.PropTypes.func.isRequired
     label: React.PropTypes.string
     isInline: React.PropTypes.bool
+    newSuggestion: React.PropTypes.shape
+      component: reactTypes.reactComponent
+      dataProperty: React.PropTypes.string.isRequired
+      commitMethod: React.PropTypes.func.isRequired
+      removeMethod: React.PropTypes.func.isRequired
 
   constructor: ->
     @state =
@@ -20,11 +32,14 @@ class module.exports extends React.Component
       suggestions: []
       loading: false
       keyboardFocusedIndex: undefined
+      layer: undefined
 
   fetchSuggestions: =>
     @setState loading: true
     @props.suggestionsFetcher escapeStringRegexp(@state.query), 0,
       constants.typeaheadSuggestionsLimit, (err, suggestions, total) =>
+        if @props.newSuggestion?
+          suggestions.push newConstant
         if @canSetState
           @setState
             suggestions: suggestions
@@ -32,10 +47,13 @@ class module.exports extends React.Component
             keyboardFocusedIndex: if suggestions.length > 0 then 0
 
   handleSelectedItemChanged: (item) =>
-    @props.onSelectedItemChange item
-    @setState
-      query: @props.textFormatter item
-      keyboardFocusedIndex: @state.suggestions.indexOf item
+    if item is newConstant
+      @handleCreateSuggestion()
+    else
+      @props.onSelectedItemChange item
+      @setState
+        query: @props.textFormatter item
+        keyboardFocusedIndex: @state.suggestions.indexOf item
 
   handleQueryChanged: (e) =>
     @setState query: e.target.value
@@ -63,6 +81,27 @@ class module.exports extends React.Component
     else
       handled = false
     event.preventDefault() if handled
+
+  handleCreateSuggestion: =>
+    layer =
+      <CommitCache
+        component={@props.newSuggestion.component}
+        data={undefined}
+        dataProperty={@props.newSuggestion.dataProperty}
+        commitMethod={@props.newSuggestion.commitMethod}
+        removeMethod={@props.newSuggestion.removeMethod}
+        onDismiss={@handleLayerDismissed}
+      />
+    title = changeCase.titleCase "new #{@props.newSuggestion.dataProperty}"
+    @setState layer: layer
+    Layers.addLayer layer, title
+
+  handleLayerDismissed: ({status, data}) =>
+    Layers.removeLayer @state.layer
+    @setState layer: undefined
+    if status is "saved"
+      @handleSelectedItemChanged data
+      nextTick @fetchSuggestions
 
   renderInput: =>
     divClassName = "form-group"
@@ -103,11 +142,16 @@ class module.exports extends React.Component
 
   renderSuggestion: (suggestion, key) =>
     liClassName = if @state.keyboardFocusedIndex is key then "active"
+    text =
+      if suggestion isnt newConstant
+        @props.textFormatter suggestion
+      else
+        "New ..."
     <li
       key={key}
       className={liClassName}
       onMouseDown={@handleSelectedItemChanged.bind @, suggestion}>
-      <a href="#">{@props.textFormatter suggestion}</a>
+      <a href="#">{text}</a>
     </li>
 
   renderDropdown: =>
@@ -133,3 +177,4 @@ class module.exports extends React.Component
 
   componentWillUnmount: ->
     @canSetState = false
+    Layers.removeLayer @state.layer if @state.layer?

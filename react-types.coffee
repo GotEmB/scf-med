@@ -16,6 +16,10 @@ date = oneOfType [
   string
 ]
 
+reactComponent = (props) ->
+  unless props.component?.prototype instanceof React.Component
+    new Error "Expected `component` to be a React Component."
+
 patient = shape
   _id: string
   id: string
@@ -47,6 +51,7 @@ prescription = shape
 
 module.exports = {
   date
+  reactComponent
   patient
   genericDrug
   brandedDrug

@@ -3,14 +3,13 @@ clone = require "clone"
 deepDiff = require "deep-diff"
 Layers = require "./layers"
 React = require "react"
+reactTypes = require "../react-types"
 
 class module.exports extends React.Component
   @displayName: "CommitCache"
 
   @propTypes:
-    component: (props) ->
-      unless props.component?.prototype instanceof React.Component
-        new Error "Expected `component` to be a React Component."
+    component: reactTypes.reactComponent
     data: React.PropTypes.object
     dataProperty: React.PropTypes.string.isRequired
     commitMethod: React.PropTypes.func.isRequired
@@ -25,7 +24,6 @@ class module.exports extends React.Component
 
   dataChanged: ->
     prefilter = (_, x) -> typeof x is "string" and x.startsWith "_"
-    console.log deepDiff(@state.data, @props.data, prefilter)
     deepDiff(@state.data, @props.data, prefilter)?
 
   handleDataChanged: (data) =>
@@ -42,8 +40,11 @@ class module.exports extends React.Component
   handleSaveClicked: =>
     @setState loading: true
     if @state.data?
-      @props.commitMethod @state.data, (err) =>
-        @setState loading: false
+      @props.commitMethod @state.data, (err, {_id}) =>
+        @state.data._id = _id
+        @setState
+          loading: false
+          data: @state.data
         @props.onDismiss
           status: "saved"
           data: @state.data
@@ -90,8 +91,11 @@ class module.exports extends React.Component
   handleCommitted: (dismiss) =>
     @setState loading: true
     if @state.data?
-      @props.commitMethod @state.data, (err) =>
-        @setState loading: false
+      @props.commitMethod @state.data, (err, {_id}) =>
+        @state.data._id = _id
+        @setState
+          loading: false
+          data: @state.data
         if dismiss
           @props.onDismiss
             status: "saved"
