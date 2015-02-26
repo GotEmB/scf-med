@@ -22,6 +22,7 @@ class module.exports extends React.Component
       patient: undefined
       date: new Date()
       medicines: []
+      routine: false
 
   handlePrescriptionChanged: =>
     @props.onPrescriptionChange @props.prescription
@@ -34,6 +35,10 @@ class module.exports extends React.Component
 
   handlePatientChanged: (patient) =>
     @props.prescription.patient = patient
+    @handlePrescriptionChanged()
+
+  handleRoutineChanged: (e) =>
+    @props.prescription.routine = e.target.checked
     @handlePrescriptionChanged()
 
   handleMedicinesChanged: (medicines) =>
@@ -68,6 +73,15 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
+      <div className="checkbox">
+        <label>
+          <input
+            type="checkbox"
+            checked={@props.prescription.routine}
+            onChange={@handleRoutineChanged}
+          /> Routine
+        </label>
+      </div>
       <EditMedicinesTable
         medicines={@props.prescription.medicines}
         onMedicinesChange={@handleMedicinesChanged}

@@ -9,6 +9,7 @@ React = require "react"
   shape
   array
   arrayOf
+  bool
 } = React.PropTypes
 
 date = oneOfType [
@@ -48,6 +49,7 @@ prescription = shape
   patient: patient
   date: date
   medicines: arrayOf medicine
+  routine: bool
 
 module.exports = {
   date

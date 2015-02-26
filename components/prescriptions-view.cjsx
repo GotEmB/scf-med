@@ -1,3 +1,4 @@
+clone = require "clone"
 CommitCache = require "./commit-cache"
 constants = require "../constants"
 escapeStringRegexp = require "escape-string-regexp"
@@ -114,6 +115,22 @@ class module.exports extends React.Component
       layer: layer
     Layers.addLayer layer, "Edit Prescription"
 
+  handlePrescriptionRoutineClicked: (prescription) =>
+    duplicatePrescription = clone prescription
+    delete duplicatePrescription._id
+    duplicatePrescription.date = moment().toISOString()
+    layer =
+      <CommitCache
+        component={EditPrescription}
+        data={duplicatePrescription}
+        dataProperty="prescription"
+        commitMethod={prescriptionsCalls.commitPrescription}
+        removeMethod={prescriptionsCalls.removePrescription}
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState layer: layer
+    Layers.addLayer layer, "Duplicate Prescription"
+
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
     @setState
@@ -210,6 +227,7 @@ class module.exports extends React.Component
         prescriptions={@state.prescriptions}
         selectedPrescription={@state.selectedPrescription}
         onPrescriptionClick={@handlePrescriptionClicked}
+        onPrescriptionRoutineClick={@handlePrescriptionRoutineClicked}
       />
     </div>
 

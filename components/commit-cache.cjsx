@@ -23,6 +23,7 @@ class module.exports extends React.Component
       loading: false
 
   dataChanged: ->
+    return true unless @props.data?._id?
     prefilter = (_, x) -> typeof x is "string" and x.startsWith "_"
     deepDiff(@state.data, @props.data, prefilter)?
 
@@ -117,7 +118,7 @@ class module.exports extends React.Component
           <i className="fa fa-circle-o-notch fa-spin fa-fw" />
         </button>
     deleteButton =
-      unless @props.data is undefined
+      if @props.data?._id?
         <button className="btn btn-danger" onClick={@handleDeleteClicked}>
           Delete
         </button>

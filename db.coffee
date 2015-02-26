@@ -35,6 +35,7 @@ exports.Prescription = metaDB.model "Prescription",
       dosage: String
       comments: String
     ]
+    routine: Boolean
   ), "prescriptions"
 
 exports.eval = metaDB.db.eval.bind metaDB.db
