@@ -19,6 +19,7 @@ class module.exports extends React.Component
 
   constructor: ->
     @state =
+      lastCommittedData: undefined
       data: undefined
       layer: undefined
       loading: false
@@ -28,15 +29,20 @@ class module.exports extends React.Component
     prefilter = (_, x) -> typeof x is "string" and x.startsWith "_"
     deepDiff(@state.data, @props.data, prefilter)?
 
+  dataCommitted: ->
+    return true unless @state.lastCommittedData?._id?
+    prefilter = (_, x) -> typeof x is "string" and x.startsWith "_"
+    deepDiff(@state.data, @state.lastCommittedData, prefilter)?
+
   commitData: (callback) ->
-    debugger
-    if @state.data? and @dataChanged()
+    if @state.data? and @dataCommitted()
       @setState loading: true
       @props.commitMethod @state.data, (err, {_id}) =>
         @state.data._id = _id
         @setState
           loading: false
           data: @state.data
+          lastCommittedData: clone @state.data
         nextTick ->
           callback?()
 
@@ -105,7 +111,7 @@ class module.exports extends React.Component
 
   renderButtonToolbar: ->
     saveButton =
-      if @dataChanged()
+      if @dataCommitted()
         <button className="btn btn-primary" onClick={@handleSaveClicked}>
           Save
         </button>
@@ -151,7 +157,9 @@ class module.exports extends React.Component
     </div>
 
   componentWillMount: ->
-    @setState data: clone @props.data
+    @setState
+      lastCommittedData: clone @props.data
+      data: clone @props.data
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?
