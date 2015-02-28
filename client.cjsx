@@ -14,5 +14,6 @@ docReady ->
       <RootView />
     </Page>
   React.render page, document
-  preloadLogo = new Image
-  preloadLogo.src = "/static/logo.jpg"
+
+window.preloadLogo = new Image
+window.preloadLogo.src = "/static/logo.jpg"

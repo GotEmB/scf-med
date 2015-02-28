@@ -85,7 +85,7 @@ class module.exports extends React.Component
     <tr key={key}>
       <td style={border: "solid 1px black"}>
         <div style={fontWeight: "bold"}>{medicine.brandedDrug?.name}</div>
-        <em>{medicine.brandedDrug?.genericDrug?.name}</em>
+        {medicine.brandedDrug?.genericDrug?.name}
       </td>
       <td style={border: "solid 1px black"}>
         <div>{medicine.dosage}</div>
@@ -97,25 +97,32 @@ class module.exports extends React.Component
 
   renderMedicines: ->
     medicines = @props.prescription?.medicines ? []
-    <table className="table table-bordered table-condensed" style={border: 0}>
-      <thead>
-        <th
-          style={border: "solid 1px black"}>
-          Drug
-        </th>
-        <th
-          style={border: "solid 1px black"}>
-          Dosage
-        </th>
-        <th
-          style={border: "solid 1px black", minWidth: 100}>
-          Comments
-        </th>
-      </thead>
-      <tbody>
-        {@renderMedicine medicine, i for medicine, i in medicines}
-      </tbody>
-    </table>
+    <div style={marginBottom: 20}>
+      <table
+        className="table table-bordered table-condensed"
+        style={border: 0, marginBottom: 5}>
+        <thead>
+          <th
+            style={border: "solid 1px black"}>
+            Drug
+          </th>
+          <th
+            style={border: "solid 1px black"}>
+            Dosage
+          </th>
+          <th
+            style={border: "solid 1px black", minWidth: 100}>
+            Comments
+          </th>
+        </thead>
+        <tbody>
+          {@renderMedicine medicine, i for medicine, i in medicines}
+        </tbody>
+      </table>
+      <div className="text-center">
+        <em>(No Substitutions)</em>
+      </div>
+    </div>
 
   renderSignature: ->
     <div>
