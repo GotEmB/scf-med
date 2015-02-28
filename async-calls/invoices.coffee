@@ -38,13 +38,37 @@ calls =
         callback err, invoices, total
 
   commitInvoice: (invoice, callback) ->
-    invoice.patient = invoice.patient?._id
-    for service, i in invoice.services
-      invoice.services[i] = service?._id
-    unless invoice._id?
-      db.Invoice.create invoice, callback
-    else
-      db.Invoice.update {_id: invoice._id}, invoice, callback
+    async.waterfall [
+      (callback) ->
+        invoice.patient = invoice.patient?._id
+        for service, i in invoice.services
+          invoice.services[i] = service?._id
+        unless invoice._id?
+          async.waterfall [
+            (callback) ->
+              db.Invoice.aggregate()
+                .project
+                  serialYear: "$serial.year"
+                  serialNumber: "$serial.number"
+                .match
+                  serialYear: moment().year()
+                .project
+                  serialNumber: 1
+                .sort "-serialNumber"
+                .limit 1
+                .exec callback
+          ], (err, result) ->
+            invoice.serial =
+              year: moment().year()
+              number: (result[0]?.serialNumber ? 0) + 1
+            db.Invoice.create invoice, callback
+        else
+          db.Invoice.update {_id: invoice._id}, invoice, callback
+      (invoice, callback) ->
+        db.Patient.populate invoice, "patient", callback
+      (invoice, callback) ->
+        db.Service.populate invoice, "services", callback
+    ], callback
 
   removeInvoice: (invoice, callback) ->
     db.Invoice.remove _id: invoice._id , callback

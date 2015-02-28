@@ -44,13 +44,20 @@ calls =
         callback err, prescriptions2, total
 
   commitPrescription: (prescription, callback) ->
-    prescription.patient = prescription.patient?._id
-    for medicine in prescription.medicines
-      medicine.brandedDrug = medicine.brandedDrug?._id
-    unless prescription._id?
-      db.Prescription.create prescription, callback
-    else
-      db.Prescription.update {_id: prescription._id}, prescription, callback
+    async.waterfall [
+      (callback) ->
+        prescription.patient = prescription.patient?._id
+        for medicine in prescription.medicines
+          medicine.brandedDrug = medicine.brandedDrug?._id
+        unless prescription._id?
+          db.Prescription.create prescription, callback
+        else
+          db.Prescription.update {_id: prescription._id}, prescription, callback
+      (prescription, callback) ->
+        db.Patient.populate prescription, "patient", callback
+      (prescription, callback) ->
+        db.BrandedDrug.populate prescription, "medicines.brandedDrug", callback
+    ], callback
 
   removePrescription: (prescription, callback) ->
     db.Prescription.remove _id: prescription._id , callback

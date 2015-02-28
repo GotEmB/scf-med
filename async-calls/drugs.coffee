@@ -61,11 +61,16 @@ calls =
         callback err, brandedDrugs, total
 
   commitBrandedDrug: (brandedDrug, callback) ->
-    brandedDrug.genericDrug = brandedDrug.genericDrug?._id
-    unless brandedDrug._id?
-      db.BrandedDrug.create brandedDrug, callback
-    else
-      db.BrandedDrug.update {_id: brandedDrug._id}, brandedDrug, callback
+    async.waterfall [
+      (callback) ->
+        brandedDrug.genericDrug = brandedDrug.genericDrug?._id
+        unless brandedDrug._id?
+          db.BrandedDrug.create brandedDrug, callback
+        else
+          db.BrandedDrug.update {_id: brandedDrug._id}, brandedDrug, callback
+      (brandedDrug, callback) ->
+        db.GenericDrug.populate brandedDrug, "genericDrug", callback
+    ], callback
 
   removeBrandedDrug: (brandedDrug, callback) ->
     db.BrandedDrug.remove _id: brandedDrug._id, callback

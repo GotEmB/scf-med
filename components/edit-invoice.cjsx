@@ -4,6 +4,7 @@ EditPatient = require "./edit-patient"
 EditServicesTable = require "./edit-services-table"
 InvoicePrintView = require "./invoice-print-view"
 Page = require "./page"
+padNumber = require "pad-number"
 patientsCalls = require("../async-calls/patients").calls
 React = require "react"
 reactTypes = require "../react-types"
@@ -46,8 +47,8 @@ class module.exports extends React.Component
     @handleInvoiceChanged()
 
   handlePrintClicked: =>
-    @props.onCommit? false
-    window.print()
+    @props.onCommit? false, ->
+      window.print()
 
   render: ->
     newPatientSuggestion =
@@ -55,7 +56,20 @@ class module.exports extends React.Component
       dataProperty: "patient"
       commitMethod: patientsCalls.commitPatient
       removeMethod: patientsCalls.removePatient
+    if @props.invoice.serial?
+      serial =
+        "#{@props.invoice.serial.year}-\
+        #{padNumber @props.invoice.serial.number, 5}"
     <div>
+      <div className="form-group" style={position: "relative"}>
+        <label>Serial</label>
+        <input
+          type="text"
+          value={serial}
+          className="form-control"
+          disabled
+        />
+      </div>
       <div className="form-group" style={position: "relative"}>
         <label>Date & Time</label>
         <DateInput

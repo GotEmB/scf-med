@@ -3,6 +3,7 @@ changeCase = require "change-case"
 constants = require "../constants"
 moment = require "moment"
 numeral = require "numeral"
+padNumber = require "pad-number"
 React = require "react"
 reactTypes = require "../react-types"
 
@@ -24,6 +25,10 @@ class module.exports extends React.Component
     </div>
 
   renderDetail: ->
+    if @props.invoice?.serial?
+      serial =
+        "#{@props.invoice.serial.year}-\
+        #{padNumber @props.invoice.serial.number, 5}"
     if @props.invoice?.patient?.dob
       dob = @props.invoice.patient.dob
       age = changeCase.upperCaseFirst calculateAge dob
@@ -47,6 +52,10 @@ class module.exports extends React.Component
           <td style={tdKeyStyle}>Date:</td>
           <td style={tdValueStyle}>
             {moment(@props.invoice?.date).format "ll"}
+          </td>
+          <td style={tdKeyStyle}>Serial:</td>
+          <td style={tdValueStyle}>
+            {serial}
           </td>
         </tr>
         <tr>

@@ -37,12 +37,11 @@ class module.exports extends React.Component
   commitData: (callback) ->
     if @state.data? and @dataCommitted()
       @setState loading: true
-      @props.commitMethod @state.data, (err, {_id}) =>
-        @state.data._id = _id
+      @props.commitMethod @state.data, (err, data) =>
         @setState
           loading: false
-          data: @state.data
-          lastCommittedData: clone @state.data
+          data: data
+          lastCommittedData: clone data
         nextTick ->
           callback?()
 
@@ -102,8 +101,9 @@ class module.exports extends React.Component
       when "saved" then @handleSaveClicked()
       when "removed" then @handleDeleteClicked()
 
-  handleCommitted: (dismiss) =>
+  handleCommitted: (dismiss, callback) =>
     @commitData =>
+      callback?()
       if dismiss
         @props.onDismiss
           status: "saved"

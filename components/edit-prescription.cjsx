@@ -46,8 +46,8 @@ class module.exports extends React.Component
     @handlePrescriptionChanged()
 
   handlePrintClicked: =>
-    @props.onCommit? false
-    window.print()
+    @props.onCommit? false, ->
+      window.print()
 
   render: ->
     newPatientSuggestion =

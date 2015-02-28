@@ -38,7 +38,9 @@ class module.exports extends React.Component
         .format "($ 0,0.00)"
         .replace "$", "Dhs"
     if i is (@props.services ? []).length
-      i = "new-#{i}"
+      key = "new-#{i}"
+    else
+      key = i
     removeButton =
       if (@props.services ? []).indexOf(service) isnt -1
         <button
@@ -50,7 +52,7 @@ class module.exports extends React.Component
         <button className="btn btn-danger" disabled>
           <i className="fa fa-times" />
         </button>
-    <tr key={i}>
+    <tr key={key}>
       <td style={paddingRight: 0}>
         <TypeaheadSelect
           selectedItem={service}

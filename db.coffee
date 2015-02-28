@@ -47,6 +47,10 @@ exports.Service = metaDB.model "Service",
 
 exports.Invoice = metaDB.model "Invoice",
   new mongoose.Schema(
+    serial: {
+      year: Number
+      number: Number
+    }
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
     services: [type: ObjectId, ref: "Service"]
