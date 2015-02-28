@@ -1,6 +1,6 @@
 {
   "title": "SCF Clinic – Medical Records",
-  "dbConnectionString": "/tmp/mongodb-27017.sock/scf-med",
+  "dbConnectionString": "mongodb://localhost:27017/scf-med",
   "paginationLimit": 100,
   "typeaheadSuggestionsLimit": 8,
   "clinicName": "Sharjah Cement Company Clinic",
