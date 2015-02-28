@@ -2,6 +2,7 @@ changeCase = require "change-case"
 clone = require "clone"
 deepDiff = require "deep-diff"
 Layers = require "./layers"
+nextTick = require "next-tick"
 React = require "react"
 reactTypes = require "../react-types"
 
@@ -27,6 +28,18 @@ class module.exports extends React.Component
     prefilter = (_, x) -> typeof x is "string" and x.startsWith "_"
     deepDiff(@state.data, @props.data, prefilter)?
 
+  commitData: (callback) ->
+    debugger
+    if @state.data? and @dataChanged()
+      @setState loading: true
+      @props.commitMethod @state.data, (err, {_id}) =>
+        @state.data._id = _id
+        @setState
+          loading: false
+          data: @state.data
+        nextTick ->
+          callback?()
+
   handleDataChanged: (data) =>
     @setState data: data
 
@@ -39,16 +52,10 @@ class module.exports extends React.Component
         data: @state.data
 
   handleSaveClicked: =>
-    @setState loading: true
-    if @state.data?
-      @props.commitMethod @state.data, (err, {_id}) =>
-        @state.data._id = _id
-        @setState
-          loading: false
-          data: @state.data
-        @props.onDismiss
-          status: "saved"
-          data: @state.data
+    @commitData =>
+      @props.onDismiss
+        status: "saved"
+        data: @state.data
 
   handleDeleteClicked: =>
     lcDataProperty = changeCase.sentenceCase @props.dataProperty
@@ -90,17 +97,11 @@ class module.exports extends React.Component
       when "removed" then @handleDeleteClicked()
 
   handleCommitted: (dismiss) =>
-    @setState loading: true
-    if @state.data?
-      @props.commitMethod @state.data, (err, {_id}) =>
-        @state.data._id = _id
-        @setState
-          loading: false
-          data: @state.data
-        if dismiss
-          @props.onDismiss
-            status: "saved"
-            state: @state.data
+    @commitData =>
+      if dismiss
+        @props.onDismiss
+          status: "saved"
+          state: @state.data
 
   renderButtonToolbar: ->
     saveButton =
