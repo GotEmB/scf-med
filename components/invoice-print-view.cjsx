@@ -2,14 +2,15 @@ calculateAge = require "../helpers/calculate-age"
 changeCase = require "change-case"
 constants = require "../constants"
 moment = require "moment"
+numeral = require "numeral"
 React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "PrescriptionPrintView"
+  @displayName: "InvoicePrintView"
 
   @propTypes:
-    prescription: reactTypes.prescription
+    invoice: reactTypes.invoice
 
   renderHeader: ->
     <div className="text-center">
@@ -18,13 +19,13 @@ class module.exports extends React.Component
         src="/static/logo.jpg"
       />
       <h4>{constants.clinicName}</h4>
-      <h5>Medical Prescription</h5>
+      <h5>Invoice</h5>
       <div className="clearfix" />
     </div>
 
   renderDetail: ->
-    if @props.prescription?.patient?.dob
-      dob = @props.prescription.patient.dob
+    if @props.invoice?.patient?.dob
+      dob = @props.invoice.patient.dob
       age = changeCase.upperCaseFirst calculateAge dob
     tdKeyStyle =
       paddingTop: 4
@@ -45,23 +46,23 @@ class module.exports extends React.Component
         <tr>
           <td style={tdKeyStyle}>Date:</td>
           <td style={tdValueStyle}>
-            {moment(@props.prescription?.date).format "ll"}
+            {moment(@props.invoice?.date).format "ll"}
           </td>
         </tr>
         <tr>
           <td style={tdKeyStyle}>ID:</td>
           <td style={tdValueStyle}>
-            {@props.prescription?.patient?.id}
+            {@props.invoice?.patient?.id}
           </td>
           <td style={tdKeyStyle}>Insurance ID:</td>
           <td style={tdValueStyle}>
-            {@props.prescription?.patient?.insuranceId}
+            {@props.invoice?.patient?.insuranceId}
           </td>
         </tr>
         <tr>
           <td style={tdKeyStyle}>Name:</td>
           <td style={tdValueStyle}>
-            {@props.prescription?.patient?.name}
+            {@props.invoice?.patient?.name}
           </td>
           <td style={tdKeyStyle}>Age:</td>
           <td style={tdValueStyle}>
@@ -71,50 +72,59 @@ class module.exports extends React.Component
         <tr>
           <td style={tdKeyStyle}>Contact:</td>
           <td style={tdValueStyle}>
-            {@props.prescription?.patient?.contact}
+            {@props.invoice?.patient?.contact}
           </td>
           <td style={tdKeyStyle}>Sex:</td>
           <td style={tdValueStyle}>
-            {@props.prescription?.patient?.sex}
+            {@props.invoice?.patient?.sex}
           </td>
         </tr>
       </tbody>
     </table>
 
-  renderMedicine: (medicine, key) ->
+  renderService: (service, key) ->
+    if service?.amount?
+      amount = numeral service?.amount
+        .format "($ 0,0.00)"
+        .replace "$", "Dhs"
     <tr key={key}>
       <td style={border: "solid 1px black"}>
-        <div style={fontWeight: "bold"}>{medicine.brandedDrug?.name}</div>
-        <em>{medicine.brandedDrug?.genericDrug?.name}</em>
+        <div>{service?.code}</div>
       </td>
       <td style={border: "solid 1px black"}>
-        <div>{medicine.dosage}</div>
+        <div>{service?.name}</div>
       </td>
-      <td style={border: "solid 1px black"}>
-        <div>{medicine.comments}</div>
+      <td style={border: "solid 1px black", whiteSpace: "nowrap"}>
+        <div className="text-right">{amount}</div>
       </td>
     </tr>
 
-  renderMedicines: ->
-    medicines = @props.prescription?.medicines ? []
+  renderServices: ->
+    services = @props.invoice?.services ? []
+    totalAmount = services
+      .map (x) -> x?.amount ? 0
+      .reduce ((carry, x) -> carry + x), 0
+    totalAmount = numeral totalAmount
+      .format "($ 0,0.00)"
+      .replace "$", "Dhs"
     <table className="table table-bordered table-condensed" style={border: 0}>
       <thead>
-        <th
-          style={border: "solid 1px black"}>
-          Drug
-        </th>
-        <th
-          style={border: "solid 1px black"}>
-          Dosage
-        </th>
-        <th
-          style={border: "solid 1px black", minWidth: 100}>
-          Comments
-        </th>
+        <th>Code</th>
+        <th>Service</th>
+        <th className="text-right" style={width: 1}>Amount</th>
       </thead>
       <tbody>
-        {@renderMedicine medicine, i for medicine, i in medicines}
+        {@renderService service, i for service, i in services}
       </tbody>
+      <tfoot>
+        <tr>
+          <th />
+          <th>Total</th>
+          <th className="text-right" style={whiteSpace: "nowrap"}>
+            {totalAmount}
+          </th>
+        </tr>
+      </tfoot>
     </table>
 
   renderSignature: ->
@@ -141,7 +151,7 @@ class module.exports extends React.Component
       <hr style={margin: "5px 0 15px", borderColor: "black"} />
       {@renderDetail()}
       <br />
-      {@renderMedicines()}
+      {@renderServices()}
       <br />
       {@renderSignature()}
       {@renderFooter()}

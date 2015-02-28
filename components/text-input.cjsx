@@ -20,6 +20,6 @@ class module.exports extends React.Component
       type="text"
       className={@props.className}
       style={@props.style}
-      value={@props.value}
+      value={@props.value ? ""}
       onChange={@handleValueChanged}
     />

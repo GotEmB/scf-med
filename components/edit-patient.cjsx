@@ -1,3 +1,4 @@
+changeCase = require "change-case"
 clone = require "clone"
 DateInput = require "./date-input"
 React = require "react"
@@ -40,6 +41,8 @@ class module.exports extends React.Component
     @props.onPatientChange @props.patient
 
   handleInsuranceIdChanged: (insuranceId) =>
+    if typeof insuranceId is "string"
+      insuranceId = changeCase.upperCase insuranceId
     @props.patient.insuranceId = insuranceId
     @props.onPatientChange @props.patient
 

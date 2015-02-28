@@ -38,4 +38,18 @@ exports.Prescription = metaDB.model "Prescription",
     routine: Boolean
   ), "prescriptions"
 
+exports.Service = metaDB.model "Service",
+  new mongoose.Schema(
+    code: String
+    name: String
+    amount: Number
+  ), "services"
+
+exports.Invoice = metaDB.model "Invoice",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    services: [type: ObjectId, ref: "Service"]
+  ), "invoices"
+
 exports.eval = metaDB.db.eval.bind metaDB.db

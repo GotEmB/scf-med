@@ -9,7 +9,7 @@ TypeaheadInput = require "./typeahead-input"
 TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
-  @displayName: "EditPrescription"
+  @displayName: "EditMedicinesTable"
 
   @propTypes:
     medicines: React.PropTypes.arrayOf reactTypes.medicine

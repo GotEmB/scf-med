@@ -51,6 +51,18 @@ prescription = shape
   medicines: arrayOf medicine
   routine: bool
 
+service = shape
+  _id: string
+  code: string
+  name: string
+  amount: number
+
+invoice = shape
+  _id: string
+  patient: patient
+  date: date
+  services: arrayOf service
+
 module.exports = {
   date
   reactComponent
@@ -59,4 +71,6 @@ module.exports = {
   brandedDrug
   medicine
   prescription
+  service
+  invoice
 }

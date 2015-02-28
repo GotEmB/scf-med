@@ -5,6 +5,7 @@ React = require "react"
 navItems = [
   "Patients"
   "Prescriptions"
+  "Billing"
 ]
 
 class module.exports extends React.Component

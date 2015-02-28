@@ -16,7 +16,7 @@ class module.exports extends React.Component
     @props.onGenericDrugClick? row
 
   renderRow: (row, key) ->
-    className = "active" if row is @props.genericDrug
+    className = "active" if row is @props.selectedGenericDrug
     <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
       <td>{row.name}</td>
     </tr>
