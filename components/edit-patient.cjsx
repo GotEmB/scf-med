@@ -22,6 +22,7 @@ class module.exports extends React.Component
       insuranceId: undefined
       bloodGroup: undefined
       address: undefined
+      nationality: undefined
 
   handleIDChanged: (id) =>
     @props.patient.id = id
