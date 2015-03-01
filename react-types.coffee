@@ -32,6 +32,7 @@ patient = shape
   bloodGroup: string
   address: string
   nationality: string
+  job: string
 
 genericDrug = shape
   _id: string

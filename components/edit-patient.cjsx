@@ -23,6 +23,7 @@ class module.exports extends React.Component
       bloodGroup: undefined
       address: undefined
       nationality: undefined
+      job: undefined
 
   handleIDChanged: (id) =>
     @props.patient.id = id
@@ -62,6 +63,10 @@ class module.exports extends React.Component
 
   handleNationalityChanged: (nationality) =>
     @props.patient.nationality = nationality
+    @props.onPatientChange @props.patient
+
+  handleJobChanged: (job) =>
+    @props.patient.job = job
     @props.onPatientChange @props.patient
 
   render: ->
@@ -156,6 +161,16 @@ class module.exports extends React.Component
           type="text"
           value={@props.patient.nationality}
           onChange={@handleNationalityChanged}
+        />
+      </div>
+      </div>
+      <div className="form-group">
+        <label>Job Title</label>
+        <TextInput
+          className="form-control"
+          type="text"
+          value={@props.patient.job}
+          onChange={@handleJobChanged}
         />
       </div>
     </div>
