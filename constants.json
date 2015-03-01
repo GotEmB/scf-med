@@ -1,7 +1,7 @@
 {
   "title": "SCF Clinic – Medical Records",
   "dbConnectionString": "mongodb://localhost:27017/scf-med",
-  "paginationLimit": 100,
+  "paginationLimit": 20,
   "typeaheadSuggestionsLimit": 8,
   "clinicName": "Sharjah Cement Company Clinic",
   "signature": "Dr. N. Badhrinathan",
