@@ -233,7 +233,6 @@ class module.exports extends React.Component
             onClick={@handleSexChanged.bind @, "No"}>
             No
           </button>
-          <div className="clearfix" />
         </div>
       </div>
     </div>
