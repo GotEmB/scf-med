@@ -222,12 +222,19 @@ class module.exports extends React.Component
       </div>
       <div className="form-group">
         <label>Smoking</label>
-        <TextInput
-          className="form-control"
-          type="text"
-          value={@props.patient.smoking}
-          onChange={@handleSmokingChanged}
-        />
+        <div className="btn-group" style={display: "block"}>
+          <button
+            className={maleButtonClassName}
+            onClick={@handleSexChanged.bind @, "Male"}>
+            Male
+          </button>
+          <button
+            className={femaleButtonClassName}
+            onClick={@handleSexChanged.bind @, "Female"}>
+            Female
+          </button>
+          <div className="clearfix" />
+        </div>
       </div>
     </div>
 
