@@ -59,6 +59,10 @@ class module.exports extends React.Component
     @props.patient.address = address
     @props.onPatientChange @props.patient
 
+  handleNationalityChanged: (nationality) =>
+    @props.patient.nationality = nationality
+    @props.onPatientChange @props.patient
+
   render: ->
     maleButtonClassName = "btn btn-default"
     femaleButtonClassName = "btn btn-default"
