@@ -149,6 +149,15 @@ class module.exports extends React.Component
           onChange={@handleAddressChanged}
         />
       </div>
+      <div className="form-group">
+        <label>Nationality</label>
+        <TextInput
+          className="form-control"
+          type="text"
+          value={@props.patient.nationality}
+          onChange={@handleNationalityChanged}
+        />
+      </div>
     </div>
 
   componentWillMount: ->
