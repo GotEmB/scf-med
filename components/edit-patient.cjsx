@@ -199,7 +199,7 @@ class module.exports extends React.Component
           className="form-control"
           type="text"
           value={@props.patient.department}
-          onChange={@handleJDepartmentChanged}
+          onChange={@handleDepartmentChanged}
         />
       </div>
       <div className="form-group">
