@@ -56,8 +56,6 @@ class module.exports extends React.Component
     @props.onPatientChange @props.patient
 
   handleAddressChanged: (address) =>
-    if typeof address is "string"
-      address = changeCase.upperCase address
     @props.patient.address = address
     @props.onPatientChange @props.patient
 
