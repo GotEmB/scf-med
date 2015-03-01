@@ -165,7 +165,7 @@ class module.exports extends React.Component
       </div>
       </div>
       <div className="form-group">
-        <label>Job Title</label>
+        <label>JobTitle</label>
         <TextInput
           className="form-control"
           type="text"
