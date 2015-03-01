@@ -8,6 +8,7 @@ padNumber = require "pad-number"
 patientsCalls = require("../async-calls/patients").calls
 React = require "react"
 reactTypes = require "../react-types"
+TextInput = require "./text-input"
 TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
@@ -44,6 +45,10 @@ class module.exports extends React.Component
 
   handleServicesChanged: (services) =>
     @props.invoice.services = services
+    @handleInvoiceChanged()
+
+  handleCommentsChanged: (comments) =>
+    @props.invoice.comments = comments
     @handleInvoiceChanged()
 
   handlePrintClicked: =>
@@ -87,6 +92,15 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
+      <div className="form-group" style={position: "relative"}>
+        <label>Comments</label>
+        <TextInput
+          type="text"
+          className="form-control"
+          value={@props.invoice.comments}
+          onChange={@handleCommentsChanged}
+        />
+      </div>
       <EditServicesTable
         services={@props.invoice.services}
         onServicesChange={@handleServicesChanged}

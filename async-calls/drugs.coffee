@@ -25,7 +25,7 @@ calls =
     unless genericDrug._id?
       db.GenericDrug.create genericDrug, callback
     else
-      db.GenericDrug.update {_id: genericDrug._id}, genericDrug, callback
+      db.GenericDrug.findByIdAndUpdate genericDrug._id, genericDrug, callback
 
   removeGenericDrug: (genericDrug, callback) ->
     async.parallel [
@@ -67,7 +67,8 @@ calls =
         unless brandedDrug._id?
           db.BrandedDrug.create brandedDrug, callback
         else
-          db.BrandedDrug.update {_id: brandedDrug._id}, brandedDrug, callback
+          db.BrandedDrug.findByIdAndUpdate brandedDrug._id, brandedDrug,
+            callback
       (brandedDrug, callback) ->
         db.GenericDrug.populate brandedDrug, "genericDrug", callback
     ], callback

@@ -63,7 +63,7 @@ calls =
               number: (result[0]?.serialNumber ? 0) + 1
             db.Invoice.create invoice, callback
         else
-          db.Invoice.update {_id: invoice._id}, invoice, callback
+          db.Invoice.findByIdAndUpdate invoice._id, invoice, callback
       (invoice, callback) ->
         db.Patient.populate invoice, "patient", callback
       (invoice, callback) ->

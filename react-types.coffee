@@ -62,6 +62,7 @@ invoice = shape
   patient: patient
   date: date
   services: arrayOf service
+  comments: string
 
 module.exports = {
   date

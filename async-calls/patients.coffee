@@ -25,7 +25,7 @@ calls =
     unless patient._id?
       db.Patient.create patient, callback
     else
-      db.Patient.update {_id: patient._id}, patient, callback
+      db.Patient.findByIdAndUpdate patient._id, patient, callback
 
   removePatient: (patient, callback) ->
     db.Patient.remove _id: patient._id, callback

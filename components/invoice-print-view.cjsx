@@ -88,6 +88,12 @@ class module.exports extends React.Component
             {@props.invoice?.patient?.sex}
           </td>
         </tr>
+        <tr>
+          <td style={tdKeyStyle}>Comments:</td>
+          <td style={tdValueStyle} colSpan={3}>
+            {@props.invoice?.comments}
+          </td>
+        </tr>
       </tbody>
     </table>
 

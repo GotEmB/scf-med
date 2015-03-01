@@ -44,6 +44,8 @@ class module.exports extends React.Component
           lastCommittedData: clone data
         nextTick ->
           callback?()
+    else
+      callback?()
 
   handleDataChanged: (data) =>
     @setState data: data

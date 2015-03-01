@@ -52,7 +52,8 @@ calls =
         unless prescription._id?
           db.Prescription.create prescription, callback
         else
-          db.Prescription.update {_id: prescription._id}, prescription, callback
+          db.Prescription.findByIdAndUpdate prescription._id, prescription,
+            callback
       (prescription, callback) ->
         db.Patient.populate prescription, "patient", callback
       (prescription, callback) ->

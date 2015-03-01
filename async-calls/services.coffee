@@ -25,7 +25,7 @@ calls =
     unless service._id?
       db.Service.create service, callback
     else
-      db.Service.update {_id: service._id}, service, callback
+      db.Service.findByIdAndUpdate service._id, service, callback
 
   removeService: (service, callback) ->
     db.Service.remove _id: service._id, callback

@@ -54,6 +54,7 @@ exports.Invoice = metaDB.model "Invoice",
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
     services: [type: ObjectId, ref: "Service"]
+    comments: String
   ), "invoices"
 
 exports.eval = metaDB.db.eval.bind metaDB.db
