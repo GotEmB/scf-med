@@ -21,6 +21,7 @@ class module.exports extends React.Component
       contact: undefined
       insuranceId: undefined
       bloodGroup: undefined
+      address: undefined
 
   handleIDChanged: (id) =>
     @props.patient.id = id
@@ -52,6 +53,12 @@ class module.exports extends React.Component
     if typeof bloodGroup is "string"
       bloodGroup = changeCase.upperCase bloodGroup
     @props.patient.bloodGroup = bloodGroup
+    @props.onPatientChange @props.patient
+
+  handleAddressChanged: (address) =>
+    if typeof address is "string"
+      address = changeCase.upperCase address
+    @props.patient.address = address
     @props.onPatientChange @props.patient
 
   render: ->
@@ -128,6 +135,15 @@ class module.exports extends React.Component
           type="text"
           value={@props.patient.bloodGroup}
           onChange={@handleBloodGroupChanged}
+        />
+      </div>
+      <div className="form-group">
+        <label>Address</label>
+        <TextInput
+          className="form-control"
+          type="text"
+          value={@props.patient.address}
+          onChange={@handleAddressChanged}
         />
       </div>
     </div>

@@ -30,6 +30,7 @@ patient = shape
   contact: string
   insuranceId: string
   bloodGroup: string
+  address: string
 
 genericDrug = shape
   _id: string
