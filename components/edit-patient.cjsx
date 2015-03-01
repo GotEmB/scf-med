@@ -48,7 +48,7 @@ class module.exports extends React.Component
     @props.patient.insuranceId = insuranceId
     @props.onPatientChange @props.patient
 
-  handleInsuranceIdChanged: (bloodGroup) =>
+  handleBloodGroupChanged: (bloodGroup) =>
     if typeof bloodGroup is "string"
       bloodGroup = changeCase.upperCase bloodGroup
     @props.patient.bloodGroup = bloodGroup
