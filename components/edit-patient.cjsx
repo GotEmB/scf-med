@@ -24,6 +24,11 @@ class module.exports extends React.Component
       address: undefined
       nationality: undefined
       job: undefined
+      department: undefined
+      sponsor: undefined
+      language: undefined
+      smoking: undefined
+
 
   handleIDChanged: (id) =>
     @props.patient.id = id
@@ -67,6 +72,22 @@ class module.exports extends React.Component
 
   handleJobChanged: (job) =>
     @props.patient.job = job
+    @props.onPatientChange @props.patient
+
+  handleDepartmentChanged: (department) =>
+    @props.patient.department = department
+    @props.onPatientChange @props.patient
+
+  handleSponsorChanged: (sponsor) =>
+    @props.patient.sponsor = sponsor
+    @props.onPatientChange @props.patient
+
+  handleLanguageChanged: (language) =>
+    @props.patient.language = language
+    @props.onPatientChange @props.patient
+
+  handleSmokingChanged: (smoking) =>
+    @props.patient.smoking = smoking
     @props.onPatientChange @props.patient
 
   render: ->
@@ -164,12 +185,48 @@ class module.exports extends React.Component
         />
       </div>
       <div className="form-group">
-        <label>JobTitle</label>
+        <label>Job Title</label>
         <TextInput
           className="form-control"
           type="text"
           value={@props.patient.job}
           onChange={@handleJobChanged}
+        />
+      </div>
+      <div className="form-group">
+        <label>Department</label>
+        <TextInput
+          className="form-control"
+          type="text"
+          value={@props.patient.department}
+          onChange={@handleJDepartmentChanged}
+        />
+      </div>
+      <div className="form-group">
+        <label>Sponsor</label>
+        <TextInput
+          className="form-control"
+          type="text"
+          value={@props.patient.sponsor}
+          onChange={@handleSponsorChanged}
+        />
+      </div>
+      <div className="form-group">
+        <label>Language</label>
+        <TextInput
+          className="form-control"
+          type="text"
+          value={@props.patient.language}
+          onChange={@handleLanguageChanged}
+        />
+      </div>
+      <div className="form-group">
+        <label>Smoking</label>
+        <TextInput
+          className="form-control"
+          type="text"
+          value={@props.patient.smoking}
+          onChange={@handleSmokingChanged}
         />
       </div>
     </div>

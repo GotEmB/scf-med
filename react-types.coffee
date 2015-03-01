@@ -33,6 +33,11 @@ patient = shape
   address: string
   nationality: string
   job: string
+  department: string
+  sponsor: string
+  language: string
+  smoking: string
+
 
 genericDrug = shape
   _id: string

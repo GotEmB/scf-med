@@ -17,6 +17,11 @@ exports.Patient = metaDB.model "Patient",
     address: String
     nationality: String
     job: String
+    department: String
+    sponsor: String
+    language: String
+    smoking: String
+
   ), "patients"
 
 exports.GenericDrug = metaDB.model "GenericDrug",
