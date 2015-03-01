@@ -224,14 +224,14 @@ class module.exports extends React.Component
         <label>Smoking</label>
         <div className="btn-group" style={display: "block"}>
           <button
-            className={maleButtonClassName}
-            onClick={@handleSexChanged.bind @, "Male"}>
-            Male
+            className={yesButtonClassName}
+            onClick={@handleSexChanged.bind @, "Yes"}>
+            Yes
           </button>
           <button
-            className={femaleButtonClassName}
-            onClick={@handleSexChanged.bind @, "Female"}>
-            Female
+            className={noButtonClassName}
+            onClick={@handleSexChanged.bind @, "No"}>
+            No
           </button>
           <div className="clearfix" />
         </div>
