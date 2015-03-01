@@ -230,12 +230,12 @@ class module.exports extends React.Component
         <div className="btn-group" style={display: "block"}>
           <button
             className={yesButtonClassName}
-            onClick={@handleSexChanged.bind @, "Yes"}>
+            onClick={@handleSmokingChanged.bind @, "Yes"}>
             Yes
           </button>
           <button
             className={noButtonClassName}
-            onClick={@handleSexChanged.bind @, "No"}>
+            onClick={@handleSmokingChanged.bind @, "No"}>
             No
           </button>
         </div>
