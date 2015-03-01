@@ -26,12 +26,12 @@ class module.exports extends React.Component
 
   dataChanged: ->
     return true unless @props.data?._id?
-    prefilter = (_, x) -> typeof x is "string" and x[0] = "_"
+    prefilter = (_, x) -> typeof x is "string" and x[0] is "_"
     deepDiff(@state.data, @props.data, prefilter)?
 
   dataCommitted: ->
     return true unless @state.lastCommittedData?._id?
-    prefilter = (_, x) -> typeof x is "string" and x[0] = "_"
+    prefilter = (_, x) -> typeof x is "string" and x[0] is "_"
     deepDiff(@state.data, @state.lastCommittedData, prefilter)?
 
   commitData: (callback) ->
