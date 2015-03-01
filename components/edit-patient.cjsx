@@ -163,7 +163,6 @@ class module.exports extends React.Component
           onChange={@handleNationalityChanged}
         />
       </div>
-      </div>
       <div className="form-group">
         <label>JobTitle</label>
         <TextInput
