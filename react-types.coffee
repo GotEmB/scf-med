@@ -29,6 +29,7 @@ patient = shape
   sex: oneOf ["Male", "Female"]
   contact: string
   insuranceId: string
+  bloodGroup: string
 
 genericDrug = shape
   _id: string
