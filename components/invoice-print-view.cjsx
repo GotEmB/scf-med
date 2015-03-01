@@ -102,16 +102,14 @@ class module.exports extends React.Component
       amount = numeral service?.amount
         .format "($ 0,0.00)"
         .replace "$", "Dhs"
+    tdStyle = border: "solid 1px black"
+    amountTStyle =
+      border: "solid 1px black"
+      whiteSpace: "nowrap"
     <tr key={key}>
-      <td style={border: "solid 1px black"}>
-        <div>{service?.code}</div>
-      </td>
-      <td style={border: "solid 1px black"}>
-        <div>{service?.name}</div>
-      </td>
-      <td style={border: "solid 1px black", whiteSpace: "nowrap"}>
-        <div className="text-right">{amount}</div>
-      </td>
+      <td style={tdStyle}>{service?.code}</td>
+      <td style={tdStyle}>{service?.name}</td>
+      <td style={amountTStyle} className="text-right">{amount}</td>
     </tr>
 
   renderServices: ->
@@ -122,20 +120,27 @@ class module.exports extends React.Component
     totalAmount = numeral totalAmount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
-    <table className="table table-bordered table-condensed" style={border: 0}>
+    thStyle = border: "solid 1px black"
+    amountTStyle =
+      border: "solid 1px black"
+      whiteSpace: "nowrap"
+    <table className="table table-condensed" style={borderColor: "black"}>
       <thead>
-        <th>Code</th>
-        <th>Service</th>
-        <th className="text-right" style={width: 1}>Amount</th>
+        <tr>
+          <th style={thStyle}>Code</th>
+          <th style={thStyle}>Service</th>
+          <th style={amountTStyle} className="text-right">
+            Amount
+          </th>
+        </tr>
       </thead>
       <tbody>
         {@renderService service, i for service, i in services}
       </tbody>
       <tfoot>
         <tr>
-          <th />
-          <th>Total</th>
-          <th className="text-right" style={whiteSpace: "nowrap"}>
+          <th style={thStyle} colSpan={2}>Total Amount</th>
+          <th style={amountTStyle} className="text-right">
             {totalAmount}
           </th>
         </tr>

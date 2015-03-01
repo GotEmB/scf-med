@@ -82,38 +82,30 @@ class module.exports extends React.Component
     </table>
 
   renderMedicine: (medicine, key) ->
+    tdStyle = border: "solid 1px black"
     <tr key={key}>
-      <td style={border: "solid 1px black"}>
-        <div style={fontWeight: "bold"}>{medicine.brandedDrug?.name}</div>
-        {medicine.brandedDrug?.genericDrug?.name}
+      <td style={tdStyle}>
+        <b>{medicine.brandedDrug?.name}</b>
+        <div>{medicine.brandedDrug?.genericDrug?.name}</div>
       </td>
-      <td style={border: "solid 1px black"}>
-        <div>{medicine.dosage}</div>
-      </td>
-      <td style={border: "solid 1px black"}>
-        <div>{medicine.comments}</div>
-      </td>
+      <td style={tdStyle}>{medicine.dosage}</td>
+      <td style={tdStyle}>{medicine.comments}</td>
     </tr>
 
   renderMedicines: ->
     medicines = @props.prescription?.medicines ? []
+    thStyle = border: "solid 1px black"
+    commentsTStyle =
+      border: "solid 1px black"
+      minWidth: 100
     <div style={marginBottom: 20}>
       <table
-        className="table table-bordered table-condensed"
-        style={border: 0, marginBottom: 5}>
+        className="table table-condensed"
+        style={borderColor: "black", marginBottom: 5}>
         <thead>
-          <th
-            style={border: "solid 1px black"}>
-            Drug
-          </th>
-          <th
-            style={border: "solid 1px black"}>
-            Dosage
-          </th>
-          <th
-            style={border: "solid 1px black", minWidth: 100}>
-            Comments
-          </th>
+          <th style={thStyle}>Drug</th>
+          <th style={thStyle}>Dosage</th>
+          <th style={commentsTStyle}>Comments</th>
         </thead>
         <tbody>
           {@renderMedicine medicine, i for medicine, i in medicines}

@@ -4,10 +4,13 @@ DateRangeInput = require "./date-range-input"
 EditInvoice = require "./edit-invoice"
 escapeStringRegexp = require "escape-string-regexp"
 invoicesCalls = require("../async-calls/invoices").calls
+InvoicesReportPrintView = require "./invoices-report-print-view"
 InvoicesTable = require "./invoices-table"
 Layers = require "./layers"
 ManageServicesView = require "./manage-services-view"
 moment = require "moment"
+nextTick = require "next-tick"
+Page = require "./page"
 React = require "react"
 
 class module.exports extends React.Component
@@ -24,6 +27,7 @@ class module.exports extends React.Component
       total: 0
       loading: false
       layer: undefined
+      printView: undefined
 
   fetchInvoices: =>
     @setState loading: true
@@ -85,6 +89,32 @@ class module.exports extends React.Component
       </div>
     @setState layer: layer
     Layers.addLayer layer, "Manage Services"
+
+  handleConsolidatedReportClicked: (e) =>
+    @setState loading: true
+    query =
+      daterange:
+        from: @state.queryStartDate
+        to: @state.queryEndDate
+    invoicesCalls.getInvoices query, 0, 99999, (err, invoices, total) =>
+      invoices.reverse()
+      @setState loading: false
+      printView =
+        <InvoicesReportPrintView
+          invoices={invoices}
+          fromDate={@state.queryStartDate}
+          toDate={@state.queryEndDate}
+        />
+      @setState printView: printView
+      Page.setPrintView printView
+      nextTick =>
+        window.print()
+        setTimeout ( =>
+          if @state.printView is printView
+            Page.unsetPrintView()
+            @setState printView: undefined if @canSetState
+        ), 1000
+    e.stopPropagation()
 
   handlePagerPreviousClicked: =>
     @setState
@@ -160,6 +190,12 @@ class module.exports extends React.Component
         onClick={@handleManageServicesClicked}>
         <i className="fa fa-th-list" /> Manage Services
       </button>
+      <span> </span>
+      <button
+        className="btn btn-default"
+        onClick={@handleConsolidatedReportClicked}>
+        <i className="fa fa-file-text" /> Report
+      </button>
     </div>
 
   renderRightControls: ->
@@ -213,8 +249,12 @@ class module.exports extends React.Component
       />
     </div>
 
+  componentWillMount: ->
+    @canSetState = true
+
   componentDidMount: ->
     @fetchInvoices()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?
+    @canSetState = false
