@@ -93,9 +93,14 @@ class module.exports extends React.Component
   render: ->
     maleButtonClassName = "btn btn-default"
     femaleButtonClassName = "btn btn-default"
+    yesButtonClassName = "btn btn-default"
+    noButtonClassName = "btn btn-default"
     switch @props.patient.sex
       when "Male" then maleButtonClassName += " active"
       when "Female" then femaleButtonClassName += " active"
+    switch @props.patient.smoking
+      when "Yes" then yesButtonClassName += " active"
+      when "No" then noButtonClassName += " active"
     <div>
       <div className="form-group">
         <label>ID</label>
@@ -234,6 +239,7 @@ class module.exports extends React.Component
             No
           </button>
         </div>
+          <div className="clearfix" />
       </div>
     </div>
 
