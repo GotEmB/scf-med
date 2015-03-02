@@ -72,7 +72,7 @@ class module.exports extends React.Component
     @props.patient.nationality = nationality
     @props.onPatientChange @props.patient
 
-  handleJobChanged: (job) =>
+  handleJobTitleChanged: (job) =>
     @props.patient.job = job
     @props.onPatientChange @props.patient
 
