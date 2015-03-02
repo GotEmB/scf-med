@@ -33,7 +33,7 @@ calls =
   getBloodGroupSuggestions: (query, skip, limit, callback) ->
     query = new RegExp query, "i"
     db.Patient.aggregate()
-      .project "$bloodGroup"
+      .project bloodGroup: 1
       .match bloodGroup: query
       .group _id: "$bloodGroup"
       .sort _id: 1
