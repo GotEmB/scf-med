@@ -90,6 +90,18 @@ calls =
       .exec (err, results) ->
         callback err, results.map (x) -> x._id
 
+  getLanguageSuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Patient.aggregate()
+      .project language: 1
+      .match language: query
+      .group _id: "$language"
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
+
 module.exports = new AsyncCaller
   mountPath: "/async-calls/patients"
   calls: calls

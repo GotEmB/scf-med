@@ -208,15 +208,13 @@ class module.exports extends React.Component
         textFormatter={(x) -> x}
         label="Sponsor"
       />
-      <div className="form-group">
-        <label>Language</label>
-        <TextInput
-          className="form-control"
-          type="text"
-          value={@props.patient.language}
-          onChange={@handleLanguageChanged}
-        />
-      </div>
+      <TypeaheadInput
+        value={@props.patient.language}
+        onChange={@handleLanguageChanged}
+        suggestionsFetcher={patientsCalls.getLanguageSuggestions}
+        textFormatter={(x) -> x}
+        label="Language"
+      />
       <div className="form-group">
         <label>Smoking</label>
         <div className="btn-group" style={display: "block"}>
