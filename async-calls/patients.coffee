@@ -54,6 +54,18 @@ calls =
       .exec (err, results) ->
         callback err, results.map (x) -> x._id
 
+  getJobTitleSuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Patient.aggregate()
+      .project jobTitle: 1
+      .match jobTitle: query
+      .group _id: "$jobTitle"
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
+
 module.exports = new AsyncCaller
   mountPath: "/async-calls/patients"
   calls: calls
