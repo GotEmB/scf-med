@@ -1,6 +1,7 @@
 changeCase = require "change-case"
 clone = require "clone"
 DateInput = require "./date-input"
+patientsCalls = require("../async-calls/patients").calls
 React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
