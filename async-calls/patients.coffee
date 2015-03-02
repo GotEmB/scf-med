@@ -78,6 +78,18 @@ calls =
       .exec (err, results) ->
         callback err, results.map (x) -> x._id
 
+  getSponsorSuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Patient.aggregate()
+      .project sponsor: 1
+      .match sponsor: query
+      .group _id: "$sponsor"
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
+
 module.exports = new AsyncCaller
   mountPath: "/async-calls/patients"
   calls: calls
