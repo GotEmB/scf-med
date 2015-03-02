@@ -192,7 +192,7 @@ class module.exports extends React.Component
         onChange={@handleJobTitleChanged}
         suggestionsFetcher={patientsCalls.getJobTitleSuggestions}
         textFormatter={(x) -> x}
-        label="JobTitle"
+        label="Job Title"
       />
       <div className="form-group">
         <label>Department</label>
