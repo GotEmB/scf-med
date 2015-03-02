@@ -187,7 +187,6 @@ class module.exports extends React.Component
         textFormatter={(x) -> x}
         label="Nationality"
       />
-      </div>
       <div className="form-group">
         <label>Job Title</label>
         <TextInput
