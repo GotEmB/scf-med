@@ -180,14 +180,13 @@ class module.exports extends React.Component
           onChange={@handleAddressChanged}
         />
       </div>
-      <div className="form-group">
-        <label>Nationality</label>
-        <TextInput
-          className="form-control"
-          type="text"
-          value={@props.patient.nationality}
-          onChange={@handleNationalityChanged}
-        />
+      <TypeaheadInput
+        value={@props.patient.nationality}
+        onChange={@handleNationalityChanged}
+        suggestionsFetcher={patientsCalls.getNationalitySuggestions}
+        textFormatter={(x) -> x}
+        label="Nationality"
+      />
       </div>
       <div className="form-group">
         <label>Job Title</label>
