@@ -194,15 +194,13 @@ class module.exports extends React.Component
         textFormatter={(x) -> x}
         label="Job Title"
       />
-      <div className="form-group">
-        <label>Department</label>
-        <TextInput
-          className="form-control"
-          type="text"
-          value={@props.patient.department}
-          onChange={@handleDepartmentChanged}
-        />
-      </div>
+      <TypeaheadInput
+        value={@props.patient.department}
+        onChange={@handleDepartmentChanged}
+        suggestionsFetcher={patientsCalls.getDepartmentSuggestions}
+        textFormatter={(x) -> x}
+        label="Department"
+      />
       <div className="form-group">
         <label>Sponsor</label>
         <TextInput
