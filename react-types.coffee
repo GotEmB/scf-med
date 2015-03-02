@@ -32,7 +32,7 @@ patient = shape
   bloodGroup: string
   address: string
   nationality: string
-  job: string
+  jobTitle: string
   department: string
   sponsor: string
   language: string

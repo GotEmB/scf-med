@@ -25,7 +25,7 @@ class module.exports extends React.Component
       bloodGroup: undefined
       address: undefined
       nationality: undefined
-      job: undefined
+      jobTitle: undefined
       department: undefined
       sponsor: undefined
       language: undefined
@@ -72,8 +72,8 @@ class module.exports extends React.Component
     @props.patient.nationality = nationality
     @props.onPatientChange @props.patient
 
-  handleJobTitleChanged: (job) =>
-    @props.patient.job = job
+  handleJobTitleChanged: (jobTitle) =>
+    @props.patient.jobTitle = jobTitle
     @props.onPatientChange @props.patient
 
   handleDepartmentChanged: (department) =>
