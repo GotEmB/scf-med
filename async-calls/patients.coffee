@@ -30,6 +30,18 @@ calls =
   removePatient: (patient, callback) ->
     db.Patient.remove _id: patient._id, callback
 
+  getBloodGroupSuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Patient.aggregate()
+      .project "$bloodGroup"
+      .match bloodGroup: query
+      .group _id: "$bloodGroup"
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
+
 module.exports = new AsyncCaller
   mountPath: "/async-calls/patients"
   calls: calls

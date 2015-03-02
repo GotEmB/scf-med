@@ -4,6 +4,7 @@ DateInput = require "./date-input"
 React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
+TypeaheadInput = require "./typeahead-input"
 
 class module.exports extends React.Component
   @displayName: "EditPatient"
@@ -162,15 +163,13 @@ class module.exports extends React.Component
           onChange={@handleInsuranceIdChanged}
         />
       </div>
-      <div className="form-group">
-        <label>Blood Group</label>
-        <TextInput
-          className="form-control"
-          type="text"
-          value={@props.patient.bloodGroup}
-          onChange={@handleBloodGroupChanged}
-        />
-      </div>
+      <TypeaheadInput
+        value={@props.patient.bloodGroup}
+        onChange={@handleBloodGroupChanged}
+        suggestionsFetcher={patientsCalls.getBloodGroupSuggestions}
+        textFormatter={(x) -> x}
+        label="Blood Group"
+      />
       <div className="form-group">
         <label>Address</label>
         <TextInput
