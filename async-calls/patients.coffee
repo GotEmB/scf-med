@@ -66,17 +66,17 @@ calls =
       .exec (err, results) ->
         callback err, results.map (x) -> x._id
 
- getDepartmentSuggestions: (query, skip, limit, callback) ->
-   query = new RegExp query, "i"
-   db.Patient.aggregate()
-     .project department: 1
-     .match department: query
-     .group _id: "$department"
-     .sort _id: 1
-     .skip skip
-     .limit limit
-     .exec (err, results) ->
-       callback err, results.map (x) -> x._id
+  getDepartmentSuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Patient.aggregate()
+      .project department: 1
+      .match department: query
+      .group _id: "$department"
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
 
 module.exports = new AsyncCaller
   mountPath: "/async-calls/patients"
