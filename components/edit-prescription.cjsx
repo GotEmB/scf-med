@@ -1,3 +1,4 @@
+Checkbox = require "./checkbox"
 clone = require "clone"
 DateInput = require "./date-input"
 EditMedicinesTable = require "./edit-medicines-table"
@@ -74,15 +75,11 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
-      <div className="checkbox">
-        <label>
-          <input
-            type="checkbox"
-            checked={@props.prescription.routine}
-            onChange={@handleRoutineChanged}
-          /> Routine
-        </label>
-      </div>
+      <Checkbox
+        checked={@props.prescription.routine}
+        onCheckedChange={@handleRoutineChanged}
+        label="Routine"
+      />
       <EditMedicinesTable
         medicines={@props.prescription.medicines}
         onMedicinesChange={@handleMedicinesChanged}

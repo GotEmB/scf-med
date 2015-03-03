@@ -1,4 +1,5 @@
 changeCase = require "change-case"
+Checkbox = require "./checkbox"
 clone = require "clone"
 DateInput = require "./date-input"
 moment = require "moment"
@@ -30,7 +31,7 @@ class module.exports extends React.Component
       department: undefined
       sponsor: undefined
       language: undefined
-      smoking: undefined
+      smoking: false
 
   handleIDChanged: (id) =>
     @props.patient.id = id
@@ -215,22 +216,11 @@ class module.exports extends React.Component
         textFormatter={(x) -> x}
         label="Language"
       />
-      <div className="form-group">
-        <label>Smoking</label>
-        <div className="btn-group" style={display: "block"}>
-          <button
-            className={yesButtonClassName}
-            onClick={@handleSmokingChanged.bind @, "Yes"}>
-            Yes
-          </button>
-          <button
-            className={noButtonClassName}
-            onClick={@handleSmokingChanged.bind @, "No"}>
-            No
-          </button>
-        </div>
-          <div className="clearfix" />
-      </div>
+      <Checkbox
+        checked={@props.patient.smoking}
+        onCheckedChange={@handleSmokingChanged}
+        label="Smoking"
+      />
     </div>
 
   componentWillMount: ->

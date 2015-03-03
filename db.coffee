@@ -20,7 +20,7 @@ exports.Patient = metaDB.model "Patient",
     department: String
     sponsor: String
     language: String
-    smoking: String
+    smoking: Boolean
   ), "patients"
 
 exports.GenericDrug = metaDB.model "GenericDrug",

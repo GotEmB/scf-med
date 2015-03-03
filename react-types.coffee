@@ -36,7 +36,7 @@ patient = shape
   department: string
   sponsor: string
   language: string
-  smoking: string
+  smoking: bool
 
 genericDrug = shape
   _id: string
