@@ -24,18 +24,16 @@ class module.exports extends React.Component
       layer: undefined
       loading: false
 
-  dataChanged: ->
-    return true unless @props.data?._id?
+  shouldCommit: ->
     prefilter = (_, x) -> typeof x is "string" and x[0] is "_"
-    deepDiff(@state.data, @props.data, prefilter)?
+    deepDiff(@state.lastCommittedData, @state.data, prefilter)?
 
-  dataCommitted: ->
-    return true unless @state.lastCommittedData?._id?
+  didCommit: ->
     prefilter = (_, x) -> typeof x is "string" and x[0] is "_"
-    deepDiff(@state.data, @state.lastCommittedData, prefilter)?
+    deepDiff(@props.data, @state.lastCommittedData, prefilter)?
 
   commitData: (callback) ->
-    if @state.data? and @dataCommitted()
+    if @state.data? and @shouldCommit()
       @setState loading: true
       @props.commitMethod @state.data, (err, data) =>
         @setState
@@ -52,7 +50,7 @@ class module.exports extends React.Component
 
   handleCancelClicked: =>
     @props.onDismiss _ =
-      unless @dataChanged()
+      unless @didCommit()
         status: "cancelled"
       else
         status: "saved"
@@ -115,7 +113,7 @@ class module.exports extends React.Component
 
   renderButtonToolbar: ->
     saveButton =
-      if @dataCommitted()
+      if @shouldCommit()
         <button className="btn btn-primary" onClick={@handleSaveClicked}>
           Save
         </button>
