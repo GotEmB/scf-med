@@ -1,7 +1,7 @@
 {
   "name": "scf-med",
   "version": "0.0.0",
-  "description": "SCF Clinic – Medical Records",
+  "description": "Sharjah Cement Company Clinic – Medical Records",
   "repository": {
     "type": "git",
     "url": "https://github.com/GotEmB/scf-med.git"
