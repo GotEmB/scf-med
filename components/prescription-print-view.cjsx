@@ -93,7 +93,8 @@ class module.exports extends React.Component
     </tr>
 
   renderMedicines: ->
-    medicines = @props.prescription?.medicines ? []
+    medicines = (@props.prescription?.medicines ? [])
+      .filter (x) -> x.brandedDrug? or x.dosage? or x.comments?
     thStyle = border: "solid 1px black"
     commentsTStyle =
       border: "solid 1px black"

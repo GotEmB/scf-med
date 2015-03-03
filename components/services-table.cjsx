@@ -17,7 +17,7 @@ class module.exports extends React.Component
     @props.onServiceClick? row
 
   renderRow: (row, key) ->
-    if service?.amount?
+    if row?.amount?
       amount = numeral row?.amount
         .format "($ 0,0.00)"
         .replace "$", "Dhs"

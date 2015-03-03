@@ -38,7 +38,6 @@ patient = shape
   language: string
   smoking: string
 
-
 genericDrug = shape
   _id: string
   name: string

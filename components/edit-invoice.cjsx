@@ -52,7 +52,7 @@ class module.exports extends React.Component
     @handleInvoiceChanged()
 
   handlePrintClicked: =>
-    @props.onCommit? false, ->
+    @props.onCommit? true, ->
       window.print()
 
   render: ->

@@ -113,7 +113,8 @@ class module.exports extends React.Component
     </tr>
 
   renderServices: ->
-    services = @props.invoice?.services ? []
+    services = (@props.invoice?.services ? [])
+      .filter (x) -> x?
     totalAmount = services
       .map (x) -> x?.amount ? 0
       .reduce ((carry, x) -> carry + x), 0

@@ -107,9 +107,11 @@ class module.exports extends React.Component
     @commitData =>
       callback?()
       if dismiss
-        @props.onDismiss
-          status: "saved"
-          state: @state.data
+        setTimeout ( =>
+          @props.onDismiss
+            status: "saved"
+            state: @state.data
+        ), 200
 
   renderButtonToolbar: ->
     saveButton =
