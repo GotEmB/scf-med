@@ -22,7 +22,11 @@ class module.exports extends React.Component
         .format "($ 0,0.00)"
         .replace "$", "Dhs"
     className = "active" if row is @props.selectedService
-    <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
+    <tr
+      className={className}
+      style={cursor: "pointer"}
+      onClick={@handleRowClicked.bind @, row}
+      key={key}>
       <td>{row?.code}</td>
       <td>{row?.name}</td>
       <td className="text-right">{amount}</td>

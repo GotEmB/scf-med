@@ -51,7 +51,11 @@ class module.exports extends React.Component
           <i className="fa fa-repeat" />
         </button>
     className = "active" if row is @props.selectedPatient
-    <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
+    <tr
+      className={className}
+      style={cursor: "pointer"}
+      onClick={@handleRowClicked.bind @, row}
+      key={key}>
       <td style={verticalAlign: "middle"}>{datetime}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.name}</td>

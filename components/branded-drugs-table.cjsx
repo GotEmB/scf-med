@@ -17,7 +17,11 @@ class module.exports extends React.Component
 
   renderRow: (row, key) ->
     className = "active" if row is @props.selectedBrandedDrug
-    <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
+    <tr
+      className={className}
+      style={cursor: "pointer"}
+      onClick={@handleRowClicked.bind @, row}
+      key={key}>
       <td>{row.name}</td>
       <td>{row.genericDrug?.name}</td>
     </tr>

@@ -42,7 +42,11 @@ class module.exports extends React.Component
       serial = "#{row.serial.year}-#{padNumber row.serial.number, 5}"
     datetime = moment(row.date).format("lll") if row.date?
     className = "active" if row is @props.selectedPatient
-    <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
+    <tr
+      className={className}
+      style={cursor: "pointer"}
+      onClick={@handleRowClicked.bind @, row}
+      key={key}>
       <td style={verticalAlign: "middle"}>{serial}</td>
       <td style={verticalAlign: "middle"}>{datetime}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>

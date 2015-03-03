@@ -22,7 +22,11 @@ class module.exports extends React.Component
     dob = moment(row.dob).format("ll") if row.dob?
     age = changeCase.upperCaseFirst calculateAge row.dob
     className = "active" if row is @props.selectedPatient
-    <tr className={className} onClick={@handleRowClicked.bind @, row} key={key}>
+    <tr
+      className={className}
+      style={cursor: "pointer"}
+      onClick={@handleRowClicked.bind @, row}
+      key={key}>
       <th>{row.id}</th>
       <td>{row.name}</td>
       <td>{dob}</td>
