@@ -133,7 +133,16 @@ class module.exports extends React.Component
         <button className="btn btn-danger" onClick={@handleDeleteClicked}>
           Delete
         </button>
-    <div>
+    containerStyle =
+      position: "fixed"
+      left: 0
+      right: 0
+      bottom: 0
+      paddingBottom: 20
+      backgroundColor: "white"
+      zIndex: 3
+    <div className="container" style={containerStyle}>
+      <hr style={marginTop: 0} />
       <div className="pull-left btn-toolbar">
         {deleteButton}
       </div>
@@ -156,8 +165,8 @@ class module.exports extends React.Component
       @handleDataChanged
     <div>
       {React.createElement @props.component, props, @props.children}
-      <hr />
       {@renderButtonToolbar()}
+      <div style={height: 75} />
     </div>
 
   componentWillMount: ->

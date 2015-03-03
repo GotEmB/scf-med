@@ -80,6 +80,8 @@ class module.exports extends React.Component
       backgroundcolor: "white"
       paddingTop: 20
       paddingBottom: 20
+      height: "100%"
+      overflowY: "scroll"
     titleDiv =
       if @props.title?
         <div className="lead text-center">{@props.title}</div>
