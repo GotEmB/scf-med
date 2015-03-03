@@ -4,13 +4,16 @@ React = require "react"
 class module.exports extends React.Component
   @displayName: "Layer"
   @propTypes:
-    index: React.PropTypes.number.isRequired
+    negDepth: React.PropTypes.number.isRequired
     children: React.PropTypes.element.isRequired
     title: React.PropTypes.string
 
   constructor: ->
     @state =
       transitionState: "pre"
+
+  getTransformOffset: =>
+    5 * Math.pow(2, 4 - @props.negDepth) * (-1 + Math.pow(2, @props.negDepth))
 
   renderTranslucentScreen: ->
     style =
@@ -28,7 +31,7 @@ class module.exports extends React.Component
   renderOpaqueScreen: ->
     style =
       position: "fixed"
-      top: 120 + @props.index * 70
+      top: 120
       bottom: 0
       width: "100%"
       zIndex: 3
@@ -36,14 +39,14 @@ class module.exports extends React.Component
       transition: "transform .2s ease-in-out, opacity .2s ease-in-out"
       transform:
         switch @state.transitionState
-          when "pre" then "translateY(100px)"
-          when "post" then "translateY(0)"
+          when "pre" then "translateY(#{100 - @getTransformOffset()}px)"
+          when "post" then "translateY(#{0 - @getTransformOffset()}px)"
       WebkitTransition:
         "-webkit-transform .2s ease-in-out, opacity .2s ease-in-out"
       WebkitTransform:
         switch @state.transitionState
-          when "pre" then "translateY(100px)"
-          when "post" then "translateY(0)"
+          when "pre" then "translateY(#{100 - @getTransformOffset()}px)"
+          when "post" then "translateY(#{0 - @getTransformOffset()}px)"
       opacity:
         switch @state.transitionState
           when "pre" then 0.01
@@ -55,7 +58,7 @@ class module.exports extends React.Component
       position: "absolute"
       left: 0
       right: 0
-      top: 120 + @props.index * 70
+      top: 120
       bottom: 0
       zIndex: 3
       backgroundColor: "white"
@@ -63,14 +66,14 @@ class module.exports extends React.Component
       transition: "transform .2s ease-in-out, opacity .2s ease-in-out"
       transform:
         switch @state.transitionState
-          when "pre" then "translateY(100px)"
-          when "post" then "translateY(0)"
+          when "pre" then "translateY(#{100 - @getTransformOffset()}px)"
+          when "post" then "translateY(#{0 - @getTransformOffset()}px)"
       WebkitTransition:
         "-webkit-transform .2s ease-in-out, opacity .2s ease-in-out"
       WebkitTransform:
         switch @state.transitionState
-          when "pre" then "translateY(100px)"
-          when "post" then "translateY(0)"
+          when "pre" then "translateY(#{100 - @getTransformOffset()}px)"
+          when "post" then "translateY(#{0 - @getTransformOffset()}px)"
       boxShadow: "0 -5px 5px -5px rgba(0, 0, 0, 0.1)"
       opacity:
         switch @state.transitionState

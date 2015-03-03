@@ -15,7 +15,7 @@ class module.exports extends React.Component
       titles: []
 
   renderLayer: (layer, title, key) ->
-    <Layer index={key} title={title} key={key}>
+    <Layer negDepth={@state.layers.length - key - 1} title={title} key={key}>
       {layer}
     </Layer>
 
