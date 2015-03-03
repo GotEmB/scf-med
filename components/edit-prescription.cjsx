@@ -2,6 +2,7 @@ clone = require "clone"
 DateInput = require "./date-input"
 EditMedicinesTable = require "./edit-medicines-table"
 EditPatient = require "./edit-patient"
+moment = require "moment"
 Page = require "./page"
 patientsCalls = require("../async-calls/patients").calls
 PrescriptionPrintView = require "./prescription-print-view"
@@ -20,7 +21,7 @@ class module.exports extends React.Component
   @defaultProps:
     prescription:
       patient: undefined
-      date: new Date()
+      date: undefined
       medicines: []
       routine: false
 
@@ -96,6 +97,7 @@ class module.exports extends React.Component
   componentWillMount: ->
     if Object.keys(@props.prescription).length is 0
       prescription = clone @constructor.defaultProps.prescription
+      prescription.date = moment().toISOString()
       @props.onPrescriptionChange prescription
     printView = <PrescriptionPrintView prescription={@props.prescription} />
     Page.setPrintView printView

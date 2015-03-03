@@ -3,6 +3,7 @@ DateInput = require "./date-input"
 EditPatient = require "./edit-patient"
 EditServicesTable = require "./edit-services-table"
 InvoicePrintView = require "./invoice-print-view"
+moment = require "moment"
 Page = require "./page"
 padNumber = require "pad-number"
 patientsCalls = require("../async-calls/patients").calls
@@ -22,7 +23,7 @@ class module.exports extends React.Component
   @defaultProps:
     invoice:
       patient: undefined
-      date: new Date()
+      date: undefined
       services: []
       routine: false
 
@@ -115,6 +116,7 @@ class module.exports extends React.Component
   componentWillMount: ->
     if Object.keys(@props.invoice).length is 0
       invoice = clone @constructor.defaultProps.invoice
+      invoice.date = moment().toISOString()
       @props.onInvoiceChange invoice
     printView = <InvoicePrintView invoice={@props.invoice} />
     Page.setPrintView printView

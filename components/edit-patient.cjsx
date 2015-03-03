@@ -1,6 +1,7 @@
 changeCase = require "change-case"
 clone = require "clone"
 DateInput = require "./date-input"
+moment = require "moment"
 patientsCalls = require("../async-calls/patients").calls
 React = require "react"
 reactTypes = require "../react-types"
@@ -18,7 +19,7 @@ class module.exports extends React.Component
     patient:
       id: undefined
       name: undefined
-      dob: new Date()
+      dob: undefined
       sex: undefined
       contact: undefined
       insuranceId: undefined
@@ -30,7 +31,6 @@ class module.exports extends React.Component
       sponsor: undefined
       language: undefined
       smoking: undefined
-
 
   handleIDChanged: (id) =>
     @props.patient.id = id
@@ -236,4 +236,5 @@ class module.exports extends React.Component
   componentWillMount: ->
     if Object.keys(@props.patient).length is 0
       patient = clone @constructor.defaultProps.patient
+      patient.dob = moment().startOf("day").toISOString()
       @props.onPatientChange patient
