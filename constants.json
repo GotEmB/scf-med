@@ -1,5 +1,5 @@
 {
-  "title": "Sharjah Cement Company Clinic – Medical Records",
+  "title": "Sharjah Cement Company Clinic",
   "dbConnectionString": "mongodb://localhost:27017/scf-med",
   "paginationLimit": 20,
   "typeaheadSuggestionsLimit": 8,
