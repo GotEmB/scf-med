@@ -37,7 +37,7 @@ class module.exports extends React.Component
       amount = numeral service?.amount
         .format "($ 0,0.00)"
         .replace "$", "Dhs"
-    if i is (@props.services ? []).length
+    unless service?
       key = "new-#{i}"
     else
       key = i
