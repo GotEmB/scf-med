@@ -34,64 +34,78 @@ class module.exports extends React.Component
       smoking: false
 
   handleIDChanged: (id) =>
-    @props.patient.id = id
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.id = id
+    @props.onPatientChange patient
 
   handleNameChanged: (name) =>
-    @props.patient.name = name
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.name = name
+    @props.onPatientChange patient
 
   handleDobChanged: (date) =>
-    @props.patient.dob = date
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.dob = date
+    @props.onPatientChange patient
 
   handleSexChanged: (sex) =>
-    @props.patient.sex = sex
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.sex = sex
+    @props.onPatientChange patient
 
   handleContactChanged: (contact) =>
-    @props.patient.contact = contact
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.contact = contact
+    @props.onPatientChange patient
 
   handleInsuranceIdChanged: (insuranceId) =>
+    patient = clone @props.patient
     if typeof insuranceId is "string"
       insuranceId = changeCase.upperCase insuranceId
-    @props.patient.insuranceId = insuranceId
-    @props.onPatientChange @props.patient
+    patient.insuranceId = insuranceId
+    @props.onPatientChange patient
 
   handleBloodGroupChanged: (bloodGroup) =>
+    patient = clone @props.patient
     if typeof bloodGroup is "string"
       bloodGroup = changeCase.upperCase bloodGroup
-    @props.patient.bloodGroup = bloodGroup
-    @props.onPatientChange @props.patient
+    patient.bloodGroup = bloodGroup
+    @props.onPatientChange patient
 
   handleAddressChanged: (address) =>
-    @props.patient.address = address
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.address = address
+    @props.onPatientChange patient
 
   handleNationalityChanged: (nationality) =>
-    @props.patient.nationality = nationality
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.nationality = nationality
+    @props.onPatientChange patient
 
   handleJobTitleChanged: (jobTitle) =>
-    @props.patient.jobTitle = jobTitle
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.jobTitle = jobTitle
+    @props.onPatientChange patient
 
   handleDepartmentChanged: (department) =>
-    @props.patient.department = department
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.department = department
+    @props.onPatientChange patient
 
   handleSponsorChanged: (sponsor) =>
-    @props.patient.sponsor = sponsor
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.sponsor = sponsor
+    @props.onPatientChange patient
 
   handleLanguageChanged: (language) =>
-    @props.patient.language = language
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.language = language
+    @props.onPatientChange patient
 
   handleSmokingChanged: (smoking) =>
-    @props.patient.smoking = smoking
-    @props.onPatientChange @props.patient
+    patient = clone @props.patient
+    patient.smoking = smoking
+    @props.onPatientChange patient
 
   render: ->
     maleButtonClassName = "btn btn-default"

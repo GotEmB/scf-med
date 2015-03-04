@@ -1,3 +1,4 @@
+clone = require "clone"
 drugsCalls = require("../async-calls/drugs").calls
 EditGenericDrug = require "./edit-generic-drug"
 React = require "react"
@@ -18,12 +19,14 @@ class module.exports extends React.Component
       genericDrug: undefined
 
   handleNameChanged: (name) =>
-    @props.brandedDrug.name = name
-    @props.onBrandedDrugChange @props.brandedDrug
+    brandedDrug = clone @props.brandedDrug
+    brandedDrug.name = name
+    @props.onBrandedDrugChange brandedDrug
 
   handleGenericDrugChanged: (genericDrug) =>
-    @props.brandedDrug.genericDrug = genericDrug
-    @props.onBrandedDrugChange @props.brandedDrug
+    brandedDrug = clone @props.brandedDrug
+    brandedDrug.genericDrug = genericDrug
+    @props.onBrandedDrugChange brandedDrug
 
   render: ->
     newGenericDrugSuggestion =

@@ -1,3 +1,4 @@
+clone = require "clone"
 drugsCalls = require("../async-calls/drugs").calls
 EditBrandedDrug = require "./edit-branded-drug"
 md5 = require "MD5"
@@ -18,24 +19,29 @@ class module.exports extends React.Component
   handleMedicineChanged: (medicine) =>
     index = @props.medicines.indexOf medicine
     keys = Object.keys(medicine).length
+    medicines = clone @props.medicines
     if keys isnt 0 and index is -1
-      @props.medicines.push medicine
-    @props.onMedicinesChange @props.medicines
+      medicines.push medicine
+    @props.onMedicinesChange medicines
 
   handleRemoveMedicineClicked: (medicine) =>
     index = @props.medicines.indexOf medicine
-    @props.medicines.splice index, 1
-    @props.onMedicinesChange @props.medicines
+    medicines = clone @props.medicines
+    medicines.splice index, 1
+    @props.onMedicinesChange medicines
 
   handleBrandedDrugChanged: (medicine, brandedDrug) =>
+    medicine = clone medicine
     medicine.brandedDrug = brandedDrug
     @handleMedicineChanged medicine
 
   handleDosageChanged: (medicine, dosage) =>
+    medicine = clone medicine
     medicine.dosage = dosage
     @handleMedicineChanged medicine
 
   handleCommentsChanged: (medicine, comments) =>
+    medicine = clone medicine
     medicine.comments = comments
     @handleMedicineChanged medicine
 

@@ -1,3 +1,4 @@
+clone = require "clone"
 EditService = require "./edit-service"
 invoicesCalls = require("../async-calls/invoices").calls
 md5 = require "MD5"
@@ -17,13 +18,15 @@ class module.exports extends React.Component
     onServicesChange: React.PropTypes.func
 
   handleServiceChanged: (index, service) =>
-    @props.services[index] = service
-    @props.onServicesChange @props.services
+    services = clone @props.services
+    services[index] = service
+    @props.onServicesChange services
 
   handleRemoveServiceClicked: (service) =>
     index = @props.services.indexOf service
-    @props.services.splice index, 1
-    @props.onServicesChange @props.services
+    services = clone @props.services
+    services.splice index, 1
+    @props.onServicesChange services
 
   renderRow: (service, i) ->
     newServiceSuggestion =

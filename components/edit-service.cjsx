@@ -1,3 +1,4 @@
+clone = require "clone"
 React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
@@ -16,12 +17,14 @@ class module.exports extends React.Component
       amount: undefined
 
   handleCodeChanged: (code) =>
-    @props.service.code = code
-    @props.onServiceChange @props.service
+    service = clone @props.service
+    service.code = code
+    @props.onServiceChange service
 
   handleNameChanged: (name) =>
-    @props.service.name = name
-    @props.onServiceChange @props.service
+    service = clone @props.service
+    service.name = name
+    @props.onServiceChange service
 
   handleAmountChanged: (amount) =>
     amountNumber =

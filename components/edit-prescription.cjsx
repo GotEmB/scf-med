@@ -1,9 +1,11 @@
 Checkbox = require "./checkbox"
 clone = require "clone"
 DateInput = require "./date-input"
+deepDiff = require "deep-diff"
 EditMedicinesTable = require "./edit-medicines-table"
 EditPatient = require "./edit-patient"
 moment = require "moment"
+nextTick = require "next-tick"
 Page = require "./page"
 patientsCalls = require("../async-calls/patients").calls
 PrescriptionPrintView = require "./prescription-print-view"
@@ -26,30 +28,35 @@ class module.exports extends React.Component
       medicines: []
       routine: false
 
-  handlePrescriptionChanged: =>
-    @props.onPrescriptionChange @props.prescription
-    printView = <PrescriptionPrintView prescription={@props.prescription} />
-    Page.setPrintView printView
+  componentWillReceiveProps: (props) ->
+    if deepDiff(@props.prescription, props.prescription)?
+      printView = <PrescriptionPrintView prescription={props.prescription} />
+      Page.setPrintView printView
 
   handleDateChanged: (date) =>
-    @props.prescription.date = date
-    @handlePrescriptionChanged()
+    prescription = clone @props.prescription
+    prescription.date = date
+    @props.onPrescriptionChange prescription
 
   handlePatientChanged: (patient) =>
-    @props.prescription.patient = patient
-    @handlePrescriptionChanged()
+    prescription = clone @props.prescription
+    prescription.patient = patient
+    @props.onPrescriptionChange prescription
 
   handleRoutineChanged: (routine) =>
-    @props.prescription.routine = routine
-    @handlePrescriptionChanged()
+    prescription = clone @props.prescription
+    prescription.routine = routine
+    @props.onPrescriptionChange prescription
 
   handleMedicinesChanged: (medicines) =>
-    @props.prescription.medicines = medicines
-    @handlePrescriptionChanged()
+    prescription = clone @props.prescription
+    prescription.medicines = medicines
+    @props.onPrescriptionChange prescription
 
   handlePrintClicked: =>
     @props.onCommit? true, ->
-      window.print()
+      nextTick ->
+        window.print()
 
   render: ->
     newPatientSuggestion =

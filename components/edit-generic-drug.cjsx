@@ -1,3 +1,4 @@
+clone = require "clone"
 React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
@@ -14,8 +15,9 @@ class module.exports extends React.Component
       name: undefined
 
   handleNameChanged: (name) =>
-    @props.genericDrug.name = name
-    @props.onGenericDrugChange @props.genericDrug
+    genericDrug = clone @props.genericDrug
+    genericDrug.name = name
+    @props.onGenericDrugChange genericDrug
 
   render: ->
     <div>

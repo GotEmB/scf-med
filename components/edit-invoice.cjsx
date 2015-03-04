@@ -1,9 +1,11 @@
 clone = require "clone"
 DateInput = require "./date-input"
+deepDiff = require "deep-diff"
 EditPatient = require "./edit-patient"
 EditServicesTable = require "./edit-services-table"
 InvoicePrintView = require "./invoice-print-view"
 moment = require "moment"
+nextTick = require "next-tick"
 Page = require "./page"
 padNumber = require "pad-number"
 patientsCalls = require("../async-calls/patients").calls
@@ -27,38 +29,40 @@ class module.exports extends React.Component
       services: []
       routine: false
 
-  handleInvoiceChanged: =>
-    @props.onInvoiceChange @props.invoice
-    printView = <InvoicePrintView invoice={@props.invoice} />
-    Page.setPrintView printView
+  componentWillReceiveProps: (props) ->
+    if deepDiff(@props.invoice, props.invoice)?
+      printView = <InvoicePrintView invoice={props.invoice} />
+      Page.setPrintView printView
 
   handleDateChanged: (date) =>
-    @props.invoice.date = date
-    @handleInvoiceChanged()
+    invoice = clone @props.invoice
+    invoice.date = date
+    @props.onInvoiceChange invoice
 
   handlePatientChanged: (patient) =>
-    @props.invoice.patient = patient
-    @handleInvoiceChanged()
-
-  handleRoutineChanged: (e) =>
-    @props.invoice.routine = e.target.checked
-    @handleInvoiceChanged()
+    invoice = clone @props.invoice
+    invoice.patient = patient
+    @props.onInvoiceChange invoice
 
   handleServicesChanged: (services) =>
-    @props.invoice.services = services
-    @handleInvoiceChanged()
+    invoice = clone @props.invoice
+    invoice.services = services
+    @props.onInvoiceChange invoice
 
   handleCommentsChanged: (comments) =>
-    @props.invoice.comments = comments
-    @handleInvoiceChanged()
+    invoice = clone @props.invoice
+    invoice.comments = comments
+    @props.onInvoiceChange invoice
 
   handleCopayChanged: (copay) =>
-    @props.invoice.copay = copay
-    @handleInvoiceChanged()
+    invoice = clone @props.invoice
+    invoice.copay = copay
+    @props.onInvoiceChange invoice
 
   handlePrintClicked: =>
     @props.onCommit? true, ->
-      window.print()
+      nextTick ->
+        window.print()
 
   render: ->
     newPatientSuggestion =
