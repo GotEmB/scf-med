@@ -62,6 +62,13 @@ class module.exports extends React.Component
       dataProperty: "patient"
       commitMethod: patientsCalls.commitPatient
       removeMethod: patientsCalls.removePatient
+    copayNoneButtonClassName = "btn btn-default"
+    copaySilverButtonClassName = "btn btn-default"
+    copayGoldButtonClassName = "btn btn-default"
+    switch @props.invoice.copay
+      when 0 then copayNoneButtonClassName += " active"
+      when 25 then copaySilverButtonClassName += " active"
+      when 50 then copayGoldButtonClassName += " active"
     if @props.invoice.serial?
       serial =
         "#{@props.invoice.serial.year}-\
@@ -110,6 +117,27 @@ class module.exports extends React.Component
         <button className="btn btn-primary" onClick={@handlePrintClicked}>
           <i className="fa fa-print" /> Save & Print
         </button>
+      </div>
+      <div className="form-group">
+        <label>Copay</label>
+        <div className="btn-group" style={display: "block"}>
+          <button
+            className={copayNoneButtonClassName}
+            onClick={@handleCopayChanged.bind @, 0}>
+            None
+          </button>
+          <button
+            className={copaySilverButtonClassName}
+            onClick={@handleCopayChanged.bind @, 25}>
+            Silver
+          </button>
+          <button
+            className={copayGoldButtonClassName}
+            onClick={@handleCopayChanged.bind @, 50}>
+            Gold
+          </button>
+        </div>
+        <div className="clearfix" />
       </div>
     </div>
 

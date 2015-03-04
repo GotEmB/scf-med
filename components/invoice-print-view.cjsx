@@ -112,15 +112,47 @@ class module.exports extends React.Component
       <td style={amountTStyle} className="text-right">{amount}</td>
     </tr>
 
-  renderServices: ->
+  renderAmounts: ->
     services = (@props.invoice?.services ? [])
       .filter (x) -> x?
     totalAmount = services
       .map (x) -> x?.amount ? 0
       .reduce ((carry, x) -> carry + x), 0
-    totalAmount = numeral totalAmount
+    totalAmountText = numeral totalAmount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
+    copayAmount = @props.invoice?.copay ? 0
+    copayAmountText = numeral copayAmount
+      .format "($ 0,0.00)"
+      .replace "$", "Dhs"
+    netAmount = totalAmount - copayAmount
+    netAmountText = numeral netAmount
+      .format "($ 0,0.00)"
+      .replace "$", "Dhs"
+    <tfoot>
+      <tr>
+        <th style={thStyle} colSpan={2}>Gross Amount</th>
+        <th style={amountTStyle} className="text-right">
+          {totalAmountText}
+        </th>
+      </tr>
+      <tr>
+        <th style={thStyle} colSpan={2}>Patient Co-Pay</th>
+        <th style={amountTStyle} className="text-right">
+          {copayAmountText}
+        </th>
+      </tr>
+      <tr>
+        <th style={thStyle} colSpan={2}>Net Amount</th>
+        <th style={amountTStyle} className="text-right">
+          {netAmountText}
+        </th>
+      </tr>
+    </tfoot>
+
+  renderServices: ->
+    services = (@props.invoice?.services ? [])
+      .filter (x) -> x?
     thStyle = border: "solid 1px black"
     amountTStyle =
       border: "solid 1px black"
@@ -138,14 +170,7 @@ class module.exports extends React.Component
       <tbody>
         {@renderService service, i for service, i in services}
       </tbody>
-      <tfoot>
-        <tr>
-          <th style={thStyle} colSpan={2}>Total Amount</th>
-          <th style={amountTStyle} className="text-right">
-            {totalAmount}
-          </th>
-        </tr>
-      </tfoot>
+
     </table>
 
   renderSignature: ->

@@ -63,6 +63,7 @@ exports.Invoice = metaDB.model "Invoice",
     date: type: Date, default: Date.now()
     services: [type: ObjectId, ref: "Service"]
     comments: String
+    copay: Number
   ), "invoices"
 
 exports.eval = metaDB.db.eval.bind metaDB.db
