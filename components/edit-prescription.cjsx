@@ -39,8 +39,8 @@ class module.exports extends React.Component
     @props.prescription.patient = patient
     @handlePrescriptionChanged()
 
-  handleRoutineChanged: (e) =>
-    @props.prescription.routine = e.target.checked
+  handleRoutineChanged: (routine) =>
+    @props.prescription.routine = routine
     @handlePrescriptionChanged()
 
   handleMedicinesChanged: (medicines) =>
