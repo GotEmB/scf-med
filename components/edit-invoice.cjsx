@@ -52,6 +52,10 @@ class module.exports extends React.Component
     @props.invoice.comments = comments
     @handleInvoiceChanged()
 
+  handleCopayChanged: (copay) =>
+    @props.invoice.copay = copay
+    @handleInvoiceChanged()
+
   handlePrintClicked: =>
     @props.onCommit? true, ->
       window.print()

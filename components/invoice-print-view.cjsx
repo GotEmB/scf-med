@@ -170,7 +170,7 @@ class module.exports extends React.Component
       <tbody>
         {@renderService service, i for service, i in services}
       </tbody>
-
+      {@renderAmounts()}
     </table>
 
   renderSignature: ->
