@@ -52,6 +52,10 @@ class module.exports extends React.Component
     @props.invoice.comments = comments
     @handleInvoiceChanged()
 
+  handleCopayChanged: (copay) =>
+    @props.invoice.copay = copay
+    @handleInvoiceChanged()
+
   handlePrintClicked: =>
     @props.onCommit? true, ->
       window.print()
@@ -62,6 +66,13 @@ class module.exports extends React.Component
       dataProperty: "patient"
       commitMethod: patientsCalls.commitPatient
       removeMethod: patientsCalls.removePatient
+    copayNoneButtonClassName = "btn btn-default"
+    copaySilverButtonClassName = "btn btn-default"
+    copayGoldButtonClassName = "btn btn-default"
+    switch @props.invoice.copay
+      when 0 then copayNoneButtonClassName += " active"
+      when 25 then copaySilverButtonClassName += " active"
+      when 50 then copayGoldButtonClassName += " active"
     if @props.invoice.serial?
       serial =
         "#{@props.invoice.serial.year}-\
@@ -93,6 +104,27 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
+      <div className="form-group">
+        <label>Copay</label>
+        <div className="btn-group" style={display: "block"}>
+          <button
+            className={copayNoneButtonClassName}
+            onClick={@handleCopayChanged.bind @, 0}>
+            None
+          </button>
+          <button
+            className={copaySilverButtonClassName}
+            onClick={@handleCopayChanged.bind @, 25}>
+            Silver
+          </button>
+          <button
+            className={copayGoldButtonClassName}
+            onClick={@handleCopayChanged.bind @, 50}>
+            Gold
+          </button>
+        </div>
+        <div className="clearfix" />
+      </div>
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>
         <TextInput

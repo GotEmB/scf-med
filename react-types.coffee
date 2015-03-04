@@ -71,6 +71,7 @@ invoice = shape
   date: date
   services: arrayOf service
   comments: string
+  copay: number
 
 module.exports = {
   date
