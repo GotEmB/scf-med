@@ -113,6 +113,10 @@ class module.exports extends React.Component
     </tr>
 
   renderAmounts: ->
+    thStyle = border: "solid 1px black"
+    amountTStyle =
+      border: "solid 1px black"
+      whiteSpace: "nowrap"
     services = (@props.invoice?.services ? [])
       .filter (x) -> x?
     totalAmount = services

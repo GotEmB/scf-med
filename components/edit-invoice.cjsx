@@ -104,24 +104,6 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
-      <div className="form-group" style={position: "relative"}>
-        <label>Comments</label>
-        <TextInput
-          type="text"
-          className="form-control"
-          value={@props.invoice.comments}
-          onChange={@handleCommentsChanged}
-        />
-      </div>
-      <EditServicesTable
-        services={@props.invoice.services}
-        onServicesChange={@handleServicesChanged}
-      />
-      <div className="text-center">
-        <button className="btn btn-primary" onClick={@handlePrintClicked}>
-          <i className="fa fa-print" /> Save & Print
-        </button>
-      </div>
       <div className="form-group">
         <label>Copay</label>
         <div className="btn-group" style={display: "block"}>
@@ -142,6 +124,24 @@ class module.exports extends React.Component
           </button>
         </div>
         <div className="clearfix" />
+      </div>
+      <div className="form-group" style={position: "relative"}>
+        <label>Comments</label>
+        <TextInput
+          type="text"
+          className="form-control"
+          value={@props.invoice.comments}
+          onChange={@handleCommentsChanged}
+        />
+      </div>
+      <EditServicesTable
+        services={@props.invoice.services}
+        onServicesChange={@handleServicesChanged}
+      />
+      <div className="text-center">
+        <button className="btn btn-primary" onClick={@handlePrintClicked}>
+          <i className="fa fa-print" /> Save & Print
+        </button>
       </div>
     </div>
 
