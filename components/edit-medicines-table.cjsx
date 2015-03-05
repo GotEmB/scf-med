@@ -84,7 +84,7 @@ class module.exports extends React.Component
           value={medicine.dosage}
           onChange={@handleDosageChanged.bind @, medicine}
           suggestionsFetcher={prescriptionsCalls.getDosageSuggestions}
-          textFormatter={(x) -> x.name}
+          textFormatter={(x) -> x}
           isInline={true}
         />
       </td>
