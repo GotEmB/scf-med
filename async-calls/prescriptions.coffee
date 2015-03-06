@@ -67,13 +67,15 @@ calls =
     query = new RegExp query, "i"
     db.Prescription.aggregate()
       .project medicines: 1
-      .match dosage: query
+      .unwind "medicines"
+      .project dosage: "$medicines.dosage"
       .group _id: "$dosage"
+      .match _id: query
       .sort _id: 1
       .skip skip
       .limit limit
       .exec (err, results) ->
-        callback err, results.map (x) -> x._id  
+        callback err, results.map (x) -> x._id
 
 module.exports = new AsyncCaller
   mountPath: "/async-calls/prescriptions"
