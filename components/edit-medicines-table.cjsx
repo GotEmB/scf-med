@@ -16,12 +16,13 @@ class module.exports extends React.Component
     medicines: React.PropTypes.arrayOf reactTypes.medicine
     onMedicinesChange: React.PropTypes.func
 
-  handleMedicineChanged: (medicine) =>
-    index = @props.medicines.indexOf medicine
+  handleMedicineChanged: (medicine, index) =>
     keys = Object.keys(medicine).length
     medicines = clone @props.medicines
     if keys isnt 0 and index is -1
       medicines.push medicine
+    else
+      medicines[index] = medicine
     @props.onMedicinesChange medicines
 
   handleRemoveMedicineClicked: (medicine) =>
@@ -31,19 +32,22 @@ class module.exports extends React.Component
     @props.onMedicinesChange medicines
 
   handleBrandedDrugChanged: (medicine, brandedDrug) =>
+    index = @props.medicines.indexOf medicine
     medicine = clone medicine
     medicine.brandedDrug = brandedDrug
-    @handleMedicineChanged medicine
+    @handleMedicineChanged medicine, index
 
   handleDosageChanged: (medicine, dosage) =>
+    index = @props.medicines.indexOf medicine
     medicine = clone medicine
     medicine.dosage = dosage
-    @handleMedicineChanged medicine
+    @handleMedicineChanged medicine, index
 
   handleCommentsChanged: (medicine, comments) =>
+    index = @props.medicines.indexOf medicine
     medicine = clone medicine
     medicine.comments = comments
-    @handleMedicineChanged medicine
+    @handleMedicineChanged medicine, index
 
   renderRow: (medicine, i) ->
     unless medicine._key?
