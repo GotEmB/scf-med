@@ -23,20 +23,18 @@ exports.Patient = metaDB.model "Patient",
     smoking: Boolean
   ), "patients"
 
-exports.Visits = metaDB.model "Visits"
-    new mongoose.Schema(
+exports.Visits = metaDB.model "Visit"
+  new mongoose.Schema(
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
-    visit: Boolean
-    visits: [
-      symptoms: String
-      Signs: String
-      investigations: String
-      provisionaldx: String
-      finaldx: String
-      comments: String
-    ]
-    ), "visits"
+    symptoms: String
+    signs: String
+    investigations: String
+    provisionalDiagnosis: String
+    finalDiagnosis: String
+    comments: String
+    newVisit: Boolean
+  ), "visits"
 
 exports.GenericDrug = metaDB.model "GenericDrug",
   new mongoose.Schema(
