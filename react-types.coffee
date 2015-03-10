@@ -38,6 +38,18 @@ patient = shape
   language: string
   smoking: bool
 
+visit = shape
+  _id: string
+  patient: patient
+  date: date
+  symptoms: String
+  signs: String
+  investigations: String
+  provisionalDiagnosis: String
+  finalDiagnosis: String
+  comments: String
+  newVisit: bool
+
 genericDrug = shape
   _id: string
   name: string
