@@ -136,14 +136,14 @@ class module.exports extends React.Component
     <div className="row" style={marginBottom: 20}>
       <div className="btn-group col-sm-4 col-sm-offset-4">
         <button
-          className={genericDrugButtonClassName}
-          onClick={@handleWhichButtonClicked.bind @, "generic"}>
-          Generic Drug
-        </button>
-        <button
           className={brandedDrugButtonClassName}
           onClick={@handleWhichButtonClicked.bind @, "branded"}>
           Branded Drug
+        </button>
+        <button
+          className={genericDrugButtonClassName}
+          onClick={@handleWhichButtonClicked.bind @, "generic"}>
+          Generic Drug
         </button>
       </div>
     </div>
