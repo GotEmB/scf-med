@@ -23,7 +23,7 @@ exports.Patient = metaDB.model "Patient",
     smoking: Boolean
   ), "patients"
 
-exports.Visit = metaDB.model "Visit"
+exports.Visit = metaDB.model "Visit",
   new mongoose.Schema(
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
