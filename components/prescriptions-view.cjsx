@@ -231,8 +231,12 @@ class module.exports extends React.Component
       />
     </div>
 
+  componentWillMount: ->
+    @canSetState = true
+
   componentDidMount: ->
     @fetchPrescriptions()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?
+    @canSetState = false
