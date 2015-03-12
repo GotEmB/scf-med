@@ -7,6 +7,7 @@ EditPrescription = require "./edit-prescription"
 Layers = require "./layers"
 ManageDrugsView = require "./manage-drugs-view"
 moment = require "moment"
+nextTick = require "next-tick"
 prescriptionsCalls = require("../async-calls/prescriptions").calls
 PrescriptionsTable = require "./prescriptions-table"
 React = require "react"
@@ -231,12 +232,8 @@ class module.exports extends React.Component
       />
     </div>
 
-  componentWillMount: ->
-    @canSetState = true
-
   componentDidMount: ->
     @fetchPrescriptions()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?
-    @canSetState = false
