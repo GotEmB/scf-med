@@ -25,6 +25,7 @@ class module.exports extends React.Component
       loading: false
 
   shouldCommit: ->
+    return true unless @state.data?._id?
     prefilter = (_, x) -> typeof x is "string" and x[0] is "_"
     deepDiff(@state.lastCommittedData, @state.data, prefilter)?
 
