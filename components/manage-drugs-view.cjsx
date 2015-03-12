@@ -1,5 +1,5 @@
 CommitCache = require "./commit-cache"
-constants = require "constants"
+constants = require "../constants"
 drugsCalls = require("../async-calls/drugs").calls
 EditBrandedDrug = require "./edit-branded-drug"
 EditGenericDrug = require "./edit-generic-drug"

@@ -1,5 +1,5 @@
 CommitCache = require "./commit-cache"
-constants = require "constants"
+constants = require "../constants"
 EditService = require "./edit-service"
 escapeStringRegexp = require "escape-string-regexp"
 Layers = require "./layers"
