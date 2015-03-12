@@ -119,12 +119,12 @@ class module.exports extends React.Component
           <button
             className={copaySilverButtonClassName}
             onClick={@handleCopayChanged.bind @, 25}>
-            25
+            Dhs 25.00
           </button>
           <button
             className={copayGoldButtonClassName}
             onClick={@handleCopayChanged.bind @, 50}>
-            50
+            Dhs 50.00
           </button>
         </div>
         <div className="clearfix" />
