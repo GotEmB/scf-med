@@ -58,6 +58,9 @@ calls =
         db.Patient.populate prescription, "patient", callback
       (prescription, callback) ->
         db.BrandedDrug.populate prescription, "medicines.brandedDrug", callback
+      (prescription, callback) ->
+        db.GenericDrug.populate prescription,
+          "medicines.brandedDrug.genericDrug", callback
     ], callback
 
   removePrescription: (prescription, callback) ->
