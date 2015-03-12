@@ -15,7 +15,7 @@ class module.exports extends React.Component
 
   constructor: ->
     @state =
-      which: "generic"
+      which: "branded"
       filterQuery: ""
       drugs: []
       selectedDrug: undefined
