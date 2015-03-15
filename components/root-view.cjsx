@@ -1,7 +1,7 @@
 BillingView = require "./billing-view"
 MainNav = require "./main-nav"
 PatientsView = require "./patients-view"
-VisitsView = require "./visits-view"
+# VisitsView = require "./visits-view"
 PrescriptionsView = require "./prescriptions-view"
 React = require "react"
 
