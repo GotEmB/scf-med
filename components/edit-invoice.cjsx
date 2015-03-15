@@ -129,6 +129,10 @@ class module.exports extends React.Component
         </div>
         <div className="clearfix" />
       </div>
+      <EditServicesTable
+        services={@props.invoice.services}
+        onServicesChange={@handleServicesChanged}
+      />
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>
         <TextInput
@@ -138,10 +142,6 @@ class module.exports extends React.Component
           onChange={@handleCommentsChanged}
         />
       </div>
-      <EditServicesTable
-        services={@props.invoice.services}
-        onServicesChange={@handleServicesChanged}
-      />
       <div className="text-center">
         <button className="btn btn-primary" onClick={@handlePrintClicked}>
           <i className="fa fa-print" /> Save & Print
