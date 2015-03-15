@@ -6,7 +6,6 @@ navItems = [
   "Patients"
   "Prescriptions"
   "Billing"
-  "Visit"
 ]
 
 class module.exports extends React.Component
