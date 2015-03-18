@@ -7,7 +7,7 @@ visitsCalls = require("../async-calls/visits").calls
 VisitsReportPrintView = require "./visits-report-print-view"
 VisitsTable = require "./visits-table"
 Layers = require "./layers"
-ManageInvestigationsView = require "./manage-investigations-view"
+ManageTestsView = require "./manage-tests-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
@@ -70,7 +70,7 @@ class module.exports extends React.Component
     @setState layer: layer
     Layers.addLayer layer, "New Visit"
 
-  handleManageInvestigationsClicked: =>
+  handleManageTestsClicked: =>
     closeButtonStyle =
       position: "absolute"
       top: -50
@@ -79,7 +79,7 @@ class module.exports extends React.Component
       outline: 0
     layer =
       <div style={position: "relative"}>
-        <ManageInvestigationsView />
+        <ManageTestsView />
         <button
           className="close"
           onClick={@handleLayerDismissed}
@@ -88,7 +88,7 @@ class module.exports extends React.Component
         </button>
       </div>
     @setState layer: layer
-    Layers.addLayer layer, "Manage Investigations"
+    Layers.addLayer layer, "Manage Tests"
 
   handleConsolidatedReportClicked: (e) =>
     @setState loading: true
@@ -187,8 +187,8 @@ class module.exports extends React.Component
       <span> </span>
       <button
         className="btn btn-default"
-        onClick={@handleManageInvestigationsClicked}>
-        <i className="fa fa-th-list" /> Manage Investigations
+        onClick={@handleManageTestsClicked}>
+        <i className="fa fa-th-list" /> Manage Tests
       </button>
       <span> </span>
       <button

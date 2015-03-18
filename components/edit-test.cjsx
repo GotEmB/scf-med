@@ -4,26 +4,26 @@ reactTypes = require "../react-types"
 TextInput = require "./text-input"
 
 class module.exports extends React.Component
-  @displayName: "EditInvestigation"
+  @displayName: "EditTest"
 
   @propTypes:
-    investigation: reactTypes.investigation
-    onInvestigationChange: React.PropTypes.func.isRequired
+    test: reactTypes.test
+    onTestChange: React.PropTypes.func.isRequired
 
   @defaultProps:
-    investigation:
+    test:
       code: undefined
       name: undefined
 
   handleCodeChanged: (code) =>
-    investigation = clone @props.investigation
-    investigation.code = code
-    @props.onInvestigationChange investigation
+    test = clone @props.test
+    test.code = code
+    @props.onTestChange test
 
   handleNameChanged: (name) =>
-    investigation = clone @props.investigation
-    investigation.name = name
-    @props.onInvestigationChange investigation
+    test = clone @props.test
+    test.name = name
+    @props.onTestChange test
 
   render: ->
     <div>
@@ -32,7 +32,7 @@ class module.exports extends React.Component
         <TextInput
           className="form-control"
           type="text"
-          value={@props.investigation.code}
+          value={@props.test.code}
           onChange={@handleCodeChanged}
         />
       </div>
@@ -41,7 +41,7 @@ class module.exports extends React.Component
         <TextInput
           className="form-control"
           type="text"
-          value={@props.investigation.name}
+          value={@props.test.name}
           onChange={@handleNameChanged}
         />
       </div>

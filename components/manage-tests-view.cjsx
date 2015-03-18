@@ -1,32 +1,32 @@
 CommitCache = require "./commit-cache"
 constants = require "../constants"
-EditInvestigation = require "./edit-investigation"
+EditTest = require "./edit-test"
 escapeStringRegexp = require "escape-string-regexp"
 Layers = require "./layers"
 nextTick = require "next-tick"
 React = require "react"
-investigationsCalls = require("../async-calls/investigations").calls
-InvestigationsTable = require "./investigations-table"
+testsCalls = require("../async-calls/tests").calls
+TestsTable = require "./tests-table"
 
 class module.exports extends React.Component
-  @displayName: "ManageInvestigationsView"
+  @displayName: "ManageTestsView"
 
   constructor: ->
     @state =
       filterQuery: ""
-      investigations: []
-      selectedInvestigation: undefined
+      tests: []
+      selectedTest: undefined
       loadFrom: 0
       total: 0
       loading: false
       layer: undefined
 
-  fetchInvestigations: =>
+  fetchTests: =>
     @setState loading: true
-    investigationsCalls.getInvestigations escapeStringRegexp(@state.filterQuery),
-      @state.loadFrom, constants.paginationLimit, (err, investigations, total) =>
+    testsCalls.getTests escapeStringRegexp(@state.filterQuery),
+      @state.loadFrom, constants.paginationLimit, (err, tests, total) =>
         @setState
-          investigations: investigations
+          tests: tests
           total: total
           loading: false
 
@@ -35,55 +35,55 @@ class module.exports extends React.Component
       filterQuery: e.target.value
       loadFrom: 0
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
-    @filterQueryChangeTimer = setTimeout @fetchInvestigations, 200
+    @filterQueryChangeTimer = setTimeout @fetchTests, 200
 
-  handleNewInvestigationClicked: =>
+  handleNewTestClicked: =>
     layer =
       <CommitCache
-        component={EditInvestigation}
+        component={EditTest}
         data={undefined}
-        dataProperty="investigation"
-        commitMethod={investigationsCalls.commitInvestigation}
-        removeMethod={investigationsCalls.removeInvestigation}
+        dataProperty="test"
+        commitMethod={testsCalls.commitTest}
+        removeMethod={testsCalls.removeTest}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
-    Layers.addLayer layer, "New Investigation"
+    Layers.addLayer layer, "New Test"
 
   handlePagerPreviousClicked: =>
     @setState
       loadFrom:
         Math.max 0, @state.loadFrom - constants.paginationLimit
-    nextTick @fetchInvestigations
+    nextTick @fetchTests
 
   handlePagerNextClicked: =>
     @setState
       loadFrom:
         Math.min @state.total - constants.paginationLimit,
           @state.loadFrom + constants.paginationLimit
-    nextTick @fetchInvestigations
+    nextTick @fetchTests
 
-  handleInvestigationClicked: (investigation) =>
+  handleTestClicked: (test) =>
     layer =
       <CommitCache
-        component={EditInvestigation}
-        data={investigation}
-        dataProperty="investigation"
-        commitMethod={investigationsCalls.commitInvestigation}
-        removeMethod={investigationsCalls.removeInvestigation}
+        component={EditTest}
+        data={test}
+        dataProperty="test"
+        commitMethod={testsCalls.commitTest}
+        removeMethod={testsCalls.removeTest}
         onDismiss={@handleLayerDismissed}
       />
     @setState
-      selectedInvestigation: investigation
+      selectedTest: test
       layer: layer
-    Layers.addLayer layer, "Edit Investigation"
+    Layers.addLayer layer, "Edit Test"
 
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
     @setState
-      selectedInvestigation: undefined
+      selectedTest: undefined
       layer: undefined
-    @fetchInvestigations() if status in ["saved", "removed"]
+    @fetchTests() if status in ["saved", "removed"]
 
   renderLeftControls: ->
     <div className="form-inline pull-left">
@@ -102,8 +102,8 @@ class module.exports extends React.Component
       <span> </span>
       <button
         className="btn btn-default"
-        onClick={@handleNewInvestigationClicked}>
-        <i className="fa fa-pencil" /> New Investigation
+        onClick={@handleNewTestClicked}>
+        <i className="fa fa-pencil" /> New Test
       </button>
     </div>
 
@@ -121,7 +121,7 @@ class module.exports extends React.Component
           <i className="fa fa-chevron-left" />
         </button>
     rightButton =
-      if @state.loadFrom + @state.investigations.length < @state.total
+      if @state.loadFrom + @state.tests.length < @state.total
         <button
           className="btn btn-default"
           onClick={@handlePagerNextClicked}>
@@ -129,7 +129,7 @@ class module.exports extends React.Component
         </button>
     text =
       "#{@state.loadFrom + 1}—" +
-      "#{@state.loadFrom + @state.investigations.length} of " +
+      "#{@state.loadFrom + @state.tests.length} of " +
       "#{@state.total}"
     <div className="pull-right">
       <div className="pull-right btn-group">
@@ -148,10 +148,10 @@ class module.exports extends React.Component
     </div>
 
   renderTable: ->
-    <InvestigationsTable
-      investigations={@state.investigations}
-      selectedInvestigation={@state.selectedInvestigation}
-      onInvestigationClick={@handleInvestigationClicked}
+    <TestsTable
+      tests={@state.tests}
+      selectedTest={@state.selectedTest}
+      onTestClick={@handleTestClicked}
     />
 
   render: ->
@@ -162,7 +162,7 @@ class module.exports extends React.Component
     </div>
 
   componentDidMount: ->
-    @fetchInvestigations()
+    @fetchTests()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?

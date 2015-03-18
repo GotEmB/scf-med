@@ -2,7 +2,7 @@ clone = require "clone"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"
 EditPatient = require "./edit-patient"
-EditInvestigationsTable = require "./edit-investigations-table"
+EditTestsTable = require "./edit-tests-table"
 VisitPrintView = require "./visit-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
@@ -30,7 +30,7 @@ class module.exports extends React.Component
       date: undefined
       symptom: undefined
       sign: undefined
-      investigations: []
+      tests: []
 
   componentWillReceiveProps: (props) ->
     if deepDiff(@props.visit, props.visit)?
@@ -47,9 +47,9 @@ class module.exports extends React.Component
     visit.patient = patient
     @props.onVisitChange visit
 
-  handleInvestigationsChanged: (investigations) =>
+  handleTestsChanged: (tests) =>
     visit = clone @props.visit
-    visit.investigations = investigations
+    visit.tests = tests
     @props.onVisitChange visit
 
   handleCommentsChanged: (comments) =>
@@ -115,9 +115,9 @@ class module.exports extends React.Component
           onChange={@handleSignChanged}
         />
       </div>
-      <EditInvestigationsTable
-        investigations={@props.visit.investigations}
-        onInvestigationsChange={@handleInvestigationsChanged}
+      <EditTestsTable
+        tests={@props.visit.tests}
+        onTestsChange={@handleTestsChanged}
       />
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>

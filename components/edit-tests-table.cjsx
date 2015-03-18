@@ -1,48 +1,48 @@
 clone = require "clone"
-EditInvestigation = require "./edit-investigation"
+EditTest = require "./edit-test"
 invoicesCalls = require("../async-calls/invoices").calls
 md5 = require "MD5"
 numeral = require "numeral"
 React = require "react"
 reactTypes = require "../react-types"
-investigationsCalls = require("../async-calls/investigations").calls
+testsCalls = require("../async-calls/tests").calls
 TextInput = require "./text-input"
 TypeaheadInput = require "./typeahead-input"
 TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
-  @displayName: "EditInvestigationsTable"
+  @displayName: "EditTestsTable"
 
   @propTypes:
-    investigations: React.PropTypes.arrayOf reactTypes.investigation
-    onInvestigationsChange: React.PropTypes.func
+    tests: React.PropTypes.arrayOf reactTypes.test
+    onTestsChange: React.PropTypes.func
 
-  handleInvestigationChanged: (index, investigation) =>
-    investigations = clone @props.investigations
-    investigations[index] = investigation
-    @props.onInvestigationsChange investigations
+  handleTestChanged: (index, test) =>
+    tests = clone @props.tests
+    tests[index] = test
+    @props.onTestsChange tests
 
-  handleRemoveInvestigationClicked: (investigation) =>
-    index = @props.investigations.indexOf investigation
-    investigations = clone @props.investigations
-    investigations.splice index, 1
-    @props.onInvestigationsChange investigations
+  handleRemoveTestClicked: (test) =>
+    index = @props.tests.indexOf test
+    tests = clone @props.tests
+    tests.splice index, 1
+    @props.onTestsChange tests
 
-  renderRow: (investigation, i) ->
-    newInvestigationSuggestion =
-      component: EditInvestigation
-      dataProperty: "investigation"
-      commitMethod: investigationsCalls.commitInvestigation
-      removeMethod: investigationsCalls.removeInvestigation
-    unless investigation?
+  renderRow: (test, i) ->
+    newTestSuggestion =
+      component: EditTest
+      dataProperty: "test"
+      commitMethod: testsCalls.commitTest
+      removeMethod: testsCalls.removeTest
+    unless test?
       key = "new-#{i}"
     else
       key = i
     removeButton =
-      if (@props.investigations ? []).indexOf(investigation) isnt -1
+      if (@props.tests ? []).indexOf(test) isnt -1
         <button
           className="btn btn-danger"
-          onClick={@handleRemoveInvestigationClicked.bind @, investigation}>
+          onClick={@handleRemoveTestClicked.bind @, test}>
           <i className="fa fa-times" />
         </button>
       else
@@ -52,12 +52,12 @@ class module.exports extends React.Component
     <tr key={key}>
       <td style={paddingRight: 0}>
         <TypeaheadSelect
-          selectedItem={investigation}
-          onSelectedItemChange={@handleInvestigationChanged.bind @, i}
-          suggestionsFetcher={investigationsCalls.getInvestigations}
+          selectedItem={test}
+          onSelectedItemChange={@handleTestChanged.bind @, i}
+          suggestionsFetcher={testsCalls.getTests}
           textFormatter={(x) -> x.name}
           isInline={true}
-          newSuggestion={newInvestigationSuggestion}
+          newSuggestion={newTestSuggestion}
         />
       </td>
       <td>
@@ -66,7 +66,7 @@ class module.exports extends React.Component
     </tr>
 
   render: ->
-    rows = (@props.investigations ? []).concat undefined
+    rows = (@props.tests ? []).concat undefined
     <table className="table table-striped">
       <colgroup>
         <col span="1" style={width: "100%"} />
@@ -74,7 +74,7 @@ class module.exports extends React.Component
       </colgroup>
       <thead>
         <tr>
-          <th>Investigation</th>
+          <th>Test</th>
           <th />
         </tr>
       </thead>

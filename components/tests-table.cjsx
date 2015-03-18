@@ -3,21 +3,21 @@ React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "InvestigationsTable"
+  @displayName: "TestsTable"
 
   @propTypes:
-    investigations: React.PropTypes.arrayOf reactTypes.investigation
-    selectedInvestigation: reactTypes.investigation
-    onInvestigationClick: React.PropTypes.func
+    tests: React.PropTypes.arrayOf reactTypes.test
+    selectedTest: reactTypes.test
+    onTestClick: React.PropTypes.func
 
   @defaultProps:
-    investigations: []
+    tests: []
 
   handleRowClicked: (row) ->
-    @props.onInvestigationClick? row
+    @props.onTestClick? row
 
   renderRow: (row, key) ->
-    className = "active" if row is @props.selectedInvestigation
+    className = "active" if row is @props.selectedTest
     <tr
       className={className}
       style={cursor: "pointer"}
@@ -37,7 +37,7 @@ class module.exports extends React.Component
           </tr>
         </thead>
         <tbody>
-          {@renderRow row, i for row, i in @props.investigations}
+          {@renderRow row, i for row, i in @props.tests}
         </tbody>
       </table>
     </div>

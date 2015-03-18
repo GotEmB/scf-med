@@ -97,24 +97,24 @@ class module.exports extends React.Component
       </tbody>
     </table>
 
-  renderInvestigation: (investigation, key) ->
+  renderTest: (test, key) ->
     tdStyle = border: "solid 0px black"
     <tr key={key}>
-      <td style={tdStyle}>{investigation?.name}</td>
+      <td style={tdStyle}>{test?.name}</td>
     </tr>
 
-  renderInvestigations: ->
-    investigations = (@props.visit?.investigations ? [])
+  renderTests: ->
+    tests = (@props.visit?.tests ? [])
       .filter (x) -> x?
     thStyle = border: "solid 0px black"
     <table className="table table-condensed" style={borderColor: "black"}>
       <thead>
         <tr>
-          <th style={thStyle}><h6><em>Investigations required:</em></h6></th>
+          <th style={thStyle}><h6><em>Tests required:</em></h6></th>
         </tr>
       </thead>
       <tbody >
-        {@renderInvestigation investigation, i for investigation, i in investigations}
+        {@renderTest test, i for test, i in tests}
       </tbody>
     </table>
 
@@ -142,7 +142,7 @@ class module.exports extends React.Component
       <hr style={margin: "5px 0 15px", borderColor: "black"} />
       {@renderDetail()}
       <br />
-      {@renderInvestigations()}
+      {@renderTests()}
       <br />
       {@renderSignature()}
       {@renderFooter()}
