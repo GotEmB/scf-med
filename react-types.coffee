@@ -42,8 +42,8 @@ visit = shape
   _id: string
   patient: patient
   date: date
-  symptoms: String
-  signs: String
+  symptom: String
+  sign: String
   investigations: String
   provisionalDiagnosis: String
   finalDiagnosis: String
@@ -77,6 +77,11 @@ service = shape
   name: string
   amount: number
 
+investigation = shape
+  _id: string
+  code: string
+  name: string
+
 invoice = shape
   _id: string
   patient: patient
@@ -95,4 +100,6 @@ module.exports = {
   prescription
   service
   invoice
+  visit
+  investigation
 }

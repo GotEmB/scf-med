@@ -6,12 +6,14 @@ compression = require "compression"
 drugsCalls = require "./async-calls/drugs"
 express = require "express"
 http = require "http"
+investigationsCalls = require "./async-calls/investigations"
 invoicesCalls = require "./async-calls/invoices"
 patientsCalls = require "./async-calls/patients"
 prescriptionsCalls = require "./async-calls/prescriptions"
 rootViewRouter = require "./routers/root-view-router"
 staticRouter = require "./routers/static-router"
 servicesCalls = require "./async-calls/services"
+visitsCalls = require "./async-calls/visits"
 
 router = express()
 
@@ -24,7 +26,9 @@ router.use patientsCalls.router express: express, bodyParser: bodyParser
 router.use drugsCalls.router express: express, bodyParser: bodyParser
 router.use prescriptionsCalls.router express: express, bodyParser: bodyParser
 router.use servicesCalls.router express: express, bodyParser: bodyParser
+router.use investigationsCalls.router express: express, bodyParser: bodyParser
 router.use invoicesCalls.router express: express, bodyParser: bodyParser
+router.use visitsCalls.router express: express, bodyParser: bodyParser
 
 server = http.createServer router
 
