@@ -44,7 +44,7 @@ visit = shape
   date: date
   symptom: String
   sign: String
-  investigations: String
+  test: String
   provisionalDiagnosis: String
   finalDiagnosis: String
   comments: String
@@ -77,7 +77,7 @@ service = shape
   name: string
   amount: number
 
-investigation = shape
+test = shape
   _id: string
   code: string
   name: string
@@ -101,5 +101,5 @@ module.exports = {
   service
   invoice
   visit
-  investigation
+  test
 }

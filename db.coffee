@@ -29,7 +29,7 @@ exports.Visit = metaDB.model "Visit",
     date: type: Date, default: Date.now()
     symptom: String
     sign: String
-    investigations: [type: ObjectId, ref: "Investigation"]
+    tests: [type: ObjectId, ref: "Test"]
     provisionalDiagnosis: String
     finalDiagnosis: String
     comments: String
@@ -66,11 +66,11 @@ exports.Service = metaDB.model "Service",
     amount: Number
   ), "services"
 
-exports.Investigation = metaDB.model "Investigation",
+exports.Test = metaDB.model "Test",
   new mongoose.Schema(
     code: String
     name: String
-  ), "investigations"
+  ), "tests"
 
 exports.Invoice = metaDB.model "Invoice",
   new mongoose.Schema(
