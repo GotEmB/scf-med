@@ -44,7 +44,6 @@ visit = shape
   date: date
   symptom: String
   sign: String
-  test: String
   provisionalDiagnosis: String
   finalDiagnosis: String
   comments: String
@@ -70,6 +69,12 @@ prescription = shape
   date: date
   medicines: arrayOf medicine
   routine: bool
+
+investigation = shape
+  _id: string
+  patient: patient
+  date: date
+  tests: arrayOf test
 
 service = shape
   _id: string
@@ -101,5 +106,6 @@ module.exports = {
   service
   invoice
   visit
+  investigation
   test
 }

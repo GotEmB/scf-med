@@ -1,6 +1,6 @@
 clone = require "clone"
 EditTest = require "./edit-test"
-invoicesCalls = require("../async-calls/invoices").calls
+investigationsCalls = require("../async-calls/investigations").calls
 md5 = require "MD5"
 numeral = require "numeral"
 React = require "react"

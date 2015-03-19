@@ -66,6 +66,13 @@ exports.Service = metaDB.model "Service",
     amount: Number
   ), "services"
 
+exports.Investigation = metaDB.model "Investigation",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    tests: [type: ObjectId, ref: "Test"]
+  ), "investigations"
+
 exports.Test = metaDB.model "Test",
   new mongoose.Schema(
     code: String
