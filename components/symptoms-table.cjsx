@@ -2,27 +2,26 @@ React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "TestsTable"
+  @displayName: "SymptomsTable"
 
   @propTypes:
-    tests: React.PropTypes.arrayOf reactTypes.test
-    selectedTest: reactTypes.test
-    onTestClick: React.PropTypes.func
+    symptoms: React.PropTypes.arrayOf reactTypes.symptom
+    selectedSymptom: reactTypes.symptom
+    onSymptomClick: React.PropTypes.func
 
   @defaultProps:
-    tests: []
+    symptoms: []
 
   handleRowClicked: (row) ->
-    @props.onTestClick? row
+    @props.onSymptomClick? row
 
   renderRow: (row, key) ->
-    className = "active" if row is @props.selectedTest
+    className = "active" if row is @props.selectedSymptom
     <tr
       className={className}
       style={cursor: "pointer"}
       onClick={@handleRowClicked.bind @, row}
       key={key}>
-      <td>{row?.code}</td>
       <td>{row?.name}</td>
     </tr>
 
@@ -31,12 +30,11 @@ class module.exports extends React.Component
       <table className="table table-hover table-striped">
         <thead>
           <tr>
-            <th>Code</th>
             <th>Name</th>
           </tr>
         </thead>
         <tbody>
-          {@renderRow row, i for row, i in @props.tests}
+          {@renderRow row, i for row, i in @props.symptoms}
         </tbody>
       </table>
     </div>

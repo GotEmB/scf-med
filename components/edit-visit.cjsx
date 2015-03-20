@@ -2,8 +2,6 @@ clone = require "clone"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"
 EditPatient = require "./edit-patient"
-EditTestsTable = require "./edit-tests-table"
-VisitPrintView = require "./visit-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
@@ -12,9 +10,9 @@ patientsCalls = require("../async-calls/patients").calls
 visitsCalls = require("../async-calls/visits").calls
 React = require "react"
 reactTypes = require "../react-types"
+EditSymptomsTable = require("./edit-symptoms-table")
 TextInput = require "./text-input"
 TypeaheadSelect = require "./typeahead-select"
-TypeaheadInput = require "./typeahead-input"
 
 class module.exports extends React.Component
   @displayName: "EditVisit"
@@ -28,14 +26,8 @@ class module.exports extends React.Component
     visit:
       patient: undefined
       date: undefined
-      symptom: undefined
+      symptoms: []
       sign: undefined
-      tests: []
-
-  componentWillReceiveProps: (props) ->
-    if deepDiff(@props.visit, props.visit)?
-      printView = <VisitPrintView visit={props.visit} />
-      Page.setPrintView printView
 
   handleDateChanged: (date) =>
     visit = clone @props.visit
@@ -47,20 +39,15 @@ class module.exports extends React.Component
     visit.patient = patient
     @props.onVisitChange visit
 
-  handleTestsChanged: (tests) =>
+  handleSymptomsChanged: (symptoms) =>
     visit = clone @props.visit
-    visit.tests = tests
+    visit.symptoms = symptoms
     @props.onVisitChange visit
 
   handleCommentsChanged: (comments) =>
     visit = clone @props.visit
     visit.comments = comments
     @props.onVisitChange visit
-
-  handlePrintClicked: =>
-    @props.onCommit? true, ->
-      nextTick ->
-        window.print()
 
   render: ->
     newPatientSuggestion =
@@ -99,12 +86,9 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
-      <TypeaheadInput
-        value={@props.visit.symptom}
-        onChange={@handleSymptomChanged}
-        suggestionsFetcher={visitsCalls.getSymptomSuggestions}
-        textFormatter={(x) -> x}
-        label="Symptom"
+      <EditSymptomsTable
+        symptoms={@props.visit.symptoms}
+        onSymptomsChange={@handleSymptomsChanged}
       />
       <div className="form-group">
         <label>Sign</label>
@@ -115,10 +99,6 @@ class module.exports extends React.Component
           onChange={@handleSignChanged}
         />
       </div>
-      <EditTestsTable
-        tests={@props.visit.tests}
-        onTestsChange={@handleTestsChanged}
-      />
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>
         <TextInput
@@ -128,11 +108,6 @@ class module.exports extends React.Component
           onChange={@handleCommentsChanged}
         />
       </div>
-      <div className="text-center">
-        <button className="btn btn-primary" onClick={@handlePrintClicked}>
-          <i className="fa fa-print" /> Save & Print
-        </button>
-      </div>
     </div>
 
   componentWillMount: ->
@@ -140,8 +115,3 @@ class module.exports extends React.Component
       visit = clone @constructor.defaultProps.visit
       visit.date = moment().toISOString()
       @props.onVisitChange visit
-    printView = <VisitPrintView visit={@props.visit} />
-    Page.setPrintView printView
-
-  componentWillUnmount: ->
-    Page.unsetPrintView()

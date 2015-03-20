@@ -7,7 +7,6 @@ visitsCalls = require("../async-calls/visits").calls
 VisitsReportPrintView = require "./visits-report-print-view"
 VisitsTable = require "./visits-table"
 Layers = require "./layers"
-ManageTestsView = require "./manage-tests-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
@@ -69,26 +68,6 @@ class module.exports extends React.Component
       />
     @setState layer: layer
     Layers.addLayer layer, "New Visit"
-
-  handleManageTestsClicked: =>
-    closeButtonStyle =
-      position: "absolute"
-      top: -50
-      right: 0
-      padding: "2.5px 0"
-      outline: 0
-    layer =
-      <div style={position: "relative"}>
-        <ManageTestsView />
-        <button
-          className="close"
-          onClick={@handleLayerDismissed}
-          style={closeButtonStyle}>
-          <span className="lead">✕</span>
-        </button>
-      </div>
-    @setState layer: layer
-    Layers.addLayer layer, "Manage Tests"
 
   handleConsolidatedReportClicked: (e) =>
     @setState loading: true
@@ -183,12 +162,6 @@ class module.exports extends React.Component
         className="btn btn-default"
         onClick={@handleNewVisitClicked}>
         <i className="fa fa-pencil" /> New Visit
-      </button>
-      <span> </span>
-      <button
-        className="btn btn-default"
-        onClick={@handleManageTestsClicked}>
-        <i className="fa fa-th-list" /> Manage Tests
       </button>
       <span> </span>
       <button

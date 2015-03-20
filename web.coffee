@@ -13,6 +13,7 @@ prescriptionsCalls = require "./async-calls/prescriptions"
 rootViewRouter = require "./routers/root-view-router"
 staticRouter = require "./routers/static-router"
 servicesCalls = require "./async-calls/services"
+symptomsCalls = require "./async-calls/symptoms"
 testsCalls = require "./async-calls/tests"
 visitsCalls = require "./async-calls/visits"
 

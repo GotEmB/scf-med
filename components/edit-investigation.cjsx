@@ -1,4 +1,3 @@
-Checkbox = require "./checkbox"
 clone = require "clone"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"

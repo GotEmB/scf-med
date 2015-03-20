@@ -1,4 +1,3 @@
-VisitPrintView = require "./visit-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
 padNumber = require "pad-number"
@@ -24,19 +23,6 @@ class module.exports extends React.Component
   handleRowClicked: (row) =>
     @props.onVisitClick? row
 
-  handlePrintClicked: (row, e) =>
-    printView = <VisitPrintView visit={row} />
-    @setState printView: printView
-    Page.setPrintView printView
-    nextTick =>
-      window.print()
-      setTimeout ( =>
-        if @state.printView is printView
-          Page.unsetPrintView()
-          @setState printView: undefined if @canSetState
-      ), 1000
-    e.stopPropagation()
-
   renderRow: (row, key) ->
     if row.serial?
       serial = "#{row.serial.year}-#{padNumber row.serial.number, 5}"
@@ -51,13 +37,6 @@ class module.exports extends React.Component
       <td style={verticalAlign: "middle"}>{datetime}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.name}</td>
-      <td style={padding: 3}>
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={@handlePrintClicked.bind @, row}>
-          <i className="fa fa-print" />
-        </button>
-      </td>
     </tr>
 
   render: ->
@@ -69,7 +48,6 @@ class module.exports extends React.Component
             <th>Date & Time</th>
             <th>Patient ID</th>
             <th>Patient Name</th>
-            <th style={width: 1} />
           </tr>
         </thead>
         <tbody>
