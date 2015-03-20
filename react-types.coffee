@@ -21,6 +21,34 @@ reactComponent = (props) ->
   unless props.component?.prototype instanceof React.Component
     new Error "Expected `component` to be a React Component."
 
+brandedDrug = shape
+  _id: string
+  name: string
+  genericDrug: genericDrug
+
+genericDrug = shape
+  _id: string
+  name: string
+
+investigation = shape
+  _id: string
+  patient: patient
+  date: date
+  tests: arrayOf test
+
+invoice = shape
+  _id: string
+  patient: patient
+  date: date
+  services: arrayOf service
+  comments: string
+  copay: number
+
+medicine = shape
+  brandedDrug: brandedDrug
+  dosage: string
+  comments: string
+
 patient = shape
   _id: string
   id: string
@@ -38,32 +66,6 @@ patient = shape
   language: string
   smoking: bool
 
-visit = shape
-  _id: string
-  patient: patient
-  date: date
-  symptoms: String
-  signs: String
-  investigations: String
-  provisionalDiagnosis: String
-  finalDiagnosis: String
-  comments: String
-  newVisit: bool
-
-genericDrug = shape
-  _id: string
-  name: string
-
-brandedDrug = shape
-  _id: string
-  name: string
-  genericDrug: genericDrug
-
-medicine = shape
-  brandedDrug: brandedDrug
-  dosage: string
-  comments: string
-
 prescription = shape
   _id: string
   patient: patient
@@ -77,22 +79,38 @@ service = shape
   name: string
   amount: number
 
-invoice = shape
+symptom = shape
+  _id: string
+  name: string
+
+test = shape
+  _id: string
+  code: string
+  name: string
+
+visit = shape
   _id: string
   patient: patient
   date: date
-  services: arrayOf service
+  symptoms: arrayOf symptom
+  sign: string
+  provisionalDiagnosis: string
+  finalDiagnosis: string
   comments: string
-  copay: number
+  newVisit: bool
 
 module.exports = {
-  date
-  reactComponent
-  patient
-  genericDrug
   brandedDrug
-  medicine
-  prescription
-  service
+  date
+  genericDrug
   invoice
+  investigation
+  medicine
+  patient
+  prescription
+  reactComponent
+  service
+  symptom
+  test
+  visit
 }
