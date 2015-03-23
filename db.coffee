@@ -75,6 +75,7 @@ exports.Investigation = metaDB.model "Investigation",
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
     tests: [type: ObjectId, ref: "Test"]
+    comments: String
   ), "investigations"
 
 exports.Test = metaDB.model "Test",

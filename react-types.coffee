@@ -35,6 +35,7 @@ investigation = shape
   patient: patient
   date: date
   tests: arrayOf test
+  comments: string
 
 invoice = shape
   _id: string
