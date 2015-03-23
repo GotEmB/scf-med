@@ -5,7 +5,7 @@ moment = require "moment"
 
 calls =
 
-  getVisits: (query, skip, limit, callback) ->
+  getInvestigations: (query, skip, limit, callback) ->
     if typeof query is "string"
       textQuery = new RegExp query, "i"
     else
@@ -19,33 +19,34 @@ calls =
           .find $or: [{id: textQuery}, {name: textQuery}]
           .select "_id"
           .exec callback
-      visits: ["patientIDs", (callback, {patientIDs}) ->
-        db.Visit
+      investigations: ["patientIDs", (callback, {patientIDs}) ->
+        db.Investigation
           .find date: dateQuery, patient: $in: patientIDs
           .sort "-date"
           .skip skip
           .limit limit
           .populate "patient"
+          .populate "tests"
           .exec callback
       ]
       total: ["patientIDs", (callback, {patientIDs}) ->
-        db.Visit
+        db.Investigation
           .count date: dateQuery, patient: $in: patientIDs
           .exec callback
       ]
-      (err, {visits, total}) ->
-        callback err, visits, total
+      (err, {investigations, total}) ->
+        callback err, investigations, total
 
-  commitVisit: (visit, callback) ->
+  commitInvestigation: (investigation, callback) ->
     async.waterfall [
       (callback) ->
-        visit.patient = visit.patient?._id
-        for symptom, i in visit.symptoms
-          visit.symptoms[i] = symptom?._id
-        unless visit._id?
+        investigation.patient = investigation.patient?._id
+        for test, i in investigation.tests
+          investigation.tests[i] = test?._id
+        unless investigation._id?
           async.waterfall [
             (callback) ->
-              db.Visit.aggregate()
+              db.Investigation.aggregate()
                 .project
                   serialYear: "$serial.year"
                   serialNumber: "$serial.number"
@@ -57,31 +58,21 @@ calls =
                 .limit 1
                 .exec callback
           ], (err, result) ->
-            visit.serial =
+            investigation.serial =
               year: moment().year()
               number: (result[0]?.serialNumber ? 0) + 1
-            db.Visit.create visit, callback
+            db.Investigation.create investigation, callback
         else
-          db.Visit.findByIdAndUpdate visit._id, visit, callback
-      (visit, callback) ->
-        db.Patient.populate visit, "patient", callback
+          db.Investigation.findByIdAndUpdate investigation._id, investigation, callback
+      (investigation, callback) ->
+        db.Patient.populate investigation, "patient", callback
+      (investigation, callback) ->
+        db.Test.populate investigation, "tests", callback
     ], callback
 
-  removeVisit: (visit, callback) ->
-    db.Visit.remove _id: visit._id , callback
-
-  getSymptomSuggestions: (query, skip, limit, callback) ->
-    query = new RegExp query, "i"
-    db.Visit.aggregate()
-      .project symptom: 1
-      .match symptom: query
-      .group _id: "$symptom"
-      .sort _id: 1
-      .skip skip
-      .limit limit
-      .exec (err, results) ->
-        callback err, results.map (x) -> x._id
+  removeInvestigation: (investigation, callback) ->
+    db.Investigation.remove _id: investigation._id , callback
 
 module.exports = new AsyncCaller
-  mountPath: "/async-calls/visits"
+  mountPath: "/async-calls/investigations"
   calls: calls
