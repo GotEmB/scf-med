@@ -1,7 +1,8 @@
+InvestigationPrintView = require "./investigation-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
-InvestigationPrintView = require "./investigation-print-view"
+padNumber = require "pad-number"
 React = require "react"
 reactTypes = require "../react-types"
 

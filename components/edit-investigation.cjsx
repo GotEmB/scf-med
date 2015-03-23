@@ -3,13 +3,15 @@ DateInput = require "./date-input"
 deepDiff = require "deep-diff"
 EditTestsTable = require "./edit-tests-table"
 EditPatient = require "./edit-patient"
+InvestigationPrintView = require "./investigation-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
+padNumber = require "pad-number"
 patientsCalls = require("../async-calls/patients").calls
-InvestigationPrintView = require "./investigation-print-view"
 React = require "react"
 reactTypes = require "../react-types"
+TextInput = require "./text-input"
 TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
@@ -25,6 +27,7 @@ class module.exports extends React.Component
       patient: undefined
       date: undefined
       tests: []
+      comments: undefined
 
   componentWillReceiveProps: (props) ->
     if deepDiff(@props.investigation, props.investigation)?
@@ -41,9 +44,9 @@ class module.exports extends React.Component
     investigation.patient = patient
     @props.onInvestigationChange investigation
 
-  handleRoutineChanged: (routine) =>
+  handleCommentsChanged: (comments) =>
     investigation = clone @props.investigation
-    investigation.routine = routine
+    investigation.comments = comments
     @props.onInvestigationChange investigation
 
   handleTestsChanged: (tests) =>
@@ -84,6 +87,15 @@ class module.exports extends React.Component
         tests={@props.investigation.tests}
         onTestsChange={@handleTestsChanged}
       />
+      <div className="form-group" style={position: "relative"}>
+        <label>Comments</label>
+        <TextInput
+          type="text"
+          className="form-control"
+          value={@props.investigation.comments}
+          onChange={@handleCommentsChanged}
+        />
+      </div>
       <div className="text-center">
         <button className="btn btn-primary" onClick={@handlePrintClicked}>
           <i className="fa fa-print" /> Save & Print
