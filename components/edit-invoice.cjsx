@@ -27,7 +27,6 @@ class module.exports extends React.Component
       patient: undefined
       date: undefined
       services: []
-      routine: false
 
   componentWillReceiveProps: (props) ->
     if deepDiff(@props.invoice, props.invoice)?
