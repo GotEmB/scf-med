@@ -26,6 +26,7 @@ calls =
           .skip skip
           .limit limit
           .populate "patient"
+          .populate "symptoms"
           .exec callback
       ]
       total: ["patientIDs", (callback, {patientIDs}) ->
@@ -65,22 +66,12 @@ calls =
           db.Visit.findByIdAndUpdate visit._id, visit, callback
       (visit, callback) ->
         db.Patient.populate visit, "patient", callback
+      (visit, callback) ->
+        db.Patient.populate visit, "symptom", callback
     ], callback
 
   removeVisit: (visit, callback) ->
     db.Visit.remove _id: visit._id , callback
-
-  getSymptomSuggestions: (query, skip, limit, callback) ->
-    query = new RegExp query, "i"
-    db.Visit.aggregate()
-      .project symptom: 1
-      .match symptom: query
-      .group _id: "$symptom"
-      .sort _id: 1
-      .skip skip
-      .limit limit
-      .exec (err, results) ->
-        callback err, results.map (x) -> x._id
 
 module.exports = new AsyncCaller
   mountPath: "/async-calls/visits"
