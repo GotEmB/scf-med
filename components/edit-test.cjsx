@@ -28,7 +28,7 @@ class module.exports extends React.Component
   render: ->
     <div>
       <div className="form-group">
-        <label>Code</label>
+        <label>CPT Code</label>
         <TextInput
           className="form-control"
           type="text"

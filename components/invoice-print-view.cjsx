@@ -164,7 +164,7 @@ class module.exports extends React.Component
     <table className="table table-condensed" style={borderColor: "black"}>
       <thead>
         <tr>
-          <th style={thStyle}>Code</th>
+          <th style={thStyle}>CPT Code</th>
           <th style={thStyle}>Service</th>
           <th style={amountTStyle} className="text-right">
             Amount

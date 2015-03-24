@@ -31,7 +31,7 @@ class module.exports extends React.Component
       <table className="table table-hover table-striped">
         <thead>
           <tr>
-            <th>Code</th>
+            <th>CPT Code</th>
             <th>Name</th>
           </tr>
         </thead>
