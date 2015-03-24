@@ -58,6 +58,7 @@ exports.Prescription = metaDB.model "Prescription",
     medicines: [
       brandedDrug: type: ObjectId, ref: "BrandedDrug"
       dosage: String
+      duration: String
       comments: String
     ]
     routine: Boolean

@@ -89,12 +89,13 @@ class module.exports extends React.Component
         <div>{medicine.brandedDrug?.genericDrug?.name}</div>
       </td>
       <td style={tdStyle}>{medicine.dosage}</td>
+      <td style={tdStyle}>{medicine.duration}</td>
       <td style={tdStyle}>{medicine.comments}</td>
     </tr>
 
   renderMedicines: ->
     medicines = (@props.prescription?.medicines ? [])
-      .filter (x) -> x.brandedDrug? or x.dosage? or x.comments?
+      .filter (x) -> x.brandedDrug? or x.dosage? or x.duration?x.comments?
     thStyle = border: "solid 1px black"
     commentsTStyle =
       border: "solid 1px black"
@@ -106,6 +107,7 @@ class module.exports extends React.Component
         <thead>
           <th style={thStyle}>Drug</th>
           <th style={thStyle}>Dosage</th>
+          <th style={thStyle}>Duration</th>
           <th style={commentsTStyle}>Comments</th>
         </thead>
         <tbody>

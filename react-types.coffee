@@ -48,6 +48,7 @@ invoice = shape
 medicine = shape
   brandedDrug: brandedDrug
   dosage: string
+  duration: string
   comments: string
 
 patient = shape

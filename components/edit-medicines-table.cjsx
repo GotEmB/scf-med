@@ -43,6 +43,12 @@ class module.exports extends React.Component
     medicine.dosage = dosage
     @handleMedicineChanged medicine, index
 
+  handleDurationChanged: (medicine, duration) =>
+    index = @props.medicines.indexOf medicine
+    medicine = clone medicine
+    medicine.duration = duration
+    @handleMedicineChanged medicine, index
+
   handleCommentsChanged: (medicine, comments) =>
     index = @props.medicines.indexOf medicine
     medicine = clone medicine
@@ -93,6 +99,15 @@ class module.exports extends React.Component
         />
       </td>
       <td style={paddingRight: 0}>
+        <TypeaheadInput
+          value={medicine.duration}
+          onChange={@handleDurationChanged.bind @, medicine}
+          suggestionsFetcher={prescriptionsCalls.getDurationSuggestions}
+          textFormatter={(x) -> x}
+          isInline={true}
+        />
+      </td>
+      <td style={paddingRight: 0}>
         <TextInput
           type="text"
           className="form-control"
@@ -118,6 +133,7 @@ class module.exports extends React.Component
         <tr>
           <th>Drug</th>
           <th>Dosage</th>
+          <th>Duration</th>
           <th>Comments</th>
           <th />
         </tr>
