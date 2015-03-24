@@ -10,7 +10,7 @@ calls =
       (callback) ->
         db.Symptom
           .find $or: [{id: query}, {name: query}]
-          .sort "code"
+          .sort "name"
           .skip skip
           .limit limit
           .exec callback
