@@ -40,13 +40,6 @@ class module.exports extends React.Component
 
   renderRow: (row, key) ->
     datetime = moment(row.date).format("lll") if row.date?
-    if row.routine
-      routineButton =
-        <button
-          className="btn btn-default btn-sm"
-          onClick={@handleRoutineClicked.bind @, row}>
-          <i className="fa fa-repeat" />
-        </button>
     className = "active" if row is @props.selectedPatient
     <tr
       className={className}
