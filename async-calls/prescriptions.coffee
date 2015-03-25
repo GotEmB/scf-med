@@ -80,6 +80,20 @@ calls =
       .exec (err, results) ->
         callback err, results.map (x) -> x._id
 
+  getDurationSuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Prescription.aggregate()
+      .project medicines: 1
+      .unwind "medicines"
+      .project duration: "$medicines.duration"
+      .group _id: "$duration"
+      .match _id: query
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
+
 module.exports = new AsyncCaller
   mountPath: "/async-calls/prescriptions"
   calls: calls

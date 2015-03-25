@@ -83,10 +83,6 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
-      <EditTestsTable
-        tests={@props.investigation.tests}
-        onTestsChange={@handleTestsChanged}
-      />
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>
         <TextInput
@@ -96,6 +92,10 @@ class module.exports extends React.Component
           onChange={@handleCommentsChanged}
         />
       </div>
+      <EditTestsTable
+        tests={@props.investigation.tests}
+        onTestsChange={@handleTestsChanged}
+      />
       <div className="text-center">
         <button className="btn btn-primary" onClick={@handlePrintClicked}>
           <i className="fa fa-print" /> Save & Print

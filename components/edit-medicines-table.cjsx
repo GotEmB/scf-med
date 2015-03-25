@@ -1,3 +1,4 @@
+Checkbox = require "./checkbox"
 clone = require "clone"
 drugsCalls = require("../async-calls/drugs").calls
 EditBrandedDrug = require "./edit-branded-drug"
@@ -42,6 +43,17 @@ class module.exports extends React.Component
     medicine = clone medicine
     medicine.dosage = dosage
     @handleMedicineChanged medicine, index
+
+  handleDurationChanged: (medicine, duration) =>
+    index = @props.medicines.indexOf medicine
+    medicine = clone medicine
+    medicine.duration = duration
+    @handleMedicineChanged medicine, index
+
+  handleReceivedChanged: (medicine, received) =>
+    medicine = clone @props.medicine.indexOf medicine
+    medicine.received = received
+    @props.onMedicineChange medicine
 
   handleCommentsChanged: (medicine, comments) =>
     index = @props.medicines.indexOf medicine
@@ -93,6 +105,20 @@ class module.exports extends React.Component
         />
       </td>
       <td style={paddingRight: 0}>
+        <TypeaheadInput
+          value={medicine.duration}
+          onChange={@handleDurationChanged.bind @, medicine}
+          suggestionsFetcher={prescriptionsCalls.getDurationSuggestions}
+          textFormatter={(x) -> x}
+          isInline={true}
+        />
+      </td>
+      <Checkbox
+        checked={@props.medicine.received}
+        onCheckedChange={@handleReceivedChanged}
+        label="Received?"
+      />
+      <td style={paddingRight: 0}>
         <TextInput
           type="text"
           className="form-control"
@@ -118,6 +144,7 @@ class module.exports extends React.Component
         <tr>
           <th>Drug</th>
           <th>Dosage</th>
+          <th>Duration</th>
           <th>Comments</th>
           <th />
         </tr>
