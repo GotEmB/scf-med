@@ -50,11 +50,6 @@ class module.exports extends React.Component
     medicine.duration = duration
     @handleMedicineChanged medicine, index
 
-  handleReceivedChanged: (medicine, received) =>
-    medicine = clone @props.medicine.indexOf medicine
-    medicine.received = received
-    @props.onMedicineChange medicine
-
   handleCommentsChanged: (medicine, comments) =>
     index = @props.medicines.indexOf medicine
     medicine = clone medicine
@@ -113,11 +108,6 @@ class module.exports extends React.Component
           isInline={true}
         />
       </td>
-      <Checkbox
-        checked={@props.medicine.received}
-        onCheckedChange={@handleReceivedChanged}
-        label="Received?"
-      />
       <td style={paddingRight: 0}>
         <TextInput
           type="text"
@@ -135,9 +125,10 @@ class module.exports extends React.Component
     rows = (@props.medicines ? []).concat {}
     <table className="table table-striped">
       <colgroup>
-         <col span="1" style={width: "33%"} />
-         <col span="1" style={width: "33%"} />
-         <col span="1" style={width: "33%"} />
+         <col span="1" style={width: "30%"} />
+         <col span="1" style={width: "30%"} />
+         <col span="1" style={width: "20%"} />
+         <col span="1" style={width: "20%"} />
          <col />
       </colgroup>
       <thead>
