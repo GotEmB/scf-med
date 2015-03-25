@@ -125,9 +125,10 @@ class module.exports extends React.Component
     rows = (@props.medicines ? []).concat {}
     <table className="table table-striped">
       <colgroup>
-         <col span="1" style={width: "33%"} />
-         <col span="1" style={width: "33%"} />
-         <col span="1" style={width: "33%"} />
+         <col span="1" style={width: "30%"} />
+         <col span="1" style={width: "30%"} />
+         <col span="1" style={width: "20%"} />
+         <col span="1" style={width: "20%"} />
          <col />
       </colgroup>
       <thead>

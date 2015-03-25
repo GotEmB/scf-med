@@ -23,6 +23,7 @@ class module.exports extends React.Component
       onClick={@handleRowClicked.bind @, row}
       key={key}>
       <td>{row?.name}</td>
+      <td>{row?.duration}</td>
     </tr>
 
   render: ->
@@ -31,6 +32,7 @@ class module.exports extends React.Component
         <thead>
           <tr>
             <th>Name</th>
+            <th>Duration</th>
           </tr>
         </thead>
         <tbody>

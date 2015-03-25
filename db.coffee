@@ -38,6 +38,7 @@ exports.Visit = metaDB.model "Visit",
 exports.Symptom = metaDB.model "Symptom",
   new mongoose.Schema(
     name: String
+    duration: String
   ), "symptoms"
 
 exports.GenericDrug = metaDB.model "GenericDrug",

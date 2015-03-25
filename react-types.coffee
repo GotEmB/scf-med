@@ -85,7 +85,8 @@ service = shape
 symptom = shape
   _id: string
   name: string
-
+  duration: string
+  
 test = shape
   _id: string
   code: string
