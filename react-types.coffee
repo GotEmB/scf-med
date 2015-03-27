@@ -82,26 +82,10 @@ service = shape
   name: string
   amount: number
 
-symptom = shape
-  _id: string
-  name: string
-  duration: string
-  
 test = shape
   _id: string
   code: string
   name: string
-
-visit = shape
-  _id: string
-  patient: patient
-  date: date
-  symptoms: arrayOf symptom
-  sign: string
-  provisionalDiagnosis: string
-  finalDiagnosis: string
-  comments: string
-  newVisit: bool
 
 module.exports = {
   brandedDrug
@@ -114,7 +98,5 @@ module.exports = {
   prescription
   reactComponent
   service
-  symptom
   test
-  visit
 }
