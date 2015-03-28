@@ -47,12 +47,6 @@ class module.exports extends React.Component
           <td style={tdValueStyle}>
             {moment(@props.prescription?.date).format "ll"}
           </td>
-        </tr>
-        <tr>
-          <td style={tdKeyStyle}>ID:</td>
-          <td style={tdValueStyle}>
-            {@props.prescription?.patient?.id}
-          </td>
           <td style={tdKeyStyle}>Insurance ID:</td>
           <td style={tdValueStyle}>
             {@props.prescription?.patient?.insuranceId}
