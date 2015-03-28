@@ -3,6 +3,7 @@ InvestigationsView = require "./investigations-view"
 MainNav = require "./main-nav"
 PatientsView = require "./patients-view"
 PrescriptionsView = require "./prescriptions-view"
+VisitView = require "./visit-view"
 React = require "react"
 
 class module.exports extends React.Component
@@ -24,6 +25,8 @@ class module.exports extends React.Component
       switch @state.activeView
         when "patients"
           <PatientsView />
+        when "visits"
+          <VisitView />
         when "prescriptions"
           <PrescriptionsView />
         when "investigations"
