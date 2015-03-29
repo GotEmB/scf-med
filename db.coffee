@@ -98,6 +98,6 @@ exports.Visit = metaDB.model "Visit",
     date: type: Date, default: Date.now()
     symptoms: [type: ObjectId, ref: "Symptom"]
     comments: String
-  ), "invoices"
+  ), "Visits"
 
 exports.eval = metaDB.db.eval.bind metaDB.db

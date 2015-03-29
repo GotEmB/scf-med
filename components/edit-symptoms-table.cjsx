@@ -54,7 +54,7 @@ class module.exports extends React.Component
         <TypeaheadInput
           value={symptom.name}
           onChange={@handleNameChanged.bind @, symptom}
-          suggestionsFetcher={vistsCalls.getNameSuggestions}
+          suggestionsFetcher={visitsCalls.getNameSuggestions}
           textFormatter={(x) -> x}
           isInline={true}
         />
@@ -79,6 +79,7 @@ class module.exports extends React.Component
       <colgroup>
          <col span="1" style={width: "50%"} />
          <col span="1" style={width: "50%"} />
+         <col span="1" style={width: "0%"} />
          <col />
       </colgroup>
       <thead>

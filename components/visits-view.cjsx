@@ -13,7 +13,7 @@ VisitsTable = require "./visits-table"
 
 
 class module.exports extends React.Component
-  @displayName: "VisitView"
+  @displayName: "VisitsView"
 
   constructor: ->
     @state =
@@ -189,7 +189,7 @@ class module.exports extends React.Component
     </div>
 
   componentDidMount: ->
-    @fetchPrescriptions()
+    @fetchVisits()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?
