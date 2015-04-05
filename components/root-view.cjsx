@@ -25,8 +25,6 @@ class module.exports extends React.Component
       switch @state.activeView
         when "patients"
           <PatientsView />
-        when "visits"
-          <VisitsView />
         when "prescriptions"
           <PrescriptionsView />
         when "investigations"
