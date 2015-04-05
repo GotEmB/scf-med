@@ -1,33 +1,43 @@
 CommitCache = require "./commit-cache"
 constants = require "../constants"
-EditPatient = require "./edit-patient"
+DateRangeInput = require "./date-range-input"
+EditVisit = require "./edit-visit"
 escapeStringRegexp = require "escape-string-regexp"
 Layers = require "./layers"
+moment = require "moment"
 nextTick = require "next-tick"
-patientsCalls = require("../async-calls/patients").calls
-PatientsTable = require "./patients-table"
+Page = require "./page"
 React = require "react"
+visitsCalls = require("../async-calls/visits").calls
+VisitsTable = require "./visits-table"
+
 
 class module.exports extends React.Component
-  @displayName: "PatientsView"
+  @displayName: "VisitsView"
 
   constructor: ->
     @state =
       filterQuery: ""
-      patients: []
-      selectedPatient: undefined
+      queryStartDate: moment().subtract(1, "month").toDate()
+      queryEndDate: moment().endOf("day").toDate()
+      visits: []
+      selectedVisit: undefined
       loadFrom: 0
       total: 0
       loading: false
       layer: undefined
 
-  fetchPatients: =>
+  fetchVisits: =>
     @setState loading: true
-    patientsCalls.getPatients escapeStringRegexp(@state.filterQuery),
-      @state.loadFrom, constants.paginationLimit,
-      (err, patients, total) =>
+    query =
+      text: @state.filterQuery
+      daterange:
+        from: @state.queryStartDate
+        to: @state.queryEndDate
+    visitsCalls.getVisits query, @state.loadFrom,
+      constants.paginationLimit, (err, visits, total) =>
         @setState
-          patients: patients
+          visits: visits
           total: total
           loading: false
 
@@ -36,55 +46,62 @@ class module.exports extends React.Component
       filterQuery: e.target.value
       loadFrom: 0
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
-    @filterQueryChangeTimer = setTimeout @fetchPatients, 200
+    @filterQueryChangeTimer = setTimeout @fetchVisits, 200
 
-  handleNewPatientClicked: =>
+  handleQueryDateRangeChanged: ({startDate, endDate}) =>
+    @setState
+      queryStartDate: startDate
+      queryEndDate: endDate
+    clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
+    @filterQueryChangeTimer = setTimeout @fetchVisits, 200
+
+  handleNewVisitClicked: =>
     layer =
       <CommitCache
-        component={EditPatient}
+        component={EditVisit}
         data={undefined}
-        dataProperty="patient"
-        commitMethod={patientsCalls.commitPatient}
-        removeMethod={patientsCalls.removePatient}
+        dataProperty="visit"
+        commitMethod={visitsCalls.commitVisit}
+        removeMethod={visitsCalls.removeVisit}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
-    Layers.addLayer layer, "New Patient"
+    Layers.addLayer layer, "New Visit"
 
   handlePagerPreviousClicked: =>
     @setState
       loadFrom:
         Math.max 0, @state.loadFrom - constants.paginationLimit
-    nextTick @fetchPatients
+    nextTick @fetchVisits
 
   handlePagerNextClicked: =>
     @setState
       loadFrom:
         Math.min @state.total - constants.paginationLimit,
           @state.loadFrom + constants.paginationLimit
-    nextTick @fetchPatients
+    nextTick @fetchVisits
 
-  handlePatientClicked: (patient) =>
+  handleVisitClicked: (visit) =>
     layer =
       <CommitCache
-        component={EditPatient}
-        data={patient}
-        dataProperty="patient"
-        commitMethod={patientsCalls.commitPatient}
-        removeMethod={patientsCalls.removePatient}
+        component={EditVisit}
+        data={visit}
+        dataProperty="visit"
+        commitMethod={visitsCalls.commitVisit}
+        removeMethod={visitsCalls.removeVisit}
         onDismiss={@handleLayerDismissed}
       />
     @setState
-      selectedPatient: patient
+      selectedVisit: visit
       layer: layer
-    Layers.addLayer layer, "Edit Patient"
+    Layers.addLayer layer, "Edit Visit"
 
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
     @setState
-      selectedPatient: undefined
+      selectedVisit: undefined
       layer: undefined
-    @fetchPatients() if status in ["saved", "removed"]
+    @fetchVisits() if status in ["saved", "removed"]
 
   renderLeftControls: ->
     <div className="form-inline pull-left">
@@ -101,11 +118,22 @@ class module.exports extends React.Component
         />
       </div>
       <span> </span>
-      <button className="btn btn-default" onClick={@handleNewPatientClicked}>
-        <i className="fa fa-user-plus" /> New Patient
-      </button>
-      <button className="btn btn-default">
-        <i className="fa fa-user-plus" /> Blood Group Certificate
+      <div className="input-group">
+        <span className="input-group-addon">
+          <i className="fa fa-calendar" />
+        </span>
+        <DateRangeInput
+          className="form-control"
+          style={width: 200}
+          startDate={@state.queryStartDate}
+          endDate={@state.queryEndDate}
+          onDateRangeChange={@handleQueryDateRangeChanged}
+        />
+      </div>
+      <button
+        className="btn btn-default"
+        onClick={@handleNewVisitClicked}>
+        <i className="fa fa-pencil" /> New Visit
       </button>
     </div>
 
@@ -123,7 +151,7 @@ class module.exports extends React.Component
           <i className="fa fa-chevron-left" />
         </button>
     rightButton =
-      if @state.loadFrom + @state.patients.length < @state.total
+      if @state.loadFrom + @state.visits.length < @state.total
         <button
           className="btn btn-default"
           onClick={@handlePagerNextClicked}>
@@ -131,7 +159,7 @@ class module.exports extends React.Component
         </button>
     text =
       "#{@state.loadFrom + 1}—" +
-      "#{@state.loadFrom + @state.patients.length} of " +
+      "#{@state.loadFrom + @state.visits.length} of " +
       "#{@state.total}"
     <div className="pull-right">
       <div className="pull-right btn-group">
@@ -153,15 +181,15 @@ class module.exports extends React.Component
     <div>
       {@renderControls()}
       <br />
-      <PatientsTable
-        patients={@state.patients}
-        selectedPatient={@state.selectedPatient}
-        onPatientClick={@handlePatientClicked}
+      <VisitsTable
+        visits={@state.visits}
+        selectedVisit={@state.selectedVisit}
+        onVisitClick={@handleVisitClicked}
       />
     </div>
 
   componentDidMount: ->
-    @fetchPatients()
+    @fetchVisits()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?
