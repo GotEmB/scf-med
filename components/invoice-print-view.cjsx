@@ -125,31 +125,11 @@ class module.exports extends React.Component
     totalAmountText = numeral totalAmount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
-    copayAmount = totalAmount * 0.2
-    copayAmountText = numeral copayAmount
-      .format "($ 0,0.00)"
-      .replace "$", "Dhs"
-    netAmount = totalAmount * 0.8
-    netAmountText = numeral netAmount
-      .format "($ 0,0.00)"
-      .replace "$", "Dhs"
     <tfoot>
       <tr>
-        <th style={thStyle} colSpan={2}>Gross Amount</th>
+        <th style={thStyle} colSpan={2}>Total Amount</th>
         <th style={amountTStyle} className="text-right">
           {totalAmountText}
-        </th>
-      </tr>
-      <tr>
-        <th style={thStyle} colSpan={2}>Patient Co-Pay 20%</th>
-        <th style={amountTStyle} className="text-right">
-          {copayAmountText}
-        </th>
-      </tr>
-      <tr>
-        <th style={thStyle} colSpan={2}>Net Amount</th>
-        <th style={amountTStyle} className="text-right">
-          {netAmountText}
         </th>
       </tr>
     </tfoot>
