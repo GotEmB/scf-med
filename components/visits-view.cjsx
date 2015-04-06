@@ -1,3 +1,4 @@
+clone = require "clone"
 CommitCache = require "./commit-cache"
 constants = require "../constants"
 DateRangeInput = require "./date-range-input"
