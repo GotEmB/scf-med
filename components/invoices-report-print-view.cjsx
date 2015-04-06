@@ -103,7 +103,7 @@ class module.exports extends React.Component
         {@renderInvoice invoice, i for invoice, i in @props.invoices}
       </tbody>
       <tfoot>
-        <th style={thStyle} colSpan={4}>Total - Amount</th>
+        <th style={thStyle} colSpan={4}>Total Amount</th>
         <th style={thStyle} className="text-right">{totalAmount}</th>
         <th style={border: "solid 1px black"} />
       </tfoot>
