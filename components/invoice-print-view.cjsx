@@ -131,7 +131,7 @@ class module.exports extends React.Component
         </th>
       </tr>
       <tr>
-        <th style={thStyle} colSpan={2}>Deduction: Patient Co-Pay 20%</th>
+        <th style={thStyle} colSpan={2}>Deduction: Co-Pay 20%</th>
         <th style={amountTStyle} className="text-right">
           {copayAmountText}
         </th>
