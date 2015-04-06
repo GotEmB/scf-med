@@ -45,7 +45,6 @@ exports.Prescription = metaDB.model "Prescription",
       received: Boolean
       comments: String
     ]
-    pharmacy: String
     routine: Boolean
   ), "prescriptions"
 
@@ -55,12 +54,6 @@ exports.Service = metaDB.model "Service",
     name: String
     amount: Number
   ), "services"
-
-exports.Symptom = metaDB.model "Symptom",
-  new mongoose.Schema(
-    name: String
-    period: String
-  ), "symptoms"
 
 exports.Investigation = metaDB.model "Investigation",
   new mongoose.Schema(
@@ -88,17 +81,5 @@ exports.Invoice = metaDB.model "Invoice",
     comments: String
     copay: Number
   ), "invoices"
-
-exports.Visit = metaDB.model "Visit",
-  new mongoose.Schema(
-    serial: {
-      year: Number
-      number: Number
-    }
-    patient: type: ObjectId, ref: "Patient"
-    date: type: Date, default: Date.now()
-    symptoms: [type: ObjectId, ref: "Symptom"]
-    comments: String
-  ), "Visits"
 
 exports.eval = metaDB.db.eval.bind metaDB.db

@@ -58,7 +58,7 @@ class module.exports extends React.Component
     amount = (invoice.services ? [])
       .map (x) -> x?.amount ? 0
       .reduce ((carry, x) -> carry + x), 0
-    amount = amount * 0.8
+    amount -= invoice.copay ? 0
     amount = numeral amount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
@@ -82,9 +82,8 @@ class module.exports extends React.Component
         grossAmount = (x.services ? [])
           .map (x) -> x?.amount ? 0
           .reduce ((carry, x) -> carry + x), 0
-        grossAmount
+        grossAmount - (x.copay ? 0)
       .reduce ((carry, x) -> carry + x), 0
-    totalAmount = totalAmount * 0.8
     totalAmount = numeral totalAmount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
@@ -95,7 +94,7 @@ class module.exports extends React.Component
           <th style={thStyle}>Date</th>
           <th style={thStyle}>Patient</th>
           <th style={thStyle}>Insurance ID</th>
-          <th style={thStyle} className="text-right">Amount</th>
+          <th style={thStyle} className="text-right">Net Amount</th>
           <th style={thStyle}>Comments</th>
         </tr>
       </thead>

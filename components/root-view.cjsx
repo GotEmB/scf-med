@@ -3,7 +3,6 @@ InvestigationsView = require "./investigations-view"
 MainNav = require "./main-nav"
 PatientsView = require "./patients-view"
 PrescriptionsView = require "./prescriptions-view"
-VisitsView = require "./visits-view"
 React = require "react"
 
 class module.exports extends React.Component

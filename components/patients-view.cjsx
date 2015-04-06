@@ -104,9 +104,6 @@ class module.exports extends React.Component
       <button className="btn btn-default" onClick={@handleNewPatientClicked}>
         <i className="fa fa-user-plus" /> New Patient
       </button>
-      <button className="btn btn-default">
-        <i className="fa fa-user-plus" /> Blood Group Certificate
-      </button>
     </div>
 
   renderRightControls: ->

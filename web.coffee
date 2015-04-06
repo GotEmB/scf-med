@@ -13,9 +13,7 @@ prescriptionsCalls = require "./async-calls/prescriptions"
 rootViewRouter = require "./routers/root-view-router"
 staticRouter = require "./routers/static-router"
 servicesCalls = require "./async-calls/services"
-symptomsCalls = require "./async-calls/symptoms"
 testsCalls = require "./async-calls/tests"
-visitsCalls = require "./async-calls/visits"
 
 router = express()
 
@@ -28,10 +26,8 @@ router.use patientsCalls.router express: express, bodyParser: bodyParser
 router.use drugsCalls.router express: express, bodyParser: bodyParser
 router.use prescriptionsCalls.router express: express, bodyParser: bodyParser
 router.use servicesCalls.router express: express, bodyParser: bodyParser
-router.use symptomsCalls.router express: express, bodyParser: bodyParser
 router.use testsCalls.router express: express, bodyParser: bodyParser
 router.use invoicesCalls.router express: express, bodyParser: bodyParser
-router.use visitsCalls.router express: express, bodyParser: bodyParser
 router.use investigationsCalls.router express: express, bodyParser: bodyParser
 
 server = http.createServer router

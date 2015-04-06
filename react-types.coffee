@@ -45,13 +45,6 @@ invoice = shape
   comments: string
   copay: number
 
-visit = shape
-  _id: string
-  patient: patient
-  date: date
-  symptoms: arrayOf symptom
-  comments: string
-
 medicine = shape
   brandedDrug: brandedDrug
   dosage: string
@@ -81,7 +74,6 @@ prescription = shape
   patient: patient
   date: date
   medicines: arrayOf medicine
-  pharmacy: string
   routine: bool
 
 service = shape
@@ -89,10 +81,6 @@ service = shape
   code: string
   name: string
   amount: number
-
-symptom = shape
-  name: string
-  period: string
 
 test = shape
   _id: string
@@ -110,7 +98,5 @@ module.exports = {
   prescription
   reactComponent
   service
-  symptom
   test
-  visit
 }
