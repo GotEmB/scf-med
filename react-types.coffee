@@ -81,6 +81,7 @@ prescription = shape
   patient: patient
   date: date
   medicines: arrayOf medicine
+  pharmacy: string
   routine: bool
 
 service = shape
@@ -90,7 +91,6 @@ service = shape
   amount: number
 
 symptom = shape
-  _id: string
   name: string
   period: string
 

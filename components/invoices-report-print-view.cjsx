@@ -58,6 +58,7 @@ class module.exports extends React.Component
     amount = (invoice.services ? [])
       .map (x) -> x?.amount ? 0
       .reduce ((carry, x) -> carry + x), 0
+    amount = amount * 0.8
     amount = numeral amount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
@@ -102,7 +103,7 @@ class module.exports extends React.Component
         {@renderInvoice invoice, i for invoice, i in @props.invoices}
       </tbody>
       <tfoot>
-        <th style={thStyle} colSpan={4}>Total Amount - Copay 20%</th>
+        <th style={thStyle} colSpan={4}>Total Amount</th>
         <th style={thStyle} className="text-right">{totalAmount}</th>
         <th style={border: "solid 1px black"} />
       </tfoot>

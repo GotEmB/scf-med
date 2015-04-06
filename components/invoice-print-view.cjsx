@@ -59,9 +59,9 @@ class module.exports extends React.Component
           </td>
         </tr>
         <tr>
-          <td style={tdKeyStyle}>ID:</td>
+          <td style={tdKeyStyle}>Name:</td>
           <td style={tdValueStyle}>
-            {@props.invoice?.patient?.id}
+            {@props.invoice?.patient?.name}
           </td>
           <td style={tdKeyStyle}>Insurance ID:</td>
           <td style={tdValueStyle}>
@@ -69,23 +69,13 @@ class module.exports extends React.Component
           </td>
         </tr>
         <tr>
-          <td style={tdKeyStyle}>Name:</td>
-          <td style={tdValueStyle}>
-            {@props.invoice?.patient?.name}
-          </td>
           <td style={tdKeyStyle}>Age:</td>
           <td style={tdValueStyle}>
             {age}
           </td>
-        </tr>
-        <tr>
           <td style={tdKeyStyle}>Contact:</td>
           <td style={tdValueStyle}>
             {@props.invoice?.patient?.contact}
-          </td>
-          <td style={tdKeyStyle}>Sex:</td>
-          <td style={tdValueStyle}>
-            {@props.invoice?.patient?.sex}
           </td>
         </tr>
         <tr>
@@ -125,6 +115,17 @@ class module.exports extends React.Component
     totalAmountText = numeral totalAmount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
+<<<<<<< HEAD
+=======
+    copayAmount = totalAmount * 0.2
+    copayAmountText = numeral copayAmount
+      .format "($ 0,0.00)"
+      .replace "$", "- Dhs"
+    netAmount = totalAmount * 0.8
+    netAmountText = numeral netAmount
+      .format "($ 0,0.00)"
+      .replace "$", "Dhs"
+>>>>>>> visits
     <tfoot>
       <tr>
         <th style={thStyle} colSpan={2}>Total Amount</th>
@@ -132,6 +133,21 @@ class module.exports extends React.Component
           {totalAmountText}
         </th>
       </tr>
+<<<<<<< HEAD
+=======
+      <tr>
+        <th style={thStyle} colSpan={2}>Deduction: Patient Co-Pay 20%</th>
+        <th style={amountTStyle} className="text-right">
+          {copayAmountText}
+        </th>
+      </tr>
+      <tr>
+        <th style={thStyle} colSpan={2}>Net Amount</th>
+        <th style={amountTStyle} className="text-right">
+          {netAmountText}
+        </th>
+      </tr>
+>>>>>>> visits
     </tfoot>
 
   renderServices: ->

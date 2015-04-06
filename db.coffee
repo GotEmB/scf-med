@@ -45,6 +45,7 @@ exports.Prescription = metaDB.model "Prescription",
       received: Boolean
       comments: String
     ]
+    pharmacy: String
     routine: Boolean
   ), "prescriptions"
 
