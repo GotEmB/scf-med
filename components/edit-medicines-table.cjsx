@@ -17,6 +17,10 @@ class module.exports extends React.Component
     medicines: React.PropTypes.arrayOf reactTypes.medicine
     onMedicinesChange: React.PropTypes.func
 
+  @defaultProps:
+    medicine:
+      received: false
+
   handleMedicineChanged: (medicine, index) =>
     keys = Object.keys(medicine).length
     medicines = clone @props.medicines
@@ -49,6 +53,12 @@ class module.exports extends React.Component
     medicine = clone medicine
     medicine.duration = duration
     @handleMedicineChanged medicine, index
+
+  handleReceivedChanged: (received) =>
+    index = @props.medicines.indexOf medicine
+    medicine = clone medicine
+    medicine.received = received
+    @props.onMedicineChange medicine
 
   handleCommentsChanged: (medicine, comments) =>
     index = @props.medicines.indexOf medicine
@@ -117,6 +127,12 @@ class module.exports extends React.Component
         />
       </td>
       <td>
+        <Checkbox
+          checked={@props.medicine.received}
+          onCheckedChange={@handleReceivedChanged}
+        />
+      </td>
+      <td>
         {removeButton}
       </td>
     </tr>
@@ -128,7 +144,7 @@ class module.exports extends React.Component
          <col span="1" style={width: "30%"} />
          <col span="1" style={width: "30%"} />
          <col span="1" style={width: "20%"} />
-         <col span="1" style={width: "20%"} />
+         <col span="1" style={width: "19%"} />
          <col />
       </colgroup>
       <thead>
@@ -137,6 +153,7 @@ class module.exports extends React.Component
           <th>Dosage</th>
           <th>Duration</th>
           <th>Comments</th>
+          <th>Received</th>
           <th />
         </tr>
       </thead>
