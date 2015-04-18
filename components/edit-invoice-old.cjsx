@@ -69,6 +69,13 @@ class module.exports extends React.Component
       dataProperty: "patient"
       commitMethod: patientsCalls.commitPatient
       removeMethod: patientsCalls.removePatient
+    copayNoneButtonClassName = "btn btn-default"
+    copaySilverButtonClassName = "btn btn-default"
+    copayGoldButtonClassName = "btn btn-default"
+    switch @props.invoice.copay
+      when 0 then copayNoneButtonClassName += " active"
+      when 25 then copaySilverButtonClassName += " active"
+      when 50 then copayGoldButtonClassName += " active"
     if @props.invoice.serial?
       serial =
         "#{@props.invoice.serial.year}-\
