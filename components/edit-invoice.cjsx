@@ -53,11 +53,6 @@ class module.exports extends React.Component
     invoice.comments = comments
     @props.onInvoiceChange invoice
 
-  handleCopayChanged: (copay) =>
-    invoice = clone @props.invoice
-    invoice.copay = copay
-    @props.onInvoiceChange invoice
-
   handlePrintClicked: =>
     @props.onCommit? true, ->
       nextTick ->
@@ -100,27 +95,6 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
-      <div className="form-group">
-        <label>Copay</label>
-        <div className="btn-group" style={display: "block"}>
-          <button
-            className={copayNoneButtonClassName}
-            onClick={@handleCopayChanged.bind @, 0}>
-            None
-          </button>
-          <button
-            className={copaySilverButtonClassName}
-            onClick={@handleCopayChanged.bind @, 25}>
-            Dhs 25.00
-          </button>
-          <button
-            className={copayGoldButtonClassName}
-            onClick={@handleCopayChanged.bind @, 50}>
-            Dhs 50.00
-          </button>
-        </div>
-        <div className="clearfix" />
-      </div>
       <EditServicesTable
         services={@props.invoice.services}
         onServicesChange={@handleServicesChanged}
