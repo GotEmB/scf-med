@@ -18,7 +18,7 @@ class module.exports extends React.Component
   constructor: ->
     @state =
       filterQuery: ""
-      queryStartDate: moment().subtract(1, "month").toDate()
+      queryStartDate: moment().subtract(3, "month").toDate()
       queryEndDate: moment().endOf("day").toDate()
       investigations: []
       selectedInvestigation: undefined
