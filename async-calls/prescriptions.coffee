@@ -94,6 +94,18 @@ calls =
       .exec (err, results) ->
         callback err, results.map (x) -> x._id
 
+  getPharmacySuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Prescription.aggregate()
+      .project pharmacy: 1
+      .match pharmacy: query
+      .group _id: "$pharmacy"
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
+
 module.exports = new AsyncCaller
   mountPath: "/async-calls/prescriptions"
   calls: calls

@@ -75,6 +75,7 @@ prescription = shape
   date: date
   medicines: arrayOf medicine
   routine: bool
+  pharmacy: string
 
 service = shape
   _id: string

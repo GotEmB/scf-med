@@ -8,10 +8,12 @@ moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
 patientsCalls = require("../async-calls/patients").calls
+prescriptionsCalls = require("../async-calls/prescriptions").calls
 PrescriptionPrintView = require "./prescription-print-view"
 React = require "react"
 reactTypes = require "../react-types"
 TypeaheadSelect = require "./typeahead-select"
+TypeaheadInput = require "./typeahead-input"
 
 class module.exports extends React.Component
   @displayName: "EditPrescription"
@@ -27,6 +29,7 @@ class module.exports extends React.Component
       date: undefined
       medicines: []
       routine: false
+      pharmacy: undefined
 
   componentWillReceiveProps: (props) ->
     if deepDiff(@props.prescription, props.prescription)?
@@ -41,6 +44,11 @@ class module.exports extends React.Component
   handlePatientChanged: (patient) =>
     prescription = clone @props.prescription
     prescription.patient = patient
+    @props.onPrescriptionChange prescription
+
+  handlePharmacyChanged: (pharmacy) =>
+    prescription = clone @props.prescription
+    prescription.pharmacy = pharmacy
     @props.onPrescriptionChange prescription
 
   handleRoutineChanged: (routine) =>
@@ -90,6 +98,13 @@ class module.exports extends React.Component
       <EditMedicinesTable
         medicines={@props.prescription.medicines}
         onMedicinesChange={@handleMedicinesChanged}
+      />
+      <TypeaheadInput
+        value={@props.prescription.pharmacy}
+        onChange={@handlePharmacyChanged}
+        suggestionsFetcher={prescriptionsCalls.getPharmacySuggestions}
+        textFormatter={(x) -> x}
+        label="Pharmacy"
       />
       <div className="text-center">
         <button className="btn btn-primary" onClick={@handlePrintClicked}>

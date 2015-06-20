@@ -17,10 +17,6 @@ class module.exports extends React.Component
     medicines: React.PropTypes.arrayOf reactTypes.medicine
     onMedicinesChange: React.PropTypes.func
 
-  @defaultProps:
-    medicine:
-      received: false
-
   handleMedicineChanged: (medicine, index) =>
     keys = Object.keys(medicine).length
     medicines = clone @props.medicines
@@ -54,11 +50,15 @@ class module.exports extends React.Component
     medicine.duration = duration
     @handleMedicineChanged medicine, index
 
-  handleReceivedChanged: (received) =>
+  handleReceivedClicked: (medicine) =>
     index = @props.medicines.indexOf medicine
     medicine = clone medicine
-    medicine.received = received
-    @props.onMedicineChange medicine
+    medicine.received =
+      if medicine.received
+        undefined
+      else
+        true
+    @handleMedicineChanged medicine, index
 
   handleCommentsChanged: (medicine, comments) =>
     index = @props.medicines.indexOf medicine
@@ -78,6 +78,23 @@ class module.exports extends React.Component
       dataProperty: "brandedDrug"
       commitMethod: drugsCalls.commitBrandedDrug
       removeMethod: drugsCalls.removeBrandedDrug
+    receiveButton =
+      if (@props.medicines ? []).indexOf(medicine) is -1
+        <button className="btn btn-default" disabled>
+          <i className="fa fa-check" />
+        </button>
+      else if medicine.received
+        <button
+          className="btn btn-success"
+          onClick={@handleReceivedClicked.bind @, medicine}>
+          <i className="fa fa-check" />
+        </button>
+      else
+        <button
+          className="btn btn-default"
+          onClick={@handleReceivedClicked.bind @, medicine}>
+          <i className="fa fa-check" />
+        </button>
     removeButton =
       if (@props.medicines ? []).indexOf(medicine) isnt -1
         <button
@@ -127,10 +144,7 @@ class module.exports extends React.Component
         />
       </td>
       <td>
-        <Checkbox
-          checked={@props.medicine.received}
-          onCheckedChange={@handleReceivedChanged}
-        />
+        {receiveButton}
       </td>
       <td>
         {removeButton}

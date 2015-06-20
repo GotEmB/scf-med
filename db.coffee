@@ -46,6 +46,7 @@ exports.Prescription = metaDB.model "Prescription",
       comments: String
     ]
     routine: Boolean
+    pharmacy: String
   ), "prescriptions"
 
 exports.Service = metaDB.model "Service",
