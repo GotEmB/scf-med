@@ -47,10 +47,21 @@ class module.exports extends React.Component
       routineButton =
         <button
           className="btn btn-default btn-sm"
+          style={marginLeft: 3, marginRight: 3}
           onClick={@handleRoutineClicked.bind @, row}>
           <i className="fa fa-repeat" />
         </button>
+    debugger
+    if row.medicines?.reduce(((x, y) -> x and y.received), {}) is true
+      receivedAllI =
+        <i
+          className="fa fa-fw fa-check text-success"
+          style={lineHeight: "inherit", margin: "0 10px"}
+        />
     className = "active" if row is @props.selectedPatient
+    btnTdStyle =
+      padding: 3
+      whiteSpace: "nowrap"
     <tr
       className={className}
       style={cursor: "pointer"}
@@ -59,12 +70,12 @@ class module.exports extends React.Component
       <td style={verticalAlign: "middle"}>{datetime}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.name}</td>
-      <td style={padding: 3}>
+      <td className="text-right" style={btnTdStyle}>
+        {receivedAllI}
         {routineButton}
-      </td>
-      <td style={padding: 3}>
         <button
           className="btn btn-primary btn-sm"
+          style={marginLeft: 3}
           onClick={@handlePrintClicked.bind @, row}>
           <i className="fa fa-print" />
         </button>
@@ -79,7 +90,6 @@ class module.exports extends React.Component
             <th>Date & Time</th>
             <th>Patient ID</th>
             <th>Patient Name</th>
-            <th style={width: 1} />
             <th style={width: 1} />
           </tr>
         </thead>

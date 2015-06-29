@@ -80,18 +80,23 @@ class module.exports extends React.Component
       removeMethod: drugsCalls.removeBrandedDrug
     receiveButton =
       if (@props.medicines ? []).indexOf(medicine) is -1
-        <button className="btn btn-default" disabled>
+        <button
+          className="btn btn-default"
+          title="Toggle received"
+          disabled>
           <i className="fa fa-check" />
         </button>
       else if medicine.received
         <button
           className="btn btn-success"
+          title="Toggle received"
           onClick={@handleReceivedClicked.bind @, medicine}>
           <i className="fa fa-check" />
         </button>
       else
         <button
           className="btn btn-default"
+          title="Toggle received"
           onClick={@handleReceivedClicked.bind @, medicine}>
           <i className="fa fa-check" />
         </button>
@@ -143,7 +148,7 @@ class module.exports extends React.Component
           onChange={@handleCommentsChanged.bind @, medicine}
         />
       </td>
-      <td>
+      <td style={paddingRight: 0}>
         {receiveButton}
       </td>
       <td>
@@ -167,7 +172,7 @@ class module.exports extends React.Component
           <th>Dosage</th>
           <th>Duration</th>
           <th>Comments</th>
-          <th>Received</th>
+          <th />
           <th />
         </tr>
       </thead>
