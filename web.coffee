@@ -16,7 +16,6 @@ staticRouter = require "./routers/static-router"
 servicesCalls = require "./async-calls/services"
 testsCalls = require "./async-calls/tests"
 diagnosesCalls = require "./async-calls/diagnoses"
-signsCalls = require "./async-calls/signs"
 
 router = express()
 
@@ -34,7 +33,6 @@ router.use invoicesCalls.router express: express, bodyParser: bodyParser
 router.use investigationsCalls.router express: express, bodyParser: bodyParser
 router.use visitsCalls.router express: express, bodyParser: bodyParser
 router.use diagnosesCalls.router express: express, bodyParser: bodyParser
-router.use signsCalls.router express: express, bodyParser: bodyParser
 
 
 server = http.createServer router

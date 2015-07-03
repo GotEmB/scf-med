@@ -83,11 +83,6 @@ exports.Diagnosis = metaDB.model "Diagnosis",
     name: String
   ), "diagnoses"
 
-exports.Sign = metaDB.model "Sign",
-  new mongoose.Schema(
-    name: String
-  ), "signs"
-
 exports.Test = metaDB.model "Test",
   new mongoose.Schema(
     code: String
@@ -102,8 +97,11 @@ exports.Visit = metaDB.model "Visit",
       name: String
       duration: String
     ]
-    signs: [type: ObjectId, ref: "Sign"]
-    diagnoses: [type: ObjectId, ref: "Diagnosis"]
+    signs: [
+      name: String
+    ]
+    provisionalDiagnoses: [type: ObjectId, ref: "Diagnosis"]
+    finallDiagnoses: [type: ObjectId, ref: "Diagnosis"]
     comments: String
   ), "visits"
 

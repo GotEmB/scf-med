@@ -26,7 +26,8 @@ calls =
           .skip skip
           .limit limit
           .populate "patient"
-          .populate "diagnoses"
+          .populate "provisionalDiagnoses"
+          .populate "finallDiagnoses"
           .populate "signs"
           .exec callback
       ]
@@ -42,10 +43,10 @@ calls =
     async.waterfall [
       (callback) ->
         visit.patient = visit.patient?._id
-        for sign, i in visit.signs
-          visit.signs[i] = sign?._id
-        for diagnosis, i in visit.diagnoses
-          visit.diagnoses[i] = diagnosis?._id
+        for provisionalDiagnosis, i in visit.provisionalDiagnoses
+          visit.provisionalDiagnoses[i] = provisionalDiagnosis?._id
+        for finallDiagnosis, i in visit.finallDiagnoses
+          visit.finallDiagnoses[i] = finallDiagnosis?._id
         unless visit._id?
           db.Visit.create visit, callback
         else
@@ -53,9 +54,9 @@ calls =
       (visit, callback) ->
         db.Patient.populate visit, "patient", callback
       (visit, callback) ->
-        db.Diagnosis.populate visit, "diagnoses", callback
+        db.Diagnosis.populate visit, "provisionalDiagnoses", callback
       (visit, callback) ->
-        db.Sign.populate visit, "signs", callback
+        db.Diagnosis.populate visit, "finalDiagnoses", callback
     ], callback
 
   removeVisit: (visit, callback) ->
@@ -82,6 +83,20 @@ calls =
       .unwind "symptoms"
       .project duration: "$symptoms.duration"
       .group _id: "$duration"
+      .match _id: query
+      .sort _id: 1
+      .skip skip
+      .limit limit
+      .exec (err, results) ->
+        callback err, results.map (x) -> x._id
+
+  getSignNameSuggestions: (query, skip, limit, callback) ->
+    query = new RegExp query, "i"
+    db.Visit.aggregate()
+      .project signs: 1
+      .unwind "signs"
+      .project name: "$signs.name"
+      .group _id: "$name"
       .match _id: query
       .sort _id: 1
       .skip skip

@@ -1,14 +1,10 @@
 clone = require "clone"
-EditSign = require "./edit-sign"
 visitsCalls = require("../async-calls/visits").calls
 md5 = require "MD5"
-numeral = require "numeral"
 React = require "react"
 reactTypes = require "../react-types"
-signsCalls = require("../async-calls/signs").calls
 TextInput = require "./text-input"
 TypeaheadInput = require "./typeahead-input"
-TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
   @displayName: "EditSignsTable"
@@ -17,9 +13,13 @@ class module.exports extends React.Component
     signs: React.PropTypes.arrayOf reactTypes.sign
     onSignsChange: React.PropTypes.func
 
-  handleSignChanged: (index, sign) =>
+  handleSignChanged: (sign, index) =>
+    keys = Object.keys(sign).length
     signs = clone @props.signs
-    signs[index] = sign
+    if keys isnt 0 and index is -1
+      signs.push sign
+    else
+      signs[index] = sign
     @props.onSignsChange signs
 
   handleRemoveSignClicked: (sign) =>
@@ -28,16 +28,19 @@ class module.exports extends React.Component
     signs.splice index, 1
     @props.onSignsChange signs
 
+  handleNameChanged: (sign, name) =>
+    index = @props.signs.indexOf sign
+    sign = clone sign
+    sign.name = name
+    @handleSignChanged sign, index
+
   renderRow: (sign, i) ->
-    newSignSuggestion =
-      component: EditSign
-      dataProperty: "sign"
-      commitMethod: signsCalls.commitSign
-      removeMethod: signsCalls.removeSign
-    unless sign?
-      key = "new-#{i}"
-    else
-      key = i
+    unless sign._key?
+      sign._key =
+        if (@props.signs ? []).indexOf(sign) isnt -1
+          md5 "#{Date.now()}#{i}"
+        else
+          md5 "#{i}"
     removeButton =
       if (@props.signs ? []).indexOf(sign) isnt -1
         <button
@@ -49,15 +52,14 @@ class module.exports extends React.Component
         <button className="btn btn-danger" disabled>
           <i className="fa fa-times" />
         </button>
-    <tr key={key}>
+    <tr key={sign._key}>
       <td style={paddingRight: 0}>
-        <TypeaheadSelect
-          selectedItem={sign}
-          onSelectedItemChange={@handleSignChanged.bind @, i}
-          suggestionsFetcher={signsCalls.getSigns}
-          textFormatter={(x) -> x.name}
+        <TypeaheadInput
+          value={sign.name}
+          onChange={@handleNameChanged.bind @, sign}
+          suggestionsFetcher={visitsCalls.getSignNameSuggestions}
+          textFormatter={(x) -> x}
           isInline={true}
-          newSuggestion={newSignSuggestion}
         />
       </td>
       <td>
@@ -66,7 +68,7 @@ class module.exports extends React.Component
     </tr>
 
   render: ->
-    rows = (@props.signs ? []).concat undefined
+    rows = (@props.signs ? []).concat {}
     <table className="table table-striped">
       <colgroup>
         <col span="1" style={width: "100%"} />

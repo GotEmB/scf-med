@@ -1,4 +1,3 @@
-Checkbox = require "./checkbox"
 clone = require "clone"
 md5 = require "MD5"
 visitsCalls = require("../async-calls/visits").calls
@@ -6,7 +5,6 @@ React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
 TypeaheadInput = require "./typeahead-input"
-TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
   @displayName: "EditSymptomsTable"

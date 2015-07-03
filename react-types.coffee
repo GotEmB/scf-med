@@ -89,7 +89,7 @@ diagnosis = shape
   name: string
 
 sign = shape
-  sign: string
+  name: string
 
 symptom = shape
   name: string
@@ -105,7 +105,8 @@ visit = shape
   patient: patient
   date: date
   signs: arrayOf sign
-  diagnoses: arrayOf diagnosis
+  provisionalDiagnoses: arrayOf diagnosis
+  finallDiagnoses: arrayOf diagnosis
   comments: string
 
 module.exports = {

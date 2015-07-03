@@ -29,7 +29,8 @@ class module.exports extends React.Component
     visit:
       patient: undefined
       date: undefined
-      diagnoses: []
+      provisionalDiagnoses: []
+      finalDiagnoses: []
       signs: []
       symptoms: []
       comments: undefined
@@ -59,9 +60,14 @@ class module.exports extends React.Component
     visit.signs = signs
     @props.onVisitChange visit
 
-  handleDiagnosesChanged: (diagnoses) =>
+  handleprovisionalDiagnosesChanged: (provisionalDiagnoses) =>
     visit = clone @props.visit
-    visit.diagnoses = diagnoses
+    visit.provisionalDiagnoses = provisionalDiagnoses
+    @props.onVisitChange visit
+
+  handlefinalDiagnosesChanged: (finalDiagnoses) =>
+    visit = clone @props.visit
+    visit.finalDiagnoses = finalDiagnoses
     @props.onVisitChange visit
 
   render: ->
@@ -103,11 +109,18 @@ class module.exports extends React.Component
           className="form-control"
           value={@props.visit.comments}
           onChange={@handleCommentsChanged}
+          multiline={true}
         />
       </div>
       <EditDiagnosesTable
-        diagnoses={@props.visit.diagnoses}
-        onDiagnosesChange={@handleDiagnosesChanged}
+        title="Provisional Diagnosis"
+        provisionalDiagnoses={@props.visit.provisionalDiagnoses}
+        onProvisionalDiagnosesChange={@handleProvisionalDiagnosesChanged}
+      />
+      <EditDiagnosesTable
+        title="Final Diagnosis"
+        finalDiagnoses={@props.visit.finalDiagnoses}
+        onFinalDiagnosesChange={@handleFinalDiagnosesChanged}
       />
     </div>
 

@@ -13,6 +13,7 @@ class module.exports extends React.Component
   @displayName: "EditDiagnosesTable"
 
   @propTypes:
+    title: React.PropTypes.string
     diagnoses: React.PropTypes.arrayOf reactTypes.diagnosis
     onDiagnosesChange: React.PropTypes.func
 
@@ -73,7 +74,7 @@ class module.exports extends React.Component
       </colgroup>
       <thead>
         <tr>
-          <th>Diagnosis</th>
+          <th>{@props.title}</th>
           <th />
         </tr>
       </thead>
