@@ -4,35 +4,35 @@ reactTypes = require "../react-types"
 TextInput = require "./text-input"
 
 class module.exports extends React.Component
-  @displayName: "EditSymptom"
+  @displayName: "EditDiagnosis"
 
   @propTypes:
-    symptom: reactTypes.symptom
-    onSymptomChange: React.PropTypes.func.isRequired
+    diagnosis: reactTypes.diagnosis
+    onDiagnosisChange: React.PropTypes.func.isRequired
 
   @defaultProps:
-    symptom:
+    diagnosis:
       code: undefined
       name: undefined
 
   handleCodeChanged: (code) =>
-    symptom = clone @props.symptom
-    symptom.code = code
-    @props.onSymptomChange symptom
+    diagnosis = clone @props.diagnosis
+    diagnosis.code = code
+    @props.onDiagnosisChange diagnosis
 
   handleNameChanged: (name) =>
-    symptom = clone @props.symptom
-    symptom.name = name
-    @props.onSymptomChange symptom
+    diagnosis = clone @props.diagnosis
+    diagnosis.name = name
+    @props.onDiagnosisChange diagnosis
 
   render: ->
     <div>
       <div className="form-group">
-        <label>CPT Code</label>
+        <label>ICD-10 Code</label>
         <TextInput
           className="form-control"
           type="text"
-          value={@props.symptom.code}
+          value={@props.diagnosis.code}
           onChange={@handleCodeChanged}
         />
       </div>
@@ -41,7 +41,7 @@ class module.exports extends React.Component
         <TextInput
           className="form-control"
           type="text"
-          value={@props.symptom.name}
+          value={@props.diagnosis.name}
           onChange={@handleNameChanged}
         />
       </div>

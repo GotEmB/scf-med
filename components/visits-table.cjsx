@@ -1,4 +1,3 @@
-InvestigationPrintView = require "./investigation-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
@@ -7,36 +6,19 @@ React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "InvestigationsTable"
+  @displayName: "VisitsTable"
 
   @propTypes:
-    investigations: React.PropTypes.arrayOf reactTypes.investigation
-    selectedInvestigation: reactTypes.investigation
-    onInvestigationClick: React.PropTypes.func
-    onInvestigationRoutineClick: React.PropTypes.func
+    visits: React.PropTypes.arrayOf reactTypes.visit
+    selectedVisit: reactTypes.visit
+    onVisitClick: React.PropTypes.func
+    onVisitRoutineClick: React.PropTypes.func
 
   @defaultProps:
-    investigations: []
-
-  constructor: ->
-    @state =
-      printView: undefined
+    visits: []
 
   handleRowClicked: (row) =>
-    @props.onInvestigationClick? row
-
-  handlePrintClicked: (row, e) =>
-    printView = <InvestigationPrintView investigation={row} />
-    @setState printView: printView
-    Page.setPrintView printView
-    nextTick =>
-      window.print()
-      setTimeout ( =>
-        if @state.printView is printView
-          Page.unsetPrintView()
-          @setState printView: undefined if @canSetState
-      ), 1000
-    e.stopPropagation()
+    @props.onVisitClick? row
 
   renderRow: (row, key) ->
     datetime = moment(row.date).format("lll") if row.date?
@@ -49,13 +31,6 @@ class module.exports extends React.Component
       <td style={verticalAlign: "middle"}>{datetime}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.name}</td>
-      <td style={padding: 3}>
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={@handlePrintClicked.bind @, row}>
-          <i className="fa fa-print" />
-        </button>
-      </td>
     </tr>
 
   render: ->
@@ -66,12 +41,10 @@ class module.exports extends React.Component
             <th>Date & Time</th>
             <th>Patient ID</th>
             <th>Patient Name</th>
-            <th style={width: 1} />
-            <th style={width: 1} />
           </tr>
         </thead>
         <tbody>
-          {@renderRow row, i for row, i in @props.investigations}
+          {@renderRow row, i for row, i in @props.visits}
         </tbody>
       </table>
     </div>

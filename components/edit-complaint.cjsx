@@ -4,20 +4,20 @@ reactTypes = require "../react-types"
 TextInput = require "./text-input"
 
 class module.exports extends React.Component
-  @displayName: "EditSign"
+  @displayName: "EditComplaint"
 
   @propTypes:
-    sign: reactTypes.sign
-    onSignChange: React.PropTypes.func.isRequired
+    complaint: reactTypes.complaint
+    onComplaintChange: React.PropTypes.func.isRequired
 
   @defaultProps:
-    sign:
+    complaint:
       name: undefined
 
   handleNameChanged: (name) =>
-    sign = clone @props.sign
-    sign.name = name
-    @props.onSignChange sign
+    complaint = clone @props.complaint
+    complaint.name = name
+    @props.onComplaintChange complaint
 
   render: ->
     <div className="form-group">
@@ -25,7 +25,7 @@ class module.exports extends React.Component
       <TextInput
         className="form-control"
         type="text"
-        value={@props.sign.name}
+        value={@props.complaint.name}
         onChange={@handleNameChanged}
       />
     </div>

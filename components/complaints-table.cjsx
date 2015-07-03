@@ -1,22 +1,23 @@
+numeral = require "numeral"
 React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "SignsTable"
+  @displayName: "ComplaintsTable"
 
   @propTypes:
-    signs: React.PropTypes.arrayOf reactTypes.sign
-    selectedSign: reactTypes.sign
-    onSignClick: React.PropTypes.func
+    complaints: React.PropTypes.arrayOf reactTypes.complaint
+    selectedComplaint: reactTypes.complaint
+    onComplaintClick: React.PropTypes.func
 
   @defaultProps:
-    Signs: []
+    complaints: []
 
   handleRowClicked: (row) ->
-    @props.onSignClick? row
+    @props.onComplaintClick? row
 
   renderRow: (row, key) ->
-    className = "active" if row is @props.selectedSign
+    className = "active" if row is @props.selectedComplaint
     <tr
       className={className}
       style={cursor: "pointer"}
@@ -34,7 +35,7 @@ class module.exports extends React.Component
           </tr>
         </thead>
         <tbody>
-          {@renderRow row, i for row, i in @props.Signs}
+          {@renderRow row, i for row, i in @props.complaints}
         </tbody>
       </table>
     </div>

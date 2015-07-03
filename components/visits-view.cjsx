@@ -5,8 +5,7 @@ escapeStringRegexp = require "escape-string-regexp"
 DateRangeInput = require "./date-range-input"
 EditVisit = require "./edit-visit"
 Layers = require "./layers"
-ManageSignsView = require "./manage-signs-view"
-ManageSymptomsView = require "./manage-symptoms-view"
+ManageDiagnosesView = require "./manage-diagnoses-view"
 moment = require "moment"
 nextTick = require "next-tick"
 visitsCalls = require("../async-calls/visits").calls
@@ -69,7 +68,7 @@ class module.exports extends React.Component
     @setState layer: layer
     Layers.addLayer layer, "New Visit"
 
-  handleManageSignsClicked: =>
+  handleManageDiagnosesClicked: =>
     closeButtonStyle =
       position: "absolute"
       top: -50
@@ -78,7 +77,7 @@ class module.exports extends React.Component
       outline: 0
     layer =
       <div style={position: "relative"}>
-        <ManageSignsView />
+        <ManageDiagnosesView/>
         <button
           className="close"
           onClick={@handleLayerDismissed}
@@ -87,27 +86,7 @@ class module.exports extends React.Component
         </button>
       </div>
     @setState layer: layer
-    Layers.addLayer layer, "Manage Signs"
-
-  handleManageSymptomsClicked: =>
-    closeButtonStyle =
-      position: "absolute"
-      top: -50
-      right: 0
-      padding: "2.5px 0"
-      outline: 0
-    layer =
-      <div style={position: "relative"}>
-        <ManageSymptomsView />
-        <button
-          className="close"
-          onClick={@handleLayerDismissed}
-          style={closeButtonStyle}>
-          <span className="lead">✕</span>
-        </button>
-      </div>
-    @setState layer: layer
-    Layers.addLayer layer, "Manage Symptoms"
+    Layers.addLayer layer, "Manage Diagnoses"
 
   handlePagerPreviousClicked: =>
     @setState
@@ -180,13 +159,8 @@ class module.exports extends React.Component
       <span> </span>
       <button
         className="btn btn-default"
-        onClick={@handleManageSignsClicked}>
-        <i className="fa fa-th-list" /> Manage Signs
-      </button>
-      <button
-        className="btn btn-default"
-        onClick={@handleManageSymptomsClicked}>
-        <i className="fa fa-th-list" /> Manage Symptoms
+        onClick={@handleManageDiagnosesClicked}>
+        <i className="fa fa-th-list" /> Manage Diagnoses
       </button>
     </div>
 

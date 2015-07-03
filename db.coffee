@@ -77,17 +77,21 @@ exports.Service = metaDB.model "Service",
     amount: Number
   ), "services"
 
+exports.Complaint = metaDB.model "Complaint",
+  new mongoose.Schema(
+    name: String
+  ), "complaints"
+
+exports.Diagnosis = metaDB.model "Diagnosis",
+  new mongoose.Schema(
+    code: String
+    name: String
+  ), "diagnoses"
+
 exports.Sign = metaDB.model "Sign",
   new mongoose.Schema(
-    code: String
     name: String
   ), "signs"
-
-exports.Symptom = metaDB.model "Symptom",
-  new mongoose.Schema(
-    code: String
-    name: String
-  ), "symptoms"
 
 exports.Test = metaDB.model "Test",
   new mongoose.Schema(
@@ -99,9 +103,10 @@ exports.Visit = metaDB.model "Visit",
   new mongoose.Schema(
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
-    Symptoms: [type: ObjectId, ref: "Symptom"]
-    Signs: [type: ObjectId, ref: "Sign"]
+    complaints: [type: ObjectId, ref: "Complaint"]
+    signs: [type: ObjectId, ref: "Sign"]
+    diagnoses: [type: ObjectId, ref: "Diagnosis"]
     comments: String
-  ), "Visits"
+  ), "visits"
 
 exports.eval = metaDB.db.eval.bind metaDB.db

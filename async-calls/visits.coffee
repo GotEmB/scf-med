@@ -26,7 +26,9 @@ calls =
           .skip skip
           .limit limit
           .populate "patient"
-          .populate "tests"
+          .populate "complaints"
+          .populate "diagnoses"
+          .populate "signs"
           .exec callback
       ]
       total: ["patientIDs", (callback, {patientIDs}) ->
@@ -41,8 +43,12 @@ calls =
     async.waterfall [
       (callback) ->
         visit.patient = visit.patient?._id
-        for test, i in visit.tests
-          visit.tests[i] = test?._id
+        for complaint, i in visit.complaints
+          visit.complaints[i] = complaint?._id
+        for sign, i in visit.signs
+          visit.signs[i] = sign?._id
+        for diagnosis, i in visit.diagnoses
+          visit.diagnoses[i] = diagnosis?._id
         unless visit._id?
           async.waterfall [
             (callback) ->
@@ -64,11 +70,15 @@ calls =
             db.Visit.create visit, callback
         else
           db.Visit.findByIdAndUpdate visit._id, visit, callback
-      (visit, callback) ->
-        db.Patient.populate visit, "patient", callback
-      (visit, callback) ->
-        db.Test.populate visit, "tests", callback
-    ], callback
+        (visit, callback) ->
+          db.Patient.populate visit, "patient", callback
+        (visit, callback) ->
+          db.Complaint.populate visit, "complaints", callback
+        (visit, callback) ->
+          db.Diagnosis.populate visit, "diagnoses", callback
+        (visit, callback) ->
+          db.Sign.populate visit, "signs", callback
+      ], callback
 
   removeVisit: (visit, callback) ->
     db.Visit.remove _id: visit._id , callback

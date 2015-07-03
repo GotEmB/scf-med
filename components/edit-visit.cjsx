@@ -1,18 +1,21 @@
 clone = require "clone"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"
+EditComplaintsTable = require "./edit-complaints-table"
+EditDiagnosesTable = require "./edit-diagnoses-table"
 EditSignsTable = require "./edit-signs-table"
-EditSymptomsTable = require "./edit-symptoms-table"
 EditPatient = require "./edit-patient"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
 padNumber = require "pad-number"
 patientsCalls = require("../async-calls/patients").calls
+visitsCalls = require("../async-calls/visits").calls
 React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
 TypeaheadSelect = require "./typeahead-select"
+TypeaheadInput = require "./typeahead-input"
 
 class module.exports extends React.Component
   @displayName: "EditVisit"
@@ -26,8 +29,9 @@ class module.exports extends React.Component
     visit:
       patient: undefined
       date: undefined
+      complaints: []
+      diagnoses: []
       signs: []
-      symptoms: []
       comments: undefined
 
   handleDateChanged: (date) =>
@@ -45,14 +49,19 @@ class module.exports extends React.Component
     visit.comments = comments
     @props.onVisitChange visit
 
+  handleComplaintsChanged: (complaints) =>
+    visit = clone @props.visit
+    visit.complaints = complaints
+    @props.onVisitChange visit
+
   handleSignsChanged: (signs) =>
     visit = clone @props.visit
     visit.signs = signs
     @props.onVisitChange visit
 
-  handleSymptomsChanged: (symptoms) =>
+  handleDiagnosesChanged: (diagnoses) =>
     visit = clone @props.visit
-    visit.symptoms = symptoms
+    visit.diagnoses = diagnoses
     @props.onVisitChange visit
 
   render: ->
@@ -79,6 +88,14 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
+      <EditComplaintsTable
+        complaints={@props.visit.complaints}
+        onComplaintsChange={@handleComplaintsChanged}
+      />
+      <EditSignsTable
+        signs={@props.visit.signs}
+        onSignsChange={@handleSignsChanged}
+      />
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>
         <TextInput
@@ -88,12 +105,14 @@ class module.exports extends React.Component
           onChange={@handleCommentsChanged}
         />
       </div>
-      <EditSignsTable
-        signs={@props.visit.signs}
-        onSignsChange={@handleSignsChanged}
-      />
-      <EditSymptomsTable
-        symptoms={@props.visit.symptoms}
-        onSymptomsChange={@handleSymptomsChanged}
+      <EditDiagnosesTable
+        diagnoses={@props.visit.diagnoses}
+        onDiagnosesChange={@handleDiagnosesChanged}
       />
     </div>
+
+  componentWillMount: ->
+    if Object.keys(@props.visit).length is 0
+      visit = clone @constructor.defaultProps.visit
+      visit.date = moment().toISOString()
+      @props.onVisitChange visit

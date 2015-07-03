@@ -1,32 +1,32 @@
 CommitCache = require "./commit-cache"
 constants = require "../constants"
-EditSymptom = require "./edit-symptom"
+EditDiagnosis = require "./edit-diagnosis"
 escapeStringRegexp = require "escape-string-regexp"
 Layers = require "./layers"
 nextTick = require "next-tick"
 React = require "react"
-symptomsCalls = require("../async-calls/symptoms").calls
-SymptomsTable = require "./symptoms-table"
+diagnosesCalls = require("../async-calls/diagnoses").calls
+DiagnosesTable = require "./diagnoses-table"
 
 class module.exports extends React.Component
-  @displayName: "ManageSymptomsView"
+  @displayName: "ManageDiagnosesView"
 
   constructor: ->
     @state =
       filterQuery: ""
-      symptoms: []
-      selectedSymptom: undefined
+      diagnoses: []
+      selectedDiagnosis: undefined
       loadFrom: 0
       total: 0
       loading: false
       layer: undefined
 
-  fetchSymptoms: =>
+  fetchDiagnoses: =>
     @setState loading: true
-    symptomsCalls.getSymptoms escapeStringRegexp(@state.filterQuery),
-      @state.loadFrom, constants.paginationLimit, (err, symptoms, total) =>
+    diagnosesCalls.getDiagnoses escapeStringRegexp(@state.filterQuery),
+      @state.loadFrom, constants.paginationLimit, (err, diagnoses, total) =>
         @setState
-          symptoms: symptoms
+          diagnoses: diagnoses
           total: total
           loading: false
 
@@ -35,55 +35,55 @@ class module.exports extends React.Component
       filterQuery: e.target.value
       loadFrom: 0
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
-    @filterQueryChangeTimer = setTimeout @fetchSymptoms, 200
+    @filterQueryChangeTimer = setTimeout @fetchDiagnoses, 200
 
-  handleNewSymptomClicked: =>
+  handleNewDiagnosisClicked: =>
     layer =
       <CommitCache
-        component={EditSymptom}
+        component={EditDiagnosis}
         data={undefined}
-        dataProperty="symptom"
-        commitMethod={symptomsCalls.commitSymptom}
-        removeMethod={symptomsCalls.removeSymptom}
+        dataProperty="diagnosis"
+        commitMethod={diagnosesCalls.commitDiagnosis}
+        removeMethod={diagnosesCalls.removeDiagnosis}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
-    Layers.addLayer layer, "New Symptom"
+    Layers.addLayer layer, "New Diagnosis"
 
   handlePagerPreviousClicked: =>
     @setState
       loadFrom:
         Math.max 0, @state.loadFrom - constants.paginationLimit
-    nextTick @fetchSymptoms
+    nextTick @fetchDiagnoses
 
   handlePagerNextClicked: =>
     @setState
       loadFrom:
         Math.min @state.total - constants.paginationLimit,
           @state.loadFrom + constants.paginationLimit
-    nextTick @fetchSymptoms
+    nextTick @fetchDiagnoses
 
-  handleSymptomClicked: (symptom) =>
+  handleDiagnosisClicked: (diagnosis) =>
     layer =
       <CommitCache
-        component={EditSymptom}
-        data={symptom}
-        dataProperty="symptom"
-        commitMethod={symptomsCalls.commitSymptom}
-        removeMethod={symptomsCalls.removeSymptom}
+        component={EditDiagnosis}
+        data={diagnosis}
+        dataProperty="diagnosis"
+        commitMethod={diagnosesCalls.commitDiagnosis}
+        removeMethod={diagnosesCalls.removeDiagnosis}
         onDismiss={@handleLayerDismissed}
       />
     @setState
-      selectedSymptom: symptom
+      selectedDiagnosis: diagnosis
       layer: layer
-    Layers.addLayer layer, "Edit Symptom"
+    Layers.addLayer layer, "Edit Diagnosis"
 
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
     @setState
-      selectedSymptom: undefined
+      selectedDiagnosis: undefined
       layer: undefined
-    @fetchSymptoms() if status in ["saved", "removed"]
+    @fetchDiagnoses() if status in ["saved", "removed"]
 
   renderLeftControls: ->
     <div className="form-inline pull-left">
@@ -102,8 +102,8 @@ class module.exports extends React.Component
       <span> </span>
       <button
         className="btn btn-default"
-        onClick={@handleNewSymptomClicked}>
-        <i className="fa fa-pencil" /> New Symptom
+        onClick={@handleNewDiagnosisClicked}>
+        <i className="fa fa-pencil" /> New Diagnosis
       </button>
     </div>
 
@@ -121,7 +121,7 @@ class module.exports extends React.Component
           <i className="fa fa-chevron-left" />
         </button>
     rightButton =
-      if @state.loadFrom + @state.symptoms.length < @state.total
+      if @state.loadFrom + @state.diagnoses.length < @state.total
         <button
           className="btn btn-default"
           onClick={@handlePagerNextClicked}>
@@ -129,7 +129,7 @@ class module.exports extends React.Component
         </button>
     text =
       "#{@state.loadFrom + 1}—" +
-      "#{@state.loadFrom + @state.symptoms.length} of " +
+      "#{@state.loadFrom + @state.diagnoses.length} of " +
       "#{@state.total}"
     <div className="pull-right">
       <div className="pull-right btn-group">
@@ -148,10 +148,10 @@ class module.exports extends React.Component
     </div>
 
   renderTable: ->
-    <SymptomsTable
-      symptoms={@state.symptoms}
-      selectedSymptom={@state.selectedSymptom}
-      onSymptomClick={@handleSymptomClicked}
+    <DiagnosesTable
+      diagnoses={@state.diagnoses}
+      selectedDiagnosis={@state.selectedDiagnosis}
+      onDiagnosisClick={@handleDiagnosisClicked}
     />
 
   render: ->
@@ -162,7 +162,7 @@ class module.exports extends React.Component
     </div>
 
   componentDidMount: ->
-    @fetchSymptoms()
+    @fetchDiagnoses()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?
