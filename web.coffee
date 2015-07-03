@@ -6,7 +6,6 @@ compression = require "compression"
 drugsCalls = require "./async-calls/drugs"
 express = require "express"
 http = require "http"
-complaintsCalls = require "./async-calls/complaints"
 investigationsCalls = require "./async-calls/investigations"
 visitsCalls = require "./async-calls/visits"
 invoicesCalls = require "./async-calls/invoices"
@@ -36,7 +35,6 @@ router.use investigationsCalls.router express: express, bodyParser: bodyParser
 router.use visitsCalls.router express: express, bodyParser: bodyParser
 router.use diagnosesCalls.router express: express, bodyParser: bodyParser
 router.use signsCalls.router express: express, bodyParser: bodyParser
-router.use complaintsCalls.router express: express, bodyParser: bodyParser
 
 
 server = http.createServer router

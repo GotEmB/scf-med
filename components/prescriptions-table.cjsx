@@ -51,7 +51,6 @@ class module.exports extends React.Component
           onClick={@handleRoutineClicked.bind @, row}>
           <i className="fa fa-repeat" />
         </button>
-    debugger
     if row.medicines?.reduce(((x, y) -> x and y.received), {}) is true
       receivedAllI =
         <i

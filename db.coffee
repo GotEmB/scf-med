@@ -77,11 +77,6 @@ exports.Service = metaDB.model "Service",
     amount: Number
   ), "services"
 
-exports.Complaint = metaDB.model "Complaint",
-  new mongoose.Schema(
-    name: String
-  ), "complaints"
-
 exports.Diagnosis = metaDB.model "Diagnosis",
   new mongoose.Schema(
     code: String
@@ -103,7 +98,10 @@ exports.Visit = metaDB.model "Visit",
   new mongoose.Schema(
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
-    complaints: [type: ObjectId, ref: "Complaint"]
+    symptoms: [
+      name: String
+      duration: String
+    ]
     signs: [type: ObjectId, ref: "Sign"]
     diagnoses: [type: ObjectId, ref: "Diagnosis"]
     comments: String

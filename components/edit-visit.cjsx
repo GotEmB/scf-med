@@ -1,9 +1,9 @@
 clone = require "clone"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"
-EditComplaintsTable = require "./edit-complaints-table"
 EditDiagnosesTable = require "./edit-diagnoses-table"
 EditSignsTable = require "./edit-signs-table"
+EditSymptomsTable = require "./edit-symptoms-table"
 EditPatient = require "./edit-patient"
 moment = require "moment"
 nextTick = require "next-tick"
@@ -29,9 +29,9 @@ class module.exports extends React.Component
     visit:
       patient: undefined
       date: undefined
-      complaints: []
       diagnoses: []
       signs: []
+      symptoms: []
       comments: undefined
 
   handleDateChanged: (date) =>
@@ -49,9 +49,9 @@ class module.exports extends React.Component
     visit.comments = comments
     @props.onVisitChange visit
 
-  handleComplaintsChanged: (complaints) =>
+  handleSymptomsChanged: (symptoms) =>
     visit = clone @props.visit
-    visit.complaints = complaints
+    visit.symptoms = symptoms
     @props.onVisitChange visit
 
   handleSignsChanged: (signs) =>
@@ -88,9 +88,9 @@ class module.exports extends React.Component
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
-      <EditComplaintsTable
-        complaints={@props.visit.complaints}
-        onComplaintsChange={@handleComplaintsChanged}
+      <EditSymptomsTable
+        symptoms={@props.visit.symptoms}
+        onSymptomsChange={@handleSymptomsChanged}
       />
       <EditSignsTable
         signs={@props.visit.signs}
