@@ -105,9 +105,21 @@ visit = shape
   patient: patient
   date: date
   signs: arrayOf sign
+  symptoms: arrayOf symptom
   provisionalDiagnoses: arrayOf diagnosis
   finallDiagnoses: arrayOf diagnosis
   comments: string
+
+vital = shape
+  _id: string
+  patient: patient
+  date: date
+  temperature: number
+  pulse: number
+  systole: number
+  diastole: number
+  height: number
+  weight: number
 
 module.exports = {
   brandedDrug
@@ -124,5 +136,6 @@ module.exports = {
   service
   symptom
   test
+  vital
   visit
 }

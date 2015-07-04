@@ -105,4 +105,16 @@ exports.Visit = metaDB.model "Visit",
     comments: String
   ), "visits"
 
+exports.Vital = metaDB.model "Vital",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    temperature: Number
+    pulse: Number
+    systole: Number
+    diastole: Number
+    height: Number
+    weight: Number
+  ), "vitals"
+
 exports.eval = metaDB.db.eval.bind metaDB.db

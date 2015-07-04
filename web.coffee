@@ -7,6 +7,7 @@ drugsCalls = require "./async-calls/drugs"
 express = require "express"
 http = require "http"
 investigationsCalls = require "./async-calls/investigations"
+vitalsCalls = require "./async-calls/vitals"
 visitsCalls = require "./async-calls/visits"
 invoicesCalls = require "./async-calls/invoices"
 patientsCalls = require "./async-calls/patients"
@@ -31,6 +32,7 @@ router.use servicesCalls.router express: express, bodyParser: bodyParser
 router.use testsCalls.router express: express, bodyParser: bodyParser
 router.use invoicesCalls.router express: express, bodyParser: bodyParser
 router.use investigationsCalls.router express: express, bodyParser: bodyParser
+router.use vitalsCalls.router express: express, bodyParser: bodyParser
 router.use visitsCalls.router express: express, bodyParser: bodyParser
 router.use diagnosesCalls.router express: express, bodyParser: bodyParser
 
