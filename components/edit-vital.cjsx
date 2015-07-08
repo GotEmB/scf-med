@@ -121,9 +121,31 @@ class module.exports extends React.Component
     @props.onVitalChange vital
 
   render: ->
-    bmi = (@props.vital.weight ? 0) /
-      Math.pow((@props.vital.height ? Infinity) / 100, 2)
-    bmi = numeral(bmi).format "0.00"
+    if @props.vital.weight? and @props.vital.height?
+      bmi = (@props.vital.weight ? 0) /
+        Math.pow((@props.vital.height ? Infinity) / 100, 2)
+      bmi = numeral(bmi).format "0.00"
+    bmiDescription =
+      unless bmi?
+        undefined
+      else if 0 <= bmi < 18.5
+        "Underweight"
+      else if 18.5 <= bmi < 25
+        "Normal"
+      else if 25 <= bmi < 30
+        "Overweight"
+      else if 30 <= bmi < Infinity
+        "Obese"
+    bmiDescriptionSpan =
+      if bmi?
+        <span className="input-group-addon">{bmiDescription}</span>
+    bmiClassName =
+      unless bmiDescription?
+        undefined
+      else if bmiDescription is "Normal"
+        "input-group has-success"
+      else
+        "input-group has-error"
     newPatientSuggestion =
       component: EditPatient
       dataProperty: "patient"
@@ -203,12 +225,15 @@ class module.exports extends React.Component
       </div>
       <div className="form-group" style={position: "relative"}>
         <label>BMI (kg/m²)</label>
-        <input
-          type="text"
-          className="form-control"
-          value={bmi}
-          disabled
-        />
+        <div className={bmiClassName}>
+          <input
+            type="text"
+            className="form-control"
+            value={bmi}
+            disabled
+          />
+          {bmiDescriptionSpan}
+        </div>
       </div>
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>
