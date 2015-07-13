@@ -102,6 +102,8 @@ exports.Visit = metaDB.model "Visit",
     ]
     provisionalDiagnoses: [type: ObjectId, ref: "Diagnosis"]
     finallDiagnoses: [type: ObjectId, ref: "Diagnosis"]
+    sickDays: Number
+    sickHour: Number
     comments: String
   ), "visits"
 

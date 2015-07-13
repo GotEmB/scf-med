@@ -108,6 +108,8 @@ visit = shape
   symptoms: arrayOf symptom
   provisionalDiagnoses: arrayOf diagnosis
   finallDiagnoses: arrayOf diagnosis
+  sickDays: number
+  sickHour: number
   comments: string
 
 vital = shape

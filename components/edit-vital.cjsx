@@ -165,7 +165,7 @@ class module.exports extends React.Component
         selectedItem={@props.vital.patient}
         onSelectedItemChange={@handlePatientChanged}
         suggestionsFetcher={patientsCalls.getPatients}
-        textFormatter={(x) -> x.name}
+        textFormatter={(x) -> "#{x.name} - #{x.id}"}
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />

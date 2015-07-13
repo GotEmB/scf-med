@@ -27,7 +27,7 @@ calls =
           .limit limit
           .populate "patient"
           .populate "provisionalDiagnoses"
-          .populate "finallDiagnoses"
+          .populate "finalDiagnoses"
           .populate "signs"
           .exec callback
       ]
@@ -45,8 +45,8 @@ calls =
         visit.patient = visit.patient?._id
         for provisionalDiagnosis, i in visit.provisionalDiagnoses
           visit.provisionalDiagnoses[i] = provisionalDiagnosis?._id
-        for finallDiagnosis, i in visit.finallDiagnoses
-          visit.finallDiagnoses[i] = finallDiagnosis?._id
+        for Diagnosis, i in visit.finalDiagnoses
+          visit.finalDiagnoses[i] = finalDiagnosis?._id
         unless visit._id?
           db.Visit.create visit, callback
         else

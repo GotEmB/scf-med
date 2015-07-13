@@ -31,6 +31,8 @@ class module.exports extends React.Component
       date: undefined
       provisionalDiagnoses: []
       finalDiagnoses: []
+      sickDays: undefined
+      sickHours: undefined
       signs: []
       symptoms: []
       comments: undefined
@@ -70,6 +72,31 @@ class module.exports extends React.Component
     visit.finalDiagnoses = finalDiagnoses
     @props.onVisitChange visit
 
+  handleSickDaysChanged: (sickDays) =>
+    vital = clone @props.visit
+    sickDaysNumber =
+      unless sickDays?
+        undefined
+      else if isNaN sickDays
+        @props.visit.sickDays
+      else
+        Number sickDays
+    visit.sickDays = SickDaysNumber
+    @props.onVitalChange visit
+
+  handleSickHoursChanged: (sickHours) =>
+    visit = clone @props.visit
+    sickHoursNumber =
+      unless sickHours?
+        undefined
+      else if isNaN sickHours
+        @props.visit.sickHours
+      else
+        Number sickHours
+    visit.sickHours = sickHoursNumber
+    @props.onVitalChange visit
+
+
   render: ->
     newPatientSuggestion =
       component: EditPatient
@@ -90,7 +117,7 @@ class module.exports extends React.Component
         selectedItem={@props.visit.patient}
         onSelectedItemChange={@handlePatientChanged}
         suggestionsFetcher={patientsCalls.getPatients}
-        textFormatter={(x) -> x.name}
+        textFormatter={(x) -> "#{x.name} - #{x.id}"}
         label="Patient"
         newSuggestion={newPatientSuggestion}
       />
@@ -122,6 +149,24 @@ class module.exports extends React.Component
         finalDiagnoses={@props.visit.finalDiagnoses}
         onFinalDiagnosesChange={@handleFinalDiagnosesChanged}
       />
+      <div className="form-group" style={position: "relative"}>
+        <label>Sick Day/s</label>
+        <TextInput
+          type="text"
+          className="form-control"
+          value={@props.visit.sickDays}
+          onChange={@handleSickDaysChanged}
+        />
+      </div>
+      <div className="form-group" style={position: "relative"}>
+        <label>Sick Hour/s</label>
+        <TextInput
+          type="text"
+          className="form-control"
+          value={@props.visit.sickHours}
+          onChange={@handleSickHoursChanged}
+        />
+      </div>
     </div>
 
   componentWillMount: ->
