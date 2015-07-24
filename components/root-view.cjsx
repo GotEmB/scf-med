@@ -5,6 +5,7 @@ PatientsView = require "./patients-view"
 PrescriptionsView = require "./prescriptions-view"
 VisitsView = require "./visits-view"
 VitalsView = require "./vitals-view"
+MemosView = require "./memos-view"
 React = require "react"
 
 class module.exports extends React.Component
@@ -30,6 +31,8 @@ class module.exports extends React.Component
           <VisitsView />
         when "vitals"
           <VitalsView />
+        when "memos"
+          <MemosView />
         when "prescriptions"
           <PrescriptionsView />
         when "investigations"

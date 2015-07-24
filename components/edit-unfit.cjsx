@@ -1,9 +1,8 @@
 clone = require "clone"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"
-EditTestsTable = require "./edit-tests-table"
 EditPatient = require "./edit-patient"
-InvestigationPrintView = require "./investigation-print-view"
+InvoicePrintView = require "./invoice-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
@@ -15,44 +14,37 @@ TextInput = require "./text-input"
 TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
-  @displayName: "EditInvestigation"
+  @displayName: "EditInvoice"
 
   @propTypes:
-    investigation: reactTypes.investigation
-    onInvestigationChange: React.PropTypes.func.isRequired
+    invoice: reactTypes.invoice
+    onInvoiceChange: React.PropTypes.func.isRequired
     onCommit: React.PropTypes.func
 
   @defaultProps:
-    investigation:
+    invoice:
       patient: undefined
       date: undefined
-      tests: []
-      comments: undefined
 
   componentWillReceiveProps: (props) ->
-    if deepDiff(@props.investigation, props.investigation)?
-      printView = <InvestigationPrintView investigation={props.investigation} />
+    if deepDiff(@props.invoice, props.invoice)?
+      printView = <InvoicePrintView invoice={props.invoice} />
       Page.setPrintView printView
 
   handleDateChanged: (date) =>
-    investigation = clone @props.investigation
-    investigation.date = date
-    @props.onInvestigationChange investigation
+    invoice = clone @props.invoice
+    invoice.date = date
+    @props.onInvoiceChange invoice
 
   handlePatientChanged: (patient) =>
-    investigation = clone @props.investigation
-    investigation.patient = patient
-    @props.onInvestigationChange investigation
+    invoice = clone @props.invoice
+    invoice.patient = patient
+    @props.onInvoiceChange invoice
 
   handleCommentsChanged: (comments) =>
-    investigation = clone @props.investigation
-    investigation.comments = comments
-    @props.onInvestigationChange investigation
-
-  handleTestsChanged: (tests) =>
-    investigation = clone @props.investigation
-    investigation.tests = tests
-    @props.onInvestigationChange investigation
+    invoice = clone @props.invoice
+    invoice.comments = comments
+    @props.onInvoiceChange invoice
 
   handlePrintClicked: =>
     @props.onCommit? true, ->
@@ -65,18 +57,31 @@ class module.exports extends React.Component
       dataProperty: "patient"
       commitMethod: patientsCalls.commitPatient
       removeMethod: patientsCalls.removePatient
+    if @props.invoice.serial?
+      serial =
+        "#{@props.invoice.serial.year}-\
+        #{padNumber @props.invoice.serial.number, 5}"
     <div>
+      <div className="form-group" style={position: "relative"}>
+        <label>Serial</label>
+        <input
+          type="text"
+          value={serial}
+          className="form-control"
+          disabled
+        />
+      </div>
       <div className="form-group" style={position: "relative"}>
         <label>Date & Time</label>
         <DateInput
-          date={@props.investigation.date}
+          date={@props.invoice.date}
           onDateChange={@handleDateChanged}
           hasTime={true}
           className="form-control"
         />
       </div>
       <TypeaheadSelect
-        selectedItem={@props.investigation.patient}
+        selectedItem={@props.invoice.patient}
         onSelectedItemChange={@handlePatientChanged}
         suggestionsFetcher={patientsCalls.getPatients}
         textFormatter={(x) -> "#{x.name} - #{x.id}"}
@@ -88,14 +93,10 @@ class module.exports extends React.Component
         <TextInput
           type="text"
           className="form-control"
-          value={@props.investigation.comments}
+          value={@props.invoice.comments}
           onChange={@handleCommentsChanged}
         />
       </div>
-      <EditTestsTable
-        tests={@props.investigation.tests}
-        onTestsChange={@handleTestsChanged}
-      />
       <div className="text-center">
         <button className="btn btn-primary" onClick={@handlePrintClicked}>
           <i className="fa fa-print" /> Save & Print
@@ -104,11 +105,11 @@ class module.exports extends React.Component
     </div>
 
   componentWillMount: ->
-    if Object.keys(@props.investigation).length is 0
-      investigation = clone @constructor.defaultProps.investigation
-      investigation.date = moment().toISOString()
-      @props.onInvestigationChange investigation
-    printView = <InvestigationPrintView investigation={@props.investigation} />
+    if Object.keys(@props.invoice).length is 0
+      invoice = clone @constructor.defaultProps.invoice
+      invoice.date = moment().toISOString()
+      @props.onInvoiceChange invoice
+    printView = <InvoicePrintView invoice={@props.invoice} />
     Page.setPrintView printView
 
   componentWillUnmount: ->
