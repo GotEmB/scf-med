@@ -92,7 +92,7 @@ class module.exports extends React.Component
         onSelectedItemChange={@handlePatientChanged}
         suggestionsFetcher={patientsCalls.getPatients}
         textFormatter={(x) -> "#{x.name} - #{x.id}"}
-        label="Patient"
+        label="* Patient (required)"
         newSuggestion={newPatientSuggestion}
       />
       <EditServicesTable
