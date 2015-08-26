@@ -2,9 +2,11 @@ CommitCache = require "./commit-cache"
 constants = require "../constants"
 EditUnfit = require "./edit-unfit"
 EditFit = require "./edit-fit"
+EditReferral = require "./edit-referral"
 escapeStringRegexp = require "escape-string-regexp"
-unfitCalls = require("../async-calls/unfit").calls
-fitCalls = require("../async-calls/fit").calls
+unfitsCalls = require("../async-calls/unfits").calls
+fitsCalls = require("../async-calls/fits").calls
+referralsCalls = require("../async-calls/referrals").calls
 Layers = require "./layers"
 moment = require "moment"
 nextTick = require "next-tick"
@@ -20,8 +22,8 @@ class module.exports extends React.Component
         component={EditUnfit}
         data={undefined}
         dataProperty="unfit"
-        commitMethod={unfitCalls.commitUnfit}
-        removeMethod={unfitCalls.removeUnfit}
+        commitMethod={unfitsCalls.commitUnfits}
+        removeMethod={unfitsCalls.removeUnfits}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
@@ -33,8 +35,21 @@ class module.exports extends React.Component
         component={EditFit}
         data={undefined}
         dataProperty="fit"
-        commitMethod={fitCalls.commitFit}
-        removeMethod={fitCalls.removeFit}
+        commitMethod={fitsCalls.commitFits}
+        removeMethod={fitsCalls.removeFits}
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState layer: layer
+    Layers.addLayer layer, "Fit To Work"
+
+  handleReferralClicked: =>
+    layer =
+      <CommitCache
+        component={EditReferral}
+        data={undefined}
+        dataProperty="fit"
+        commitMethod={referralsCalls.commitReferrals}
+        removeMethod={referralsCalls.removeReferrals}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
@@ -58,6 +73,12 @@ class module.exports extends React.Component
         className="btn btn-default"
         onClick={@handleFitClicked}>
         <i className="fa fa-pencil" /> Fit To Work
+      </button>
+      <span> </span>
+      <button
+        className="btn btn-default"
+        onClick={@handleReferralClicked}>
+        <i className="fa fa-pencil" /> Referral
       </button>
       <span> </span>
     </div>

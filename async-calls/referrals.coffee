@@ -5,7 +5,7 @@ moment = require "moment"
 
 calls =
 
-  getVisits: (query, skip, limit, callback) ->
+  getFits: (query, skip, limit, callback) ->
     if typeof query is "string"
       textQuery = new RegExp query, "i"
     else
@@ -26,9 +26,6 @@ calls =
           .skip skip
           .limit limit
           .populate "patient"
-          .populate "diagnoses"
-          .populate "signs"
-          .populate "symptoms"
           .exec callback
       ]
       total: ["patientIDs", (callback, {patientIDs}) ->
@@ -39,14 +36,28 @@ calls =
       (err, {visits, total}) ->
         callback err, visits, total
 
-  commitVisit: (visit, callback) ->
-    unless diagnosis._id?
-      db.Diagnosis.create diagnosis, callback
-    else
-      db.Diagnosis.findByIdAndUpdate diagnosis._id, diagnosis, callback
+  commitfit: (fit, callback) ->
+    async.waterfall [
+      (callback) ->
+        fit.patient = fit.patient?._id
+        for provisionalDiagnosis, i in fit.provisionalDiagnoses
+          fit.provisionalDiagnoses[i] = provisionalDiagnosis?._id
+        for Diagnosis, i in fit.finalDiagnoses
+          fit.finalDiagnoses[i] = finalDiagnosis?._id
+        unless fit._id?
+          db.fit.create fit, callback
+        else
+          db.fit.findByIdAndUpdate fit._id, fit, callback
+      (fit, callback) ->
+        db.Patient.populate fitfit, "patient", callback
+      (fit, callback) ->
+        db.Diagnosis.populate fit, "provisionalDiagnoses", callback
+      (fit, callback) ->
+        db.Diagnosis.populate fit, "finalDiagnoses", callback
+    ], callback
 
-  removeVisit: (visit, callback) ->
-    db.Visit.remove _id: visit._id , callback
+  removefit: (fit, callback) ->
+    db.fit.remove _id: fit._id , callback
 
   getSymptomNameSuggestions: (query, skip, limit, callback) ->
     query = new RegExp query, "i"

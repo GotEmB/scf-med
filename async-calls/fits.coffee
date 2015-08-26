@@ -5,7 +5,7 @@ moment = require "moment"
 
 calls =
 
-  getVisits: (query, skip, limit, callback) ->
+  getFits: (query, skip, limit, callback) ->
     if typeof query is "string"
       textQuery = new RegExp query, "i"
     else
@@ -26,9 +26,6 @@ calls =
           .skip skip
           .limit limit
           .populate "patient"
-          .populate "provisionalDiagnoses"
-          .populate "finalDiagnoses"
-          .populate "signs"
           .exec callback
       ]
       total: ["patientIDs", (callback, {patientIDs}) ->
@@ -39,28 +36,28 @@ calls =
       (err, {visits, total}) ->
         callback err, visits, total
 
-  commitUnfit: (unfit, callback) ->
+  commitfit: (fit, callback) ->
     async.waterfall [
       (callback) ->
-        unfit.patient = unfit.patient?._id
-        for provisionalDiagnosis, i in unfit.provisionalDiagnoses
-          unfit.provisionalDiagnoses[i] = provisionalDiagnosis?._id
-        for Diagnosis, i in unfit.finalDiagnoses
-          unfit.finalDiagnoses[i] = finalDiagnosis?._id
-        unless unfit._id?
-          db.Unfit.create unfit, callback
+        fit.patient = fit.patient?._id
+        for provisionalDiagnosis, i in fit.provisionalDiagnoses
+          fit.provisionalDiagnoses[i] = provisionalDiagnosis?._id
+        for Diagnosis, i in fit.finalDiagnoses
+          fit.finalDiagnoses[i] = finalDiagnosis?._id
+        unless fit._id?
+          db.fit.create fit, callback
         else
-          db.Unfit.findByIdAndUpdate unfit._id, unfit, callback
-      (unfit, callback) ->
-        db.Patient.populate unfit, "patient", callback
-      (unfit, callback) ->
-        db.Diagnosis.populate unfit, "provisionalDiagnoses", callback
-      (unfit, callback) ->
-        db.Diagnosis.populate unfit, "finalDiagnoses", callback
+          db.fit.findByIdAndUpdate fit._id, fit, callback
+      (fit, callback) ->
+        db.Patient.populate fitfit, "patient", callback
+      (fit, callback) ->
+        db.Diagnosis.populate fit, "provisionalDiagnoses", callback
+      (fit, callback) ->
+        db.Diagnosis.populate fit, "finalDiagnoses", callback
     ], callback
 
-  removeUnfit: (unfit, callback) ->
-    db.Unfit.remove _id: unfit._id , callback
+  removefit: (fit, callback) ->
+    db.fit.remove _id: fit._id , callback
 
   getSymptomNameSuggestions: (query, skip, limit, callback) ->
     query = new RegExp query, "i"

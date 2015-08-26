@@ -45,6 +45,24 @@ invoice = shape
   comments: string
   copay: number
 
+fit = shape
+  _id: string
+  patient: patient
+  date: date
+  comments: string
+
+unfit = shape
+  _id: string
+  patient: patient
+  date: date
+  comments: string
+
+referral = shape
+  _id: string
+  patient: patient
+  date: date
+  comments: string
+
 medicine = shape
   brandedDrug: brandedDrug
   dosage: string
@@ -106,8 +124,7 @@ visit = shape
   date: date
   signs: arrayOf sign
   symptoms: arrayOf symptom
-  provisionalDiagnoses: arrayOf diagnosis
-  finallDiagnoses: arrayOf diagnosis
+  diagnoses: arrayOf diagnosis
   sickDays: number
   sickHour: number
   comments: string
@@ -127,6 +144,7 @@ module.exports = {
   brandedDrug
   date
   diagnosis
+  fit
   genericDrug
   invoice
   investigation
@@ -134,10 +152,12 @@ module.exports = {
   patient
   prescription
   reactComponent
+  referral
   sign
   service
   symptom
   test
+  unfit
   vital
   visit
 }

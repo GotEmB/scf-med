@@ -29,8 +29,7 @@ class module.exports extends React.Component
     visit:
       patient: undefined
       date: undefined
-      provisionalDiagnoses: []
-      finalDiagnoses: []
+      diagnoses: []
       sickDays: undefined
       sickHours: undefined
       signs: []
@@ -62,14 +61,9 @@ class module.exports extends React.Component
     visit.signs = signs
     @props.onVisitChange visit
 
-  handleprovisionalDiagnosesChanged: (provisionalDiagnoses) =>
+  handleDiagnosesChanged: (diagnoses) =>
     visit = clone @props.visit
-    visit.provisionalDiagnoses = provisionalDiagnoses
-    @props.onVisitChange visit
-
-  handlefinalDiagnosesChanged: (finalDiagnoses) =>
-    visit = clone @props.visit
-    visit.finalDiagnoses = finalDiagnoses
+    visit.diagnoses = diagnoses
     @props.onVisitChange visit
 
   handleSickDaysChanged: (sickDays) =>
@@ -140,14 +134,9 @@ class module.exports extends React.Component
         />
       </div>
       <EditDiagnosesTable
-        title="Provisional Diagnosis"
-        provisionalDiagnoses={@props.visit.provisionalDiagnoses}
-        onProvisionalDiagnosesChange={@handleProvisionalDiagnosesChanged}
-      />
-      <EditDiagnosesTable
         title="Final Diagnosis"
-        finalDiagnoses={@props.visit.finalDiagnoses}
-        onFinalDiagnosesChange={@handleFinalDiagnosesChanged}
+        diagnoses={@props.visit.diagnoses}
+        onDiagnosesChange={@handleDiagnosesChanged}
       />
       <div className="form-group" style={position: "relative"}>
         <label>Sick Day/s</label>

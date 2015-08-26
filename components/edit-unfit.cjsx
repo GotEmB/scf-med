@@ -2,7 +2,7 @@ clone = require "clone"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"
 EditPatient = require "./edit-patient"
-InvoicePrintView = require "./invoice-print-view"
+UnfitPrintView = require "./unfit-print-view"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
@@ -14,37 +14,37 @@ TextInput = require "./text-input"
 TypeaheadSelect = require "./typeahead-select"
 
 class module.exports extends React.Component
-  @displayName: "EditInvoice"
+  @displayName: "EditUnfit"
 
   @propTypes:
-    invoice: reactTypes.invoice
-    onInvoiceChange: React.PropTypes.func.isRequired
+    unfit: reactTypes.unfit
+    onUnfitChange: React.PropTypes.func.isRequired
     onCommit: React.PropTypes.func
 
   @defaultProps:
-    invoice:
+    unfit:
       patient: undefined
       date: undefined
 
   componentWillReceiveProps: (props) ->
-    if deepDiff(@props.invoice, props.invoice)?
-      printView = <InvoicePrintView invoice={props.invoice} />
+    if deepDiff(@props.unfit, props.unfit)?
+      printView = <UnfitPrintView unfit={props.unfit} />
       Page.setPrintView printView
 
   handleDateChanged: (date) =>
-    invoice = clone @props.invoice
-    invoice.date = date
-    @props.onInvoiceChange invoice
+    unfit = clone @props.unfit
+    unfit.date = date
+    @props.onUnfitChange unfit
 
   handlePatientChanged: (patient) =>
-    invoice = clone @props.invoice
-    invoice.patient = patient
-    @props.onInvoiceChange invoice
+    unfit = clone @props.unfit
+    unfit.patient = patient
+    @props.onUnfitChange unfit
 
   handleCommentsChanged: (comments) =>
-    invoice = clone @props.invoice
-    invoice.comments = comments
-    @props.onInvoiceChange invoice
+    unfit = clone @props.unfit
+    unfit.comments = comments
+    @props.onUnfitChange unfit
 
   handlePrintClicked: =>
     @props.onCommit? true, ->
@@ -57,10 +57,10 @@ class module.exports extends React.Component
       dataProperty: "patient"
       commitMethod: patientsCalls.commitPatient
       removeMethod: patientsCalls.removePatient
-    if @props.invoice.serial?
+    if @props.unfit.serial?
       serial =
-        "#{@props.invoice.serial.year}-\
-        #{padNumber @props.invoice.serial.number, 5}"
+        "#{@props.unfit.serial.year}-\
+        #{padNumber @props.unfit.serial.number, 5}"
     <div>
       <div className="form-group" style={position: "relative"}>
         <label>Serial</label>
@@ -74,14 +74,14 @@ class module.exports extends React.Component
       <div className="form-group" style={position: "relative"}>
         <label>Date & Time</label>
         <DateInput
-          date={@props.invoice.date}
+          date={@props.unfit.date}
           onDateChange={@handleDateChanged}
           hasTime={true}
           className="form-control"
         />
       </div>
       <TypeaheadSelect
-        selectedItem={@props.invoice.patient}
+        selectedItem={@props.unfit.patient}
         onSelectedItemChange={@handlePatientChanged}
         suggestionsFetcher={patientsCalls.getPatients}
         textFormatter={(x) -> "#{x.name} - #{x.id}"}
@@ -93,7 +93,7 @@ class module.exports extends React.Component
         <TextInput
           type="text"
           className="form-control"
-          value={@props.invoice.comments}
+          value={@props.unfit.comments}
           onChange={@handleCommentsChanged}
         />
       </div>
@@ -105,11 +105,11 @@ class module.exports extends React.Component
     </div>
 
   componentWillMount: ->
-    if Object.keys(@props.invoice).length is 0
-      invoice = clone @constructor.defaultProps.invoice
-      invoice.date = moment().toISOString()
-      @props.onInvoiceChange invoice
-    printView = <InvoicePrintView invoice={@props.invoice} />
+    if Object.keys(@props.unfit).length is 0
+      unfit = clone @constructor.defaultProps.unfit
+      unfit.date = moment().toISOString()
+      @props.onUnfitChange unfit
+    printView = <UnfitPrintView unfit={@props.unfit} />
     Page.setPrintView printView
 
   componentWillUnmount: ->
