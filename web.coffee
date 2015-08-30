@@ -5,7 +5,6 @@ bundleRouter = require "./routers/bundle-router"
 compression = require "compression"
 drugsCalls = require "./async-calls/drugs"
 express = require "express"
-fitsCalls = require "./async-calls/fits"
 http = require "http"
 investigationsCalls = require "./async-calls/investigations"
 vitalsCalls = require "./async-calls/vitals"
@@ -28,7 +27,6 @@ router.use "/bundle", bundleRouter
 router.use "/bundle", bundleRouter
 router.use patientsCalls.router express: express, bodyParser: bodyParser
 router.use drugsCalls.router express: express, bodyParser: bodyParser
-router.use fitsCalls.router express: express, bodyParser: bodyParser
 router.use prescriptionsCalls.router express: express, bodyParser: bodyParser
 router.use servicesCalls.router express: express, bodyParser: bodyParser
 router.use testsCalls.router express: express, bodyParser: bodyParser

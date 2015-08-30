@@ -61,6 +61,7 @@ referral = shape
   _id: string
   patient: patient
   date: date
+  consult: string
   comments: string
 
 medicine = shape
@@ -146,18 +147,18 @@ module.exports = {
   diagnosis
   fit
   genericDrug
-  invoice
   investigation
+  invoice
   medicine
   patient
   prescription
   reactComponent
   referral
-  sign
   service
+  sign
   symptom
   test
   unfit
-  vital
   visit
+  vital
 }
