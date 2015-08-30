@@ -6,6 +6,7 @@ navItems = [
   "Patients"
   "Visits"
   "Vitals"
+  "Memos"
   "Investigations"
   "Prescriptions"
   "Billing"
