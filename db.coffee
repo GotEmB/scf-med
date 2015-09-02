@@ -37,40 +37,6 @@ exports.Invoice = metaDB.model "Invoice",
     copay: Number
   ), "invoices"
 
-exports.Fit = metaDB.model "Fit",
-  new mongoose.Schema(
-    serial: {
-      year: Number
-      number: Number
-    }
-    patient: type: ObjectId, ref: "Patient"
-    date: type: Date, default: Date.now()
-    comments: String
-  ), "fits"
-
-exports.Unfit = metaDB.model "Unfit",
-  new mongoose.Schema(
-    serial: {
-      year: Number
-      number: Number
-    }
-    patient: type: ObjectId, ref: "Patient"
-    date: type: Date, default: Date.now()
-    comments: String
-  ), "unfits"
-
-exports.Referral = metaDB.model "Referral",
-  new mongoose.Schema(
-    serial: {
-      year: Number
-      number: Number
-    }
-    patient: type: ObjectId, ref: "Patient"
-    date: type: Date, default: Date.now()
-    consult: String
-    comments: String
-  ), "referrals"
-
 exports.Patient = metaDB.model "Patient",
   new mongoose.Schema(
     id: String
@@ -103,6 +69,13 @@ exports.Prescription = metaDB.model "Prescription",
     routine: Boolean
     pharmacy: String
   ), "prescriptions"
+
+exports.Referral = metaDB.model "Referral",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    consult: String
+  ), "referrals"
 
 exports.Service = metaDB.model "Service",
   new mongoose.Schema(

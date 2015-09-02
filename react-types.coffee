@@ -45,25 +45,6 @@ invoice = shape
   comments: string
   copay: number
 
-fit = shape
-  _id: string
-  patient: patient
-  date: date
-  comments: string
-
-unfit = shape
-  _id: string
-  patient: patient
-  date: date
-  comments: string
-
-referral = shape
-  _id: string
-  patient: patient
-  date: date
-  consult: string
-  comments: string
-
 medicine = shape
   brandedDrug: brandedDrug
   dosage: string
@@ -95,6 +76,12 @@ prescription = shape
   medicines: arrayOf medicine
   routine: bool
   pharmacy: string
+
+referral = shape
+  _id: string
+  patient: patient
+  date: date
+  consult: string
 
 service = shape
   _id: string
@@ -145,7 +132,6 @@ module.exports = {
   brandedDrug
   date
   diagnosis
-  fit
   genericDrug
   investigation
   invoice
@@ -158,7 +144,6 @@ module.exports = {
   sign
   symptom
   test
-  unfit
   visit
   vital
 }

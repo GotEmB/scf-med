@@ -12,6 +12,7 @@ visitsCalls = require "./async-calls/visits"
 invoicesCalls = require "./async-calls/invoices"
 patientsCalls = require "./async-calls/patients"
 prescriptionsCalls = require "./async-calls/prescriptions"
+referralsCalls = require "./async-calls/referrals"
 rootViewRouter = require "./routers/root-view-router"
 staticRouter = require "./routers/static-router"
 servicesCalls = require "./async-calls/services"
@@ -28,6 +29,7 @@ router.use "/bundle", bundleRouter
 router.use patientsCalls.router express: express, bodyParser: bodyParser
 router.use drugsCalls.router express: express, bodyParser: bodyParser
 router.use prescriptionsCalls.router express: express, bodyParser: bodyParser
+router.use referralsCalls.router express: express, bodyParser: bodyParser
 router.use servicesCalls.router express: express, bodyParser: bodyParser
 router.use testsCalls.router express: express, bodyParser: bodyParser
 router.use invoicesCalls.router express: express, bodyParser: bodyParser
