@@ -50,6 +50,8 @@ class module.exports extends React.Component
       <td style={verticalAlign: "middle"}>{datetime}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.name}</td>
+      <td style={verticalAlign: "middle"}>{row.consult}</td>
+      <td style={verticalAlign: "middle"}>{row.referred_to}</td>
       <td className="text-right" style={btnTdStyle}>
         <button
           className="btn btn-primary btn-sm"
@@ -68,6 +70,8 @@ class module.exports extends React.Component
             <th>Date & Time</th>
             <th>Patient ID</th>
             <th>Patient Name</th>
+            <th>Referred to</th>
+            <th>Doctor</th>
             <th style={width: 1} />
           </tr>
         </thead>

@@ -82,6 +82,12 @@ referral = shape
   patient: patient
   date: date
   consult: string
+  referred_to: string
+  complaint: string
+  diagnosis: string
+  instruction: string
+  comments: string
+
 
 service = shape
   _id: string

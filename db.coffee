@@ -75,6 +75,11 @@ exports.Referral = metaDB.model "Referral",
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
     consult: String
+    referred_to: String
+    complaint: String
+    diagnosis: String
+    instruction: String
+    comments: String
   ), "referrals"
 
 exports.Service = metaDB.model "Service",

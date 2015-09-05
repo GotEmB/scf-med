@@ -4,9 +4,7 @@ React = require "react"
 
 navItems = [
   "Patients"
-  "Visits"
-  "Vitals"
-  "Referrals"
+  "Cases"
   "Investigations"
   "Prescriptions"
   "Billing"

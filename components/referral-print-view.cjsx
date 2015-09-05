@@ -72,12 +72,59 @@ class module.exports extends React.Component
             {@props.referral?.patient?.sex}
           </td>
         </tr>
+        <tr>
+          <td style={tdKeyStyle}>Referral to: </td>
+          <td style={tdValueStyle}>
+            {@props.referral?.consult}
+          </td>
+          <td style={tdKeyStyle}>Age:</td>
+          <td style={tdValueStyle}>
+            {age}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  renderBody: ->
+    services = (@props.invoice?.services ? [])
+      .filter (x) -> x?
+    thStyle = height: 50, border: "solid 1px black"
+    amountTStyle =
+      border: "solid 1px black"
+      whiteSpace: "nowrap"
+    <table className="table table-condensed" style={borderColor: "black"}>
+      <tbody>
+        <tr>
+          <th style={thStyle}>Doctor's Name & Address: </th>
+          <td style={tdValueStyle} colSpan={3}>
+            {@props.referral?.referred_to}
+        </tr>
+        <tr>
+          <th style={thStyle}>Major Complaint: </th>
+          <td style={tdValueStyle} colSpan={3}>
+            {@props.referral?.complaint}
+        </tr>
+        <tr>
+          <th style={thStyle}>Diagnosis: </th>
+          <td style={tdValueStyle} colSpan={3}>
+            {@props.referral?.diagnosis}
+        </tr>
+        <tr>
+          <th style={thStyle}>Special Instructions: </th>
+          <td style={tdValueStyle} colSpan={3}>
+            {@props.referral?.instruction}
+        </tr>
+        <tr>
+          <th style={thStyle}>Comments: </th>
+          <td style={tdValueStyle} colSpan={3}>
+            {@props.referral?.comments}
+        </tr>
       </tbody>
     </table>
 
   renderSignature: ->
     <div>
-      <div style={height: 30} />
+      <div style={height: 50} />
       <div style={fontWeight: "bold"}>{constants.signature}</div>
     </div>
 
@@ -98,6 +145,8 @@ class module.exports extends React.Component
       {@renderHeader()}
       <hr style={margin: "5px 0 15px", borderColor: "black"} />
       {@renderDetail()}
+      <div style={height: 30} />
+      {@renderBody()}
       <br />
       {@renderSignature()}
       {@renderFooter()}
