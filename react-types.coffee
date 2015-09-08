@@ -102,6 +102,12 @@ unfit = shape
   diagnosis: string
   comments: string
 
+memo = shape
+  _id: string
+  patient: patient
+  date: date
+  comments: string
+
 service = shape
   _id: string
   code: string
@@ -156,6 +162,7 @@ module.exports = {
   investigation
   invoice
   medicine
+  memo
   patient
   prescription
   reactComponent

@@ -5,6 +5,7 @@ escapeStringRegexp = require "escape-string-regexp"
 Layers = require "./layers"
 moment = require "moment"
 nextTick = require "next-tick"
+MemosView = require "./memos-view"
 VisitsView = require "./visits-view"
 VitalsView = require "./vitals-view"
 ReferralsView = require "./referrals-view"
@@ -74,6 +75,20 @@ class module.exports extends React.Component
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
 
+  handleMemoClicked: =>
+    layer =
+      <CommitCache
+        component={MemosView}
+        data={undefined}
+        dataProperty="Memo"
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState layer: layer
+    Layers.addLayer layer, "Memos"
+
+  handleLayerDismissed: ({status}) =>
+    Layers.removeLayer @state.layer
+
   render: ->
     <div className="form-inline pull-right">
       <button
@@ -102,6 +117,11 @@ class module.exports extends React.Component
         className="btn btn-default"
         onClick={@handleUnfitClicked}>
         <i className="fa fa-pencil" /> Unfit
+      </button>
+      <button
+        className="btn btn-default"
+        onClick={@handleMemoClicked}>
+        <i className="fa fa-pencil" /> Memo
       </button>
     </div>
 

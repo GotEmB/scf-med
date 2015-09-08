@@ -10,6 +10,7 @@ drugsCalls = require "./async-calls/drugs"
 fitsCalls = require "./async-calls/fits"
 investigationsCalls = require "./async-calls/investigations"
 invoicesCalls = require "./async-calls/invoices"
+memosCalls = require "./async-calls/memos"
 patientsCalls = require "./async-calls/patients"
 prescriptionsCalls = require "./async-calls/prescriptions"
 referralsCalls = require "./async-calls/referrals"
@@ -33,6 +34,7 @@ router.use drugsCalls.router express: express, bodyParser: bodyParser
 router.use fitsCalls.router express: express, bodyParser: bodyParser
 router.use investigationsCalls.router express: express, bodyParser: bodyParser
 router.use invoicesCalls.router express: express, bodyParser: bodyParser
+router.use memosCalls.router express: express, bodyParser: bodyParser
 router.use patientsCalls.router express: express, bodyParser: bodyParser
 router.use prescriptionsCalls.router express: express, bodyParser: bodyParser
 router.use referralsCalls.router express: express, bodyParser: bodyParser
