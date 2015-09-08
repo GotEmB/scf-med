@@ -1,35 +1,30 @@
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
-PrescriptionPrintView = require "./prescription-print-view"
+FitPrintView = require "./fit-print-view"
 React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "PrescriptionsTable"
+  @displayName: "FitsTable"
 
   @propTypes:
-    prescriptions: React.PropTypes.arrayOf reactTypes.prescription
-    selectedPrescription: reactTypes.prescription
-    onPrescriptionClick: React.PropTypes.func
-    onPrescriptionRoutineClick: React.PropTypes.func
+    fits: React.PropTypes.arrayOf reactTypes.fit
+    selectedFit: reactTypes.fit
+    onFitClick: React.PropTypes.func
 
   @defaultProps:
-    prescriptions: []
+    fits: []
 
   constructor: ->
     @state =
       printView: undefined
 
   handleRowClicked: (row) =>
-    @props.onPrescriptionClick? row
-
-  handleRoutineClicked: (row, e) =>
-    @props.onPrescriptionRoutineClick row
-    e.stopPropagation()
+    @props.onFitClick? row
 
   handlePrintClicked: (row, e) =>
-    printView = <PrescriptionPrintView prescription={row} />
+    printView = <FitPrintView fit={row} />
     @setState printView: printView
     Page.setPrintView printView
     nextTick =>
@@ -43,20 +38,6 @@ class module.exports extends React.Component
 
   renderRow: (row, key) ->
     datetime = moment(row.date).format("lll") if row.date?
-    if row.routine
-      routineButton =
-        <button
-          className="btn btn-default btn-sm"
-          style={marginLeft: 3, marginRight: 3}
-          onClick={@handleRoutineClicked.bind @, row}>
-          <i className="fa fa-repeat" />
-        </button>
-    if row.medicines?.reduce(((x, y) -> x and y.received), {}) is true
-      receivedAllI =
-        <i
-          className="fa fa-fw fa-check text-success"
-          style={lineHeight: "inherit", margin: "0 10px"}
-        />
     className = "active" if row is @props.selectedPatient
     btnTdStyle =
       padding: 3
@@ -70,8 +51,6 @@ class module.exports extends React.Component
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.name}</td>
       <td className="text-right" style={btnTdStyle}>
-        {routineButton}
-        {receivedAllI}
         <button
           className="btn btn-primary btn-sm"
           style={marginLeft: 3}
@@ -93,7 +72,7 @@ class module.exports extends React.Component
           </tr>
         </thead>
         <tbody>
-          {@renderRow row, i for row, i in @props.prescriptions}
+          {@renderRow row, i for row, i in @props.fits}
         </tbody>
       </table>
     </div>

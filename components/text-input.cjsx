@@ -6,6 +6,10 @@ class module.exports extends React.Component
   @propTypes:
     value: React.PropTypes.string
     onChange: React.PropTypes.func
+    multiline: React.PropTypes.bool
+
+  @defaultProps:
+    multiline: false
 
   handleValueChanged: (e) =>
     value =
@@ -16,10 +20,21 @@ class module.exports extends React.Component
     @props.onChange? value
 
   render: ->
-    <input
-      type="text"
-      className={@props.className}
-      style={@props.style}
-      value={@props.value ? ""}
-      onChange={@handleValueChanged}
-    />
+    if @props.multiline
+      style = @props.style ? {}
+      style.resize = "vertical"
+      <textarea
+        type="text"
+        className={@props.className}
+        style={style}
+        value={@props.value ? ""}
+        onChange={@handleValueChanged}
+      />
+    else
+      <input
+        type="text"
+        className={@props.className}
+        style={@props.style}
+        value={@props.value ? ""}
+        onChange={@handleValueChanged}
+      />

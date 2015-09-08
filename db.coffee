@@ -5,6 +5,38 @@ ObjectId = mongoose.Schema.ObjectId
 
 metaDB = mongoose.createConnection constants.dbConnectionString
 
+exports.BrandedDrug = metaDB.model "BrandedDrug",
+  new mongoose.Schema(
+    name: String
+    genericDrug: type: ObjectId, ref: "GenericDrug"
+  ), "brandedDrug"
+
+exports.GenericDrug = metaDB.model "GenericDrug",
+  new mongoose.Schema(
+    name: String
+  ), "genericDrugs"
+
+exports.Investigation = metaDB.model "Investigation",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    tests: [type: ObjectId, ref: "Test"]
+    comments: String
+  ), "investigations"
+
+exports.Invoice = metaDB.model "Invoice",
+  new mongoose.Schema(
+    serial: {
+      year: Number
+      number: Number
+    }
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    services: [type: ObjectId, ref: "Service"]
+    comments: String
+    copay: Number
+  ), "invoices"
+
 exports.Patient = metaDB.model "Patient",
   new mongoose.Schema(
     id: String
@@ -23,17 +55,6 @@ exports.Patient = metaDB.model "Patient",
     smoking: Boolean
   ), "patients"
 
-exports.GenericDrug = metaDB.model "GenericDrug",
-  new mongoose.Schema(
-    name: String
-  ), "genericDrugs"
-
-exports.BrandedDrug = metaDB.model "BrandedDrug",
-  new mongoose.Schema(
-    name: String
-    genericDrug: type: ObjectId, ref: "GenericDrug"
-  ), "brandedDrug"
-
 exports.Prescription = metaDB.model "Prescription",
   new mongoose.Schema(
     patient: type: ObjectId, ref: "Patient"
@@ -49,6 +70,41 @@ exports.Prescription = metaDB.model "Prescription",
     pharmacy: String
   ), "prescriptions"
 
+exports.Referral = metaDB.model "Referral",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    consult: String
+    referred_to: String
+    complaint: String
+    diagnosis: String
+    instruction: String
+    comments: String
+  ), "referrals"
+
+exports.Fit = metaDB.model "Fit",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    diagnosis: String
+    comments: String
+  ), "fits"
+
+exports.Unfit = metaDB.model "Unfit",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    diagnosis: String
+    comments: String
+  ), "unfits"
+
+exports.Memo = metaDB.model "Memo",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    comments: String
+  ), "memos"
+
 exports.Service = metaDB.model "Service",
   new mongoose.Schema(
     code: String
@@ -56,13 +112,11 @@ exports.Service = metaDB.model "Service",
     amount: Number
   ), "services"
 
-exports.Investigation = metaDB.model "Investigation",
+exports.Diagnosis = metaDB.model "Diagnosis",
   new mongoose.Schema(
-    patient: type: ObjectId, ref: "Patient"
-    date: type: Date, default: Date.now()
-    tests: [type: ObjectId, ref: "Test"]
-    comments: String
-  ), "investigations"
+    code: String
+    name: String
+  ), "diagnoses"
 
 exports.Test = metaDB.model "Test",
   new mongoose.Schema(
@@ -70,17 +124,33 @@ exports.Test = metaDB.model "Test",
     name: String
   ), "tests"
 
-exports.Invoice = metaDB.model "Invoice",
+exports.Visit = metaDB.model "Visit",
   new mongoose.Schema(
-    serial: {
-      year: Number
-      number: Number
-    }
     patient: type: ObjectId, ref: "Patient"
     date: type: Date, default: Date.now()
-    services: [type: ObjectId, ref: "Service"]
+    symptoms: [
+      name: String
+      duration: String
+    ]
+    signs: [
+      name: String
+    ]
+    diagnoses: [type: ObjectId, ref: "Diagnosis"]
+    sickDays: Number
+    sickHour: Number
     comments: String
-    copay: Number
-  ), "invoices"
+  ), "visits"
+
+exports.Vital = metaDB.model "Vital",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    temperature: Number
+    pulse: Number
+    systole: Number
+    diastole: Number
+    height: Number
+    weight: Number
+  ), "vitals"
 
 exports.eval = metaDB.db.eval.bind metaDB.db

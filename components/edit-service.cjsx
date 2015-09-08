@@ -27,6 +27,7 @@ class module.exports extends React.Component
     @props.onServiceChange service
 
   handleAmountChanged: (amount) =>
+    service = clone @props.service
     amountNumber =
       unless amount?
         undefined
@@ -34,8 +35,8 @@ class module.exports extends React.Component
         @props.service.amount
       else
         Number amount
-    @props.service.amount = amountNumber
-    @props.onServiceChange @props.service
+    service.amount = amountNumber
+    @props.onServiceChange service
 
   render: ->
     <div>

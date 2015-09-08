@@ -1,4 +1,5 @@
 BillingView = require "./billing-view"
+CasesView = require "./cases-view"
 InvestigationsView = require "./investigations-view"
 MainNav = require "./main-nav"
 PatientsView = require "./patients-view"
@@ -24,6 +25,8 @@ class module.exports extends React.Component
       switch @state.activeView
         when "patients"
           <PatientsView />
+        when "cases"
+          <CasesView />
         when "prescriptions"
           <PrescriptionsView />
         when "investigations"
