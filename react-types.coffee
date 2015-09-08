@@ -88,6 +88,19 @@ referral = shape
   instruction: string
   comments: string
 
+fit = shape
+  _id: string
+  patient: patient
+  date: date
+  diagnosis: string
+  comments: string
+
+unfit = shape
+  _id: string
+  patient: patient
+  date: date
+  diagnosis: string
+  comments: string
 
 service = shape
   _id: string
@@ -138,6 +151,7 @@ module.exports = {
   brandedDrug
   date
   diagnosis
+  fit
   genericDrug
   investigation
   invoice
@@ -150,6 +164,7 @@ module.exports = {
   sign
   symptom
   test
+  unfit
   visit
   vital
 }

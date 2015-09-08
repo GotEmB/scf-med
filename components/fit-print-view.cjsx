@@ -84,12 +84,12 @@ class module.exports extends React.Component
     </table>
 
   renderBody: ->
-    thStyle =
-      fontWeight: "bold"
-      border: "solid 1px black"
     <tbody>
       <tr>
-        <th style={thStyle}>Referral for: </th>
+        <td>Referral for: </td>
+        <td>{@props.referral?.consult}</td>
+        <td>Complaint: </td>
+        <td>{@props.referral?.complaint}</td>
       </tr>
     </tbody>
 

@@ -8,10 +8,10 @@ React = require "react"
 reactTypes = require "../react-types"
 
 class module.exports extends React.Component
-  @displayName: "ReferralPrintView"
+  @displayName: "UnfitPrintView"
 
   @propTypes:
-    referral: reactTypes.referral
+    unfit: reactTypes.unfit
 
   renderHeader: ->
     <div className="text-center">
@@ -20,13 +20,13 @@ class module.exports extends React.Component
         src="/static/logo.jpg"
       />
       <h4>{constants.clinicName}</h4>
-      <h5>Referral</h5>
+      <h5>Unfit</h5>
       <div className="clearfix" />
     </div>
 
   renderDetail: ->
-    if @props.referral?.patient?.dob
-      dob = @props.referral.patient.dob
+    if @props.unfit?.patient?.dob
+      dob = @props.unfit.patient.dob
       age = changeCase.upperCaseFirst calculateAge dob
     tdKeyStyle =
       paddingTop: 4
@@ -47,17 +47,17 @@ class module.exports extends React.Component
         <tr>
           <td style={tdKeyStyle}>Date:</td>
           <td style={tdValueStyle}>
-            {moment(@props.referral?.date).format "ll"}
+            {moment(@props.unfit?.date).format "ll"}
           </td>
           <td style={tdKeyStyle}>Insurance ID:</td>
           <td style={tdValueStyle}>
-            {@props.referral?.patient?.insuranceId}
+            {@props.unfit?.patient?.insuranceId}
           </td>
         </tr>
         <tr>
           <td style={tdKeyStyle}>Name:</td>
           <td style={tdValueStyle}>
-            {@props.referral?.patient?.name}
+            {@props.unfit?.patient?.name}
           </td>
           <td style={tdKeyStyle}>Age:</td>
           <td style={tdValueStyle}>
@@ -67,29 +67,29 @@ class module.exports extends React.Component
         <tr>
           <td style={tdKeyStyle}>Contact:</td>
           <td style={tdValueStyle}>
-            {@props.referral?.patient?.contact}
+            {@props.unfit?.patient?.contact}
           </td>
           <td style={tdKeyStyle}>Sex:</td>
           <td style={tdValueStyle}>
-            {@props.referral?.patient?.sex}
+            {@props.unfit?.patient?.sex}
           </td>
         </tr>
         <tr>
-          <td style={tdKeyStyle}>Referral to:</td>
+          <td style={tdKeyStyle}>Unfit to:</td>
           <td style={tdValueStyle} colSpan={3}>
-            {@props.referral?.referred_to}
+            {@props.unfit?.referred_to}
           </td>
         </tr>
       </tbody>
     </table>
 
   renderBody: ->
-    thStyle =
-      fontWeight: "bold"
-      border: "solid 1px black"
     <tbody>
       <tr>
-        <th style={thStyle}>Referral for: </th>
+        <td>Unfit for: </td>
+        <td>{@props.unfit?.consult}</td>
+        <td>Complaint: </td>
+        <td>{@props.unfit?.complaint}</td>
       </tr>
     </tbody>
 

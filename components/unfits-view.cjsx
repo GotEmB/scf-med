@@ -3,40 +3,40 @@ CommitCache = require "./commit-cache"
 constants = require "../constants"
 escapeStringRegexp = require "escape-string-regexp"
 DateRangeInput = require "./date-range-input"
-EditFit = require "./edit-fit"
+EditUnfit = require "./edit-unfit"
 Layers = require "./layers"
 moment = require "moment"
 nextTick = require "next-tick"
-fitsCalls = require("../async-calls/fits").calls
-FitsTable = require "./fits-table"
+unfitsCalls = require("../async-calls/unfits").calls
+UnfitsTable = require "./unfits-table"
 React = require "react"
 
 class module.exports extends React.Component
-  @displayName: "FitsView"
+  @displayName: "UnfitsView"
 
   constructor: ->
     @state =
       filterQuery: ""
       queryStartDate: moment().subtract(3, "month").toDate()
       queryEndDate: moment().endOf("day").toDate()
-      fits: []
-      selectedFit: undefined
+      unfits: []
+      selectedUnfit: undefined
       loadFrom: 0
       total: 0
       loading: false
       layer: undefined
 
-  fetchFits: =>
+  fetchUnfits: =>
     @setState loading: true
     query =
       text: @state.filterQuery
       daterange:
         from: @state.queryStartDate
         to: @state.queryEndDate
-    fitsCalls.getFits query, @state.loadFrom,
-      constants.paginationLimit, (err, fits, total) =>
+    unfitsCalls.getUnfits query, @state.loadFrom,
+      constants.paginationLimit, (err, unfits, total) =>
         @setState
-          fits: fits
+          unfits: unfits
           total: total
           loading: false
 
@@ -45,62 +45,62 @@ class module.exports extends React.Component
       filterQuery: e.target.value
       loadFrom: 0
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
-    @filterQueryChangeTimer = setTimeout @fetchFits, 200
+    @filterQueryChangeTimer = setTimeout @fetchUnfits, 200
 
   handleQueryDateRangeChanged: ({startDate, endDate}) =>
     @setState
       queryStartDate: startDate
       queryEndDate: endDate
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
-    @filterQueryChangeTimer = setTimeout @fetchFits, 200
+    @filterQueryChangeTimer = setTimeout @fetchUnfits, 200
 
-  handleNewFitClicked: =>
+  handleNewUnfitClicked: =>
     layer =
       <CommitCache
-        component={EditFit}
+        component={EditUnfit}
         data={undefined}
-        dataProperty="fit"
-        commitMethod={fitsCalls.commitFit}
-        removeMethod={fitsCalls.removeFit}
+        dataProperty="unfit"
+        commitMethod={unfitsCalls.commitUnfit}
+        removeMethod={unfitsCalls.removeUnfit}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
-    Layers.addLayer layer, "New Fit"
+    Layers.addLayer layer, "New Unfit"
 
   handlePagerPreviousClicked: =>
     @setState
       loadFrom:
         Math.max 0, @state.loadFrom - constants.paginationLimit
-    nextTick @fetchFits
+    nextTick @fetchUnfits
 
   handlePagerNextClicked: =>
     @setState
       loadFrom:
         Math.min @state.total - constants.paginationLimit,
           @state.loadFrom + constants.paginationLimit
-    nextTick @fetchFits
+    nextTick @fetchUnfits
 
-  handleFitClicked: (fit) =>
+  handleUnfitClicked: (unfit) =>
     layer =
       <CommitCache
-        component={EditFit}
-        data={fit}
-        dataProperty="fit"
-        commitMethod={fitsCalls.commitFit}
-        removeMethod={fitsCalls.removeFit}
+        component={EditUnfit}
+        data={unfit}
+        dataProperty="unfit"
+        commitMethod={unfitsCalls.commitUnfit}
+        removeMethod={unfitsCalls.removeUnfit}
         onDismiss={@handleLayerDismissed}
       />
     @setState
-      selectedFit: fit
+      selectedunfit: unfit
       layer: layer
-    Layers.addLayer layer, "Edit Fit"
+    Layers.addLayer layer, "Edit Unfit"
 
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
     @setState
-      selectedFit: undefined
+      selectedUnfit: undefined
       layer: undefined
-    @fetchFits() if status in ["saved", "removed"]
+    @fetchUnfits() if status in ["saved", "removed"]
 
   renderLeftControls: ->
     <div className="form-inline pull-left">
@@ -132,8 +132,8 @@ class module.exports extends React.Component
       <span> </span>
       <button
         className="btn btn-default"
-        onClick={@handleNewFitClicked}>
-        <i className="fa fa-pencil" /> New Fit
+        onClick={@handleNewUnfitClicked}>
+        <i className="fa fa-pencil" /> New Unfit
       </button>
       <span> </span>
     </div>
@@ -152,7 +152,7 @@ class module.exports extends React.Component
           <i className="fa fa-chevron-left" />
         </button>
     rightButton =
-      if @state.loadFrom + @state.fits.length < @state.total
+      if @state.loadFrom + @state.unfits.length < @state.total
         <button
           className="btn btn-default"
           onClick={@handlePagerNextClicked}>
@@ -160,7 +160,7 @@ class module.exports extends React.Component
         </button>
     text =
       "#{@state.loadFrom + 1}—" +
-      "#{@state.loadFrom + @state.fits.length} of " +
+      "#{@state.loadFrom + @state.unfits.length} of " +
       "#{@state.total}"
     <div className="pull-right">
       <div className="pull-right btn-group">
@@ -182,15 +182,15 @@ class module.exports extends React.Component
     <div>
       {@renderControls()}
       <br />
-      <FitsTable
-        fits={@state.fits}
-        selectedFit={@state.selectedFit}
-        onFitClick={@handleFitClicked}
+      <UnfitsTable
+        unfits={@state.unfits}
+        selectedUnfit={@state.selectedUnfit}
+        onUnfitClick={@handleUnfitClicked}
       />
     </div>
 
   componentDidMount: ->
-    @fetchFits()
+    @fetchUnfits()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?

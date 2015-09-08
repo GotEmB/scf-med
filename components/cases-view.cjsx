@@ -9,6 +9,7 @@ VisitsView = require "./visits-view"
 VitalsView = require "./vitals-view"
 ReferralsView = require "./referrals-view"
 FitsView = require "./fits-view"
+UnfitsView = require "./unfits-view"
 React = require "react"
 
 class module.exports extends React.Component
@@ -26,6 +27,7 @@ class module.exports extends React.Component
     Layers.addLayer layer, "Visits"
 
   handleVitalClicked: =>
+    layer =
     layer =
       <CommitCache
         component={VitalsView}
@@ -56,7 +58,18 @@ class module.exports extends React.Component
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
-    Layers.addLayer layer, "Referrals"
+    Layers.addLayer layer, "Fitness Certificates"
+
+  handleUnfitClicked: =>
+    layer =
+      <CommitCache
+        component={UnfitsView}
+        data={undefined}
+        dataProperty="Unfit"
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState layer: layer
+    Layers.addLayer layer, "Unfitness Certificates"
 
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
@@ -82,8 +95,13 @@ class module.exports extends React.Component
       </button>
       <button
         className="btn btn-default"
-        onClick={@handleFitClicked}>
+        onClick={@handleReferralClicked}>
         <i className="fa fa-pencil" /> Fit
+      </button>
+      <button
+        className="btn btn-default"
+        onClick={@handleUnfitClicked}>
+        <i className="fa fa-pencil" /> Unfit
       </button>
     </div>
 

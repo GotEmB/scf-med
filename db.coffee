@@ -82,6 +82,22 @@ exports.Referral = metaDB.model "Referral",
     comments: String
   ), "referrals"
 
+exports.Fit = metaDB.model "Fit",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    diagnosis: String
+    comments: String
+  ), "fits"
+
+exports.Unfit = metaDB.model "Unfit",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    diagnosis: String
+    comments: String
+  ), "unfits"
+
 exports.Service = metaDB.model "Service",
   new mongoose.Schema(
     code: String

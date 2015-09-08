@@ -144,7 +144,7 @@ class module.exports extends React.Component
         label="Diagnosis"
       />
       <div className="form-group" style={position: "relative"}>
-        <label>Instrucion</label>
+        <label>Instruction</label>
         <TextInput
           type="text"
           className="form-control"
