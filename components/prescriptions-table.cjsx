@@ -70,8 +70,8 @@ class module.exports extends React.Component
       <td style={verticalAlign: "middle"}>{row.patient?.id}</td>
       <td style={verticalAlign: "middle"}>{row.patient?.name}</td>
       <td className="text-right" style={btnTdStyle}>
-        {receivedAllI}
         {routineButton}
+        {receivedAllI}
         <button
           className="btn btn-primary btn-sm"
           style={marginLeft: 3}
