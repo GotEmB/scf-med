@@ -26,7 +26,7 @@ class module.exports extends React.Component
         when "patients"
           <PatientsView />
         when "cases"
-          <CasesView />
+          <PatientsView />
         when "prescriptions"
           <PrescriptionsView />
         when "investigations"
