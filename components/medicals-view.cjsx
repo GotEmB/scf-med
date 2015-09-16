@@ -3,41 +3,40 @@ CommitCache = require "./commit-cache"
 constants = require "../constants"
 escapeStringRegexp = require "escape-string-regexp"
 DateRangeInput = require "./date-range-input"
-EditVisit = require "./edit-visit"
+EditMedical = require "./edit-medical"
 Layers = require "./layers"
-ManageDiagnosesView = require "./manage-diagnoses-view"
 moment = require "moment"
 nextTick = require "next-tick"
-visitsCalls = require("../async-calls/visits").calls
-VisitsTable = require "./visits-table"
+medicalsCalls = require("../async-calls/medicals").calls
+MedicalsTable = require "./medicals-table"
 React = require "react"
 
 class module.exports extends React.Component
-  @displayName: "VisitsView"
+  @displayName: "MedicalsView"
 
   constructor: ->
     @state =
       filterQuery: ""
       queryStartDate: moment().subtract(3, "month").toDate()
       queryEndDate: moment().endOf("day").toDate()
-      visits: []
-      selectedVisit: undefined
+      medicals: []
+      selectedMedical: undefined
       loadFrom: 0
       total: 0
       loading: false
       layer: undefined
 
-  fetchVisits: =>
+  fetchMedicals: =>
     @setState loading: true
     query =
       text: @state.filterQuery
       daterange:
         from: @state.queryStartDate
         to: @state.queryEndDate
-    visitsCalls.getVisits query, @state.loadFrom,
-      constants.paginationLimit, (err, visits, total) =>
+    medicalsCalls.getMedicals query, @state.loadFrom,
+      constants.paginationLimit, (err, medicals, total) =>
         @setState
-          visits: visits
+          medicals: medicals
           total: total
           loading: false
 
@@ -46,95 +45,62 @@ class module.exports extends React.Component
       filterQuery: e.target.value
       loadFrom: 0
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
-    @filterQueryChangeTimer = setTimeout @fetchVisits, 200
+    @filterQueryChangeTimer = setTimeout @fetchMedicals, 200
 
   handleQueryDateRangeChanged: ({startDate, endDate}) =>
     @setState
       queryStartDate: startDate
       queryEndDate: endDate
     clearTimeout @filterQueryChangeTimer if @filterQueryChangeTimer?
-    @filterQueryChangeTimer = setTimeout @fetchVisits, 200
+    @filterQueryChangeTimer = setTimeout @fetchMedicals, 200
 
-  handleNewVisitClicked: =>
+  handleNewMedicalClicked: =>
     layer =
       <CommitCache
-        component={EditVisit}
+        component={EditMedical}
         data={undefined}
-        dataProperty="visit"
-        commitMethod={visitsCalls.commitVisit}
-        removeMethod={visitsCalls.removeVisit}
+        dataProperty="medical"
+        commitMethod={medicalsCalls.commitMedical}
+        removeMethod={medicalsCalls.removeMedical}
         onDismiss={@handleLayerDismissed}
       />
     @setState layer: layer
-    Layers.addLayer layer, "New Visit"
-
-  handleFollow_upClicked: =>
-    layer =
-      <CommitCache
-        component={EditVisit}
-        data={undefined}
-        dataProperty="visit"
-        commitMethod={visitsCalls.commitVisit}
-        removeMethod={visitsCalls.removeVisit}
-        onDismiss={@handleLayerDismissed}
-      />
-    @setState layer: layer
-    Layers.addLayer layer, "Follow-up"
-
-  handleManageDiagnosesClicked: =>
-    closeButtonStyle =
-      position: "absolute"
-      top: -50
-      right: 0
-      padding: "2.5px 0"
-      outline: 0
-    layer =
-      <div style={position: "relative"}>
-        <ManageDiagnosesView/>
-        <button
-          className="close"
-          onClick={@handleLayerDismissed}
-          style={closeButtonStyle}>
-          <span className="lead">✕</span>
-        </button>
-      </div>
-    @setState layer: layer
-    Layers.addLayer layer, "Manage Diagnoses"
+    Layers.addLayer layer, "New Medical"
 
   handlePagerPreviousClicked: =>
     @setState
       loadFrom:
         Math.max 0, @state.loadFrom - constants.paginationLimit
-    nextTick @fetchVisits
+    nextTick @fetchMedicals
 
   handlePagerNextClicked: =>
     @setState
       loadFrom:
         Math.min @state.total - constants.paginationLimit,
           @state.loadFrom + constants.paginationLimit
-    nextTick @fetchVisits
+    nextTick @fetchMedicals
 
-  handleVisitClicked: (visit) =>
+  handleMedicalClicked: (medical) =>
     layer =
       <CommitCache
-        component={EditVisit}
-        data={visit}
-        dataProperty="visit"
-        commitMethod={visitsCalls.commitVisit}
-        removeMethod={visitsCalls.removeVisit}
+        component={EditMedical}
+        data={medical}
+        dataProperty="medical"
+        commitMethod={medicalsCalls.commitMedical}
+        removeMethod={medicalsCalls.removeMedical}
         onDismiss={@handleLayerDismissed}
       />
     @setState
-      selectedVisit: visit
+      selectedMedical: medical
       layer: layer
-    Layers.addLayer layer, "Edit Visit"
+    Layers.addLayer layer, "Edit Medical"
 
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
     @setState
-      selectedVisit: undefined
+      selectedMedical: undefined
       layer: undefined
-    @fetchVisits() if status in ["saved", "removed"]
+    @fetchMedicals() if status in ["saved", "removed"]
 
   renderLeftControls: ->
     <div className="form-inline pull-left">
@@ -166,21 +132,10 @@ class module.exports extends React.Component
       <span> </span>
       <button
         className="btn btn-default"
-        onClick={@handleNewVisitClicked}>
-        <i className="fa fa-pencil" /> New Visit
+        onClick={@handleNewMedicalClicked}>
+        <i className="fa fa-pencil" /> New Medical
       </button>
       <span> </span>
-      <button
-        className="btn btn-default"
-        onClick={@handleFollow_upClicked}>
-        <i className="fa fa-pencil" /> Follow-up
-      </button>
-      <span> </span>
-      <button
-        className="btn btn-default"
-        onClick={@handleManageDiagnosesClicked}>
-        <i className="fa fa-th-list" /> Manage Diagnoses
-      </button>
     </div>
 
   renderRightControls: ->
@@ -197,7 +152,7 @@ class module.exports extends React.Component
           <i className="fa fa-chevron-left" />
         </button>
     rightButton =
-      if @state.loadFrom + @state.visits.length < @state.total
+      if @state.loadFrom + @state.medicals.length < @state.total
         <button
           className="btn btn-default"
           onClick={@handlePagerNextClicked}>
@@ -205,7 +160,7 @@ class module.exports extends React.Component
         </button>
     text =
       "#{@state.loadFrom + 1}—" +
-      "#{@state.loadFrom + @state.visits.length} of " +
+      "#{@state.loadFrom + @state.medicals.length} of " +
       "#{@state.total}"
     <div className="pull-right">
       <div className="pull-right btn-group">
@@ -227,15 +182,15 @@ class module.exports extends React.Component
     <div>
       {@renderControls()}
       <br />
-      <VisitsTable
-        visits={@state.visits}
-        selectedVisit={@state.selectedVisit}
-        onVisitClick={@handleVisitClicked}
+      <MedicalsTable
+        medicals={@state.medicals}
+        selectedMedical={@state.selectedMedical}
+        onMedicalClick={@handleMedicalClicked}
       />
     </div>
 
   componentDidMount: ->
-    @fetchVisits()
+    @fetchMedicals()
 
   componentWillUnmount: ->
     Layers.removeLayer @state.layer if @state.layer?

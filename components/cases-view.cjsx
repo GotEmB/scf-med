@@ -5,6 +5,7 @@ escapeStringRegexp = require "escape-string-regexp"
 Layers = require "./layers"
 moment = require "moment"
 nextTick = require "next-tick"
+MedicalsView = require "./medicals-view"
 MemosView = require "./memos-view"
 VisitsView = require "./visits-view"
 VitalsView = require "./vitals-view"
@@ -28,7 +29,6 @@ class module.exports extends React.Component
     Layers.addLayer layer, "Visits"
 
   handleVitalClicked: =>
-    layer =
     layer =
       <CommitCache
         component={VitalsView}
@@ -89,6 +89,20 @@ class module.exports extends React.Component
   handleLayerDismissed: ({status}) =>
     Layers.removeLayer @state.layer
 
+  handleMedicalClicked: =>
+    layer =
+      <CommitCache
+        component={MedicalsView}
+        data={undefined}
+        dataProperty="Medical"
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState layer: layer
+    Layers.addLayer layer, "Medical Certificates"
+
+  handleLayerDismissed: ({status}) =>
+    Layers.removeLayer @state.layer
+
   render: ->
     <div className="form-inline pull-right">
       <button
@@ -108,20 +122,29 @@ class module.exports extends React.Component
         onClick={@handleReferralClicked}>
         <i className="fa fa-pencil" /> Referrals
       </button>
+      <span> </span>
       <button
         className="btn btn-default"
         onClick={@handleReferralClicked}>
         <i className="fa fa-pencil" /> Fit
       </button>
+      <span> </span>
       <button
         className="btn btn-default"
         onClick={@handleUnfitClicked}>
         <i className="fa fa-pencil" /> Unfit
       </button>
+      <span> </span>
       <button
         className="btn btn-default"
         onClick={@handleMemoClicked}>
         <i className="fa fa-pencil" /> Memo
+      </button>
+      <span> </span>
+      <button
+        className="btn btn-default"
+        onClick={@handleMedicalClicked}>
+        <i className="fa fa-pencil" /> Medical
       </button>
     </div>
 

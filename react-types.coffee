@@ -102,6 +102,12 @@ unfit = shape
   diagnosis: string
   comments: string
 
+medical = shape
+  _id: string
+  patient: patient
+  date: date
+  comments: string
+
 memo = shape
   _id: string
   patient: patient
@@ -162,6 +168,7 @@ module.exports = {
   investigation
   invoice
   medicine
+  medical
   memo
   patient
   prescription

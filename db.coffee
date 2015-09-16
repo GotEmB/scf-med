@@ -98,6 +98,13 @@ exports.Unfit = metaDB.model "Unfit",
     comments: String
   ), "unfits"
 
+exports.Medical = metaDB.model "Medical",
+  new mongoose.Schema(
+    patient: type: ObjectId, ref: "Patient"
+    date: type: Date, default: Date.now()
+    comments: String
+  ), "medicals"
+
 exports.Memo = metaDB.model "Memo",
   new mongoose.Schema(
     patient: type: ObjectId, ref: "Patient"

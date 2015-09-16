@@ -1,16 +1,20 @@
 clone = require "clone"
+CommitCache = require "./commit-cache"
 DateInput = require "./date-input"
 deepDiff = require "deep-diff"
 EditDiagnosesTable = require "./edit-diagnoses-table"
 EditSignsTable = require "./edit-signs-table"
 EditSymptomsTable = require "./edit-symptoms-table"
 EditPatient = require "./edit-patient"
+EditVital = require "./edit-vital"
+Layers = require "./layers"
 moment = require "moment"
 nextTick = require "next-tick"
 Page = require "./page"
 padNumber = require "pad-number"
 patientsCalls = require("../async-calls/patients").calls
 visitsCalls = require("../async-calls/visits").calls
+vitalsCalls = require("../async-calls/vitals").calls
 React = require "react"
 reactTypes = require "../react-types"
 TextInput = require "./text-input"
@@ -90,6 +94,21 @@ class module.exports extends React.Component
     visit.sickHours = sickHoursNumber
     @props.onVitalChange visit
 
+  handleVitalClicked: =>
+    layer =
+      <CommitCache
+        component={EditVital}
+        data={undefined}
+        dataProperty="vital"
+        commitMethod={vitalsCalls.commitVital}
+        removeMethod={vitalsCalls.removeVital}
+        onDismiss={@handleLayerDismissed}
+      />
+    @setState layer: layer
+    Layers.addLayer layer, "New Vital"
+
+  handleLayerDismissed: ({status}) =>
+    Layers.removeLayer @state.layer
 
   render: ->
     newPatientSuggestion =
@@ -123,6 +142,13 @@ class module.exports extends React.Component
         signs={@props.visit.signs}
         onSignsChange={@handleSignsChanged}
       />
+      <div>
+        <button
+          className="btn btn-default"
+          onClick={@handleVitalClicked}>
+          <i className="fa fa-pencil" /> Vitals
+        </button>
+      </div>
       <div className="form-group" style={position: "relative"}>
         <label>Comments</label>
         <TextInput
