@@ -125,21 +125,9 @@ class module.exports extends React.Component
       .replace "$", "Dhs"
     <tfoot>
       <tr>
-        <th style={thStyle} colSpan={2}>Gross Amount</th>
+        <th style={thStyle} colSpan={2} className="text-right">Total Amount</th>
         <th style={amountTStyle} className="text-right">
           {totalAmountText}
-        </th>
-      </tr>
-      <tr>
-        <th style={thStyle} colSpan={2}>Deduction: Co-Pay 20%</th>
-        <th style={amountTStyle} className="text-right">
-          {copayAmountText}
-        </th>
-      </tr>
-      <tr>
-        <th style={thStyle} colSpan={2}>Net Amount</th>
-        <th style={amountTStyle} className="text-right">
-          {netAmountText}
         </th>
       </tr>
     </tfoot>

@@ -58,7 +58,7 @@ class module.exports extends React.Component
     amount = (invoice.services ? [])
       .map (x) -> x?.amount ? 0
       .reduce ((carry, x) -> carry + x), 0
-    amount = amount * 0.8
+    amount = amount * 1
     amount = numeral amount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
@@ -84,7 +84,7 @@ class module.exports extends React.Component
           .reduce ((carry, x) -> carry + x), 0
         grossAmount
       .reduce ((carry, x) -> carry + x), 0
-    totalAmount = totalAmount * 0.8
+    totalAmount = totalAmount * 1
     totalAmount = numeral totalAmount
       .format "($ 0,0.00)"
       .replace "$", "Dhs"
